@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Development service
+  affiliat-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5174:5174"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - VITE_PORT=5174
+    command: npm run dev
+
+  # Production service
+  affiliat-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+
+networks:
+  default:
+    name: affiliat-network

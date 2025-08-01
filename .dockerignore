@@ -1,0 +1,44 @@
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+dist-ssr
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Git files
+.git
+.gitignore
+
+# Docker files (to avoid recursive copying)
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+.dockerignore
+
+# Testing
+coverage
+
+# Misc
+.DS_Store
