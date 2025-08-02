@@ -6,18 +6,18 @@ const Earnings: React.FC = () => {
   const [timeframe, setTimeframe] = useState('30days');
 
   const earningsStats = [
-    { label: 'Total Earnings', value: '$12,534.56', change: '+12.5%', icon: '💰' },
-    { label: 'This Month', value: '$3,247.89', change: '+8.2%', icon: '📅' },
+    { label: 'Total Earnings', value: '₹12,534.56', change: '+12.5%', icon: '💰' },
+    { label: 'This Month', value: '₹3,247.89', change: '+8.2%', icon: '📅' },
     { label: 'Commission Rate', value: '8.5%', change: '+0.3%', icon: '📊' },
-    { label: 'Avg Order Value', value: '$127.45', change: '-3.2%', icon: '🛒' },
+    { label: 'Avg Order Value', value: '₹127.45', change: '-3.2%', icon: '🛒' },
   ];
 
   const recentEarnings = [
-    { id: 1, date: '2024-01-15', product: 'Premium Software License', commission: '$45.67', rate: '15%' },
-    { id: 2, date: '2024-01-14', product: 'Online Course Bundle', commission: '$23.45', rate: '12%' },
-    { id: 3, date: '2024-01-13', product: 'Digital Marketing Tool', commission: '$67.89', rate: '18%' },
-    { id: 4, date: '2024-01-12', product: 'Design Template Pack', commission: '$12.34', rate: '10%' },
-    { id: 5, date: '2024-01-11', product: 'Productivity App', commission: '$34.56', rate: '14%' },
+    { id: 1, date: '2024-01-15', product: 'Premium Software License', commission: '₹45.67', rate: '15%' },
+    { id: 2, date: '2024-01-14', product: 'Online Course Bundle', commission: '₹23.45', rate: '12%' },
+    { id: 3, date: '2024-01-13', product: 'Digital Marketing Tool', commission: '₹67.89', rate: '18%' },
+    { id: 4, date: '2024-01-12', product: 'Design Template Pack', commission: '₹12.34', rate: '10%' },
+    { id: 5, date: '2024-01-11', product: 'Productivity App', commission: '₹34.56', rate: '14%' },
   ];
 
   const timeframes = [

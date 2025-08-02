@@ -7,18 +7,18 @@ const Payouts: React.FC = () => {
   const { isDarkMode, colorScheme } = useTheme();
 
   const payoutStats = [
-    { label: 'Available Balance', value: '$2,456.78', icon: '💰', color: 'text-green-500 dark:text-green-400' },
-    { label: 'Pending Payouts', value: '$892.34', icon: '⏳', color: 'text-yellow-500 dark:text-yellow-400' },
-    { label: 'Total Paid', value: '$15,234.56', icon: '✅', color: 'text-blue-500 dark:text-blue-400' },
-    { label: 'This Month', value: '$1,567.89', icon: '📅', color: 'text-purple-500 dark:text-purple-400' },
+    { label: 'Available Balance', value: '₹2,456.78', icon: '💰', color: 'text-green-500 dark:text-green-400' },
+    { label: 'Pending Payouts', value: '₹892.34', icon: '⏳', color: 'text-yellow-500 dark:text-yellow-400' },
+    { label: 'Total Paid', value: '₹15,234.56', icon: '✅', color: 'text-blue-500 dark:text-blue-400' },
+    { label: 'This Month', value: '₹1,567.89', icon: '📅', color: 'text-purple-500 dark:text-purple-400' },
   ];
 
   const payoutHistory = [
-    { id: 1, date: '2024-01-15', amount: '$1,234.56', method: 'PayPal', status: 'Completed', reference: 'TXN001234' },
-    { id: 2, date: '2024-01-01', amount: '$892.34', method: 'Bank Transfer', status: 'Completed', reference: 'TXN001235' },
-    { id: 3, date: '2023-12-15', amount: '$1,567.89', method: 'PayPal', status: 'Completed', reference: 'TXN001236' },
-    { id: 4, date: '2023-12-01', amount: '$734.12', method: 'Bank Transfer', status: 'Completed', reference: 'TXN001237' },
-    { id: 5, date: '2023-11-15', amount: '$2,145.67', method: 'PayPal', status: 'Completed', reference: 'TXN001238' },
+    { id: 1, date: '2024-01-15', amount: '₹1,234.56', method: 'PayPal', status: 'Completed', reference: 'TXN001234' },
+    { id: 2, date: '2024-01-01', amount: '₹892.34', method: 'Bank Transfer', status: 'Completed', reference: 'TXN001235' },
+    { id: 3, date: '2023-12-15', amount: '₹1,567.89', method: 'PayPal', status: 'Completed', reference: 'TXN001236' },
+    { id: 4, date: '2023-12-01', amount: '₹734.12', method: 'Bank Transfer', status: 'Completed', reference: 'TXN001237' },
+    { id: 5, date: '2023-11-15', amount: '₹2,145.67', method: 'PayPal', status: 'Completed', reference: 'TXN001238' },
   ];
 
   const paymentMethods = [

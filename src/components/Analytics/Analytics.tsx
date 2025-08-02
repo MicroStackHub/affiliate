@@ -5,7 +5,7 @@
 //   const stats = [
 //     {
 //       title: 'Total Earnings',
-//       value: '$12,345.67',
+//       value: '₹12,345.67',
 //       change: '+12.5%',
 //       trend: 'up',
 //       icon: '💰',
@@ -13,7 +13,7 @@
 //     },
 //     {
 //       title: 'This Month',
-//       value: '$1,234.56',
+//       value: '₹1,234.56',
 //       change: '+8.3%',
 //       trend: 'up',
 //       icon: '📈',
@@ -45,7 +45,7 @@
 //     },
 //     {
 //       title: 'Avg Order Value',
-//       value: '$89.50',
+//       value: '₹89.50',
 //       change: '-3.2%',
 //       trend: 'down',
 //       icon: '🛒',
@@ -113,7 +113,7 @@ const Analytics: React.FC = () => {
   const stats = [
     {
       title: 'Total Earnings',
-      value: '$12,345.67',
+      value: '₹12,345.67',
       change: '+12.5%',
       trend: 'up',
       icon: (
@@ -128,7 +128,7 @@ const Analytics: React.FC = () => {
     },
     {
       title: 'This Month',
-      value: '$1,234.56',
+      value: '₹1,234.56',
       change: '+8.3%',
       trend: 'up',
       icon: (

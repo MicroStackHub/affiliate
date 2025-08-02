@@ -35,9 +35,9 @@ const Navbar: React.FC = () => {
   ];
 
   const notifications = [
-    { id: 1, title: 'New referral bonus!', message: 'You earned $25 from John Doe', time: '2 min ago', unread: true },
+    { id: 1, title: 'New referral bonus!', message: 'You earned ₹25 from John Doe', time: '2 min ago', unread: true },
     { id: 2, title: 'Payment processed', message: 'Your earnings have been transferred', time: '1 hour ago', unread: true },
-    { id: 3, title: 'Welcome bonus', message: 'Complete your profile for $10 bonus', time: '2 hours ago', unread: false },
+    { id: 3, title: 'Welcome bonus', message: 'Complete your profile for ₹10 bonus', time: '2 hours ago', unread: false },
   ];
 
   return (

@@ -11,7 +11,7 @@ const Support: React.FC = () => {
     },
     {
       question: 'When do I get paid?',
-      answer: 'Payments are processed monthly on the 15th. You need a minimum balance of $100 to request a payout.'
+      answer: 'Payments are processed monthly on the 15th. You need a minimum balance of ₹100 to request a payout.'
     },
     {
       question: 'What commission rates do you offer?',

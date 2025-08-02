@@ -68,10 +68,10 @@ const GenerateLinks: React.FC = () => {
 
 const MyLinks: React.FC = () => {
   const links = [
-    { id: 1, product: 'Premium Software License', link: 'https://affiliate.example.com/r/abc123', clicks: 245, conversions: 12, earnings: '$1,234.56' },
-    { id: 2, product: 'Online Course Bundle', link: 'https://affiliate.example.com/r/def456', clicks: 189, conversions: 8, earnings: '$892.34' },
-    { id: 3, product: 'Digital Marketing Tool', link: 'https://affiliate.example.com/r/ghi789', clicks: 156, conversions: 6, earnings: '$675.12' },
-    { id: 4, product: 'Design Template Pack', link: 'https://affiliate.example.com/r/jkl012', clicks: 98, conversions: 4, earnings: '$324.78' },
+    { id: 1, product: 'Premium Software License', link: 'https://affiliate.example.com/r/abc123', clicks: 245, conversions: 12, earnings: '₹1,234.56' },
+    { id: 2, product: 'Online Course Bundle', link: 'https://affiliate.example.com/r/def456', clicks: 189, conversions: 8, earnings: '₹892.34' },
+    { id: 3, product: 'Digital Marketing Tool', link: 'https://affiliate.example.com/r/ghi789', clicks: 156, conversions: 6, earnings: '₹675.12' },
+    { id: 4, product: 'Design Template Pack', link: 'https://affiliate.example.com/r/jkl012', clicks: 98, conversions: 4, earnings: '₹324.78' },
   ];
 
   return (
@@ -131,10 +131,10 @@ const MyLinks: React.FC = () => {
 
 const LinkPerformance: React.FC = () => {
   const performanceData = [
-    { period: 'Last 7 days', clicks: 89, conversions: 5, rate: '5.6%', earnings: '$245.67' },
-    { period: 'Last 30 days', clicks: 342, conversions: 18, rate: '5.3%', earnings: '$892.34' },
-    { period: 'Last 90 days', clicks: 1024, conversions: 51, rate: '5.0%', earnings: '$2,567.89' },
-    { period: 'All time', clicks: 2156, conversions: 108, rate: '5.0%', earnings: '$5,234.56' },
+    { period: 'Last 7 days', clicks: 89, conversions: 5, rate: '5.6%', earnings: '₹245.67' },
+    { period: 'Last 30 days', clicks: 342, conversions: 18, rate: '5.3%', earnings: '₹892.34' },
+    { period: 'Last 90 days', clicks: 1024, conversions: 51, rate: '5.0%', earnings: '₹2,567.89' },
+    { period: 'All time', clicks: 2156, conversions: 108, rate: '5.0%', earnings: '₹5,234.56' },
   ];
 
   return (

@@ -348,10 +348,10 @@ const DataTable: React.FC = () => {
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                  {referral.orderValue ? `$${referral.orderValue.toFixed(2)}` : '-'}
+                  {referral.orderValue ? `₹${referral.orderValue.toFixed(2)}` : '-'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600 dark:text-green-400">
-                  {referral.commission > 0 ? `$${referral.commission.toFixed(2)}` : '-'}
+                  {referral.commission > 0 ? `₹${referral.commission.toFixed(2)}` : '-'}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                   <div className="flex space-x-2">

@@ -11,11 +11,11 @@ const Referrals: React.FC = () => {
   ];
 
   const recentReferrals = [
-    { id: 1, name: 'John Smith', email: 'john@example.com', status: 'Active', joinDate: '2024-01-15', earnings: '$245.67' },
-    { id: 2, name: 'Sarah Johnson', email: 'sarah@example.com', status: 'Pending', joinDate: '2024-01-14', earnings: '$0.00' },
-    { id: 3, name: 'Mike Wilson', email: 'mike@example.com', status: 'Active', joinDate: '2024-01-13', earnings: '$156.78' },
-    { id: 4, name: 'Emily Davis', email: 'emily@example.com', status: 'Active', joinDate: '2024-01-12', earnings: '$324.89' },
-    { id: 5, name: 'David Brown', email: 'david@example.com', status: 'Inactive', joinDate: '2024-01-10', earnings: '$89.45' },
+    { id: 1, name: 'John Smith', email: 'john@example.com', status: 'Active', joinDate: '2024-01-15', earnings: '₹245.67' },
+    { id: 2, name: 'Sarah Johnson', email: 'sarah@example.com', status: 'Pending', joinDate: '2024-01-14', earnings: '₹0.00' },
+    { id: 3, name: 'Mike Wilson', email: 'mike@example.com', status: 'Active', joinDate: '2024-01-13', earnings: '₹156.78' },
+    { id: 4, name: 'Emily Davis', email: 'emily@example.com', status: 'Active', joinDate: '2024-01-12', earnings: '₹324.89' },
+    { id: 5, name: 'David Brown', email: 'david@example.com', status: 'Inactive', joinDate: '2024-01-10', earnings: '₹89.45' },
   ];
 
   const getStatusColor = (status: string) => {
