@@ -30,10 +30,10 @@ export default {
         'purple-light': '#f5f3ff',
         'purple-dark': '#6d28d9',
         // Orange theme
-        'orange-primary': '#f97316',
-        'orange-hover': '#ea580c',
-        'orange-light': '#fff7ed',
-        'orange-dark': '#c2410c',
+        'orange-primary': '#F15A2B',
+        'orange-hover': '#E04A1B',
+        'orange-light': '#FFF5F2',
+        'orange-dark': '#D13A0B',
         // Gray enhancements
         'gray-850': '#1f2937',
         'gray-950': '#111827',

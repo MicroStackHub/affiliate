@@ -68,7 +68,7 @@ Returns recent activities like new referrals, commissions earned, etc.
         "type": "commission_earned",
         "description": "Commission earned from Product X purchase",
         "amount": 42.50,
-        "currency": "USD",
+        "currency": "INR",
         "timestamp": "2023-01-15T12:15:30Z",
         "related_id": "ord_456"
       },
@@ -77,7 +77,7 @@ Returns recent activities like new referrals, commissions earned, etc.
         "type": "payout_processed",
         "description": "Monthly payout processed",
         "amount": 1250.00,
-        "currency": "USD",
+        "currency": "INR",
         "timestamp": "2023-01-01T00:00:00Z",
         "related_id": "pay_123"
       }
@@ -295,7 +295,7 @@ Returns a paginated list of referrals.
         "conversion_status": "pending",
         "potential_value": 75.00,
         "earned_value": 0.00,
-        "currency": "USD"
+        "currency": "INR"
       },
       {
         "id": "ref_12344",
@@ -307,7 +307,7 @@ Returns a paginated list of referrals.
         "conversion_status": "converted",
         "potential_value": 50.00,
         "earned_value": 50.00,
-        "currency": "USD"
+        "currency": "INR"
       },
       {
         "id": "ref_12343",
@@ -319,7 +319,7 @@ Returns a paginated list of referrals.
         "conversion_status": "lost",
         "potential_value": 75.00,
         "earned_value": 0.00,
-        "currency": "USD"
+        "currency": "INR"
       }
     ],
     "pagination": {
@@ -357,7 +357,7 @@ Returns detailed information about a specific referral.
       "conversion_status": "pending",
       "potential_value": 75.00,
       "earned_value": 0.00,
-      "currency": "USD",
+      "currency": "INR",
       "user_info": {
         "email": "referred_user@example.com",
         "name": "Jane Smith",

@@ -2,7 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 
 type Theme = 'light' | 'dark';
-type ColorScheme = 'red' | 'blue' | 'green' | 'purple' | 'orange';
+type ColorScheme = 'orange';
 
 interface ThemeContextType {
   theme: Theme;
@@ -30,8 +30,8 @@ const STORAGE_KEYS = {
 } as const;
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setThemeState] = useState<Theme>('dark');
-  const [colorScheme, setColorSchemeState] = useState<ColorScheme>('red');
+  const [theme, setThemeState] = useState<Theme>('light');
+  const [colorScheme, setColorSchemeState] = useState<ColorScheme>('orange');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [systemPreference, setSystemPreference] = useState<Theme>('dark');
@@ -64,15 +64,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       } else if (savedTheme && ['light', 'dark'].includes(savedTheme)) {
         setThemeState(savedTheme);
       } else {
-        setThemeState(systemTheme);
+        setThemeState('light'); // Default to light mode
       }
       
-      if (savedColorScheme && ['red', 'blue', 'green', 'purple', 'orange'].includes(savedColorScheme)) {
-        setColorSchemeState(savedColorScheme);
-      } else {
-        // Default to orange as per requirement
-        setColorSchemeState('orange');
-      }
+      // Always use orange color scheme
+      setColorSchemeState('orange');
       
       if (savedSidebarState) {
         setIsSidebarCollapsed(savedSidebarState === 'true');
@@ -130,35 +126,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       
       // CSS custom properties for consistent theming
       const colors = {
-        red: { 
-          primary: '#ef4444', 
-          primaryHover: '#dc2626', 
-          primaryLight: '#fef2f2',
-          primaryDark: '#b91c1c'
-        },
-        blue: { 
-          primary: '#3b82f6', 
-          primaryHover: '#2563eb', 
-          primaryLight: '#eff6ff',
-          primaryDark: '#1d4ed8'
-        },
-        green: { 
-          primary: '#10b981', 
-          primaryHover: '#059669', 
-          primaryLight: '#ecfdf5',
-          primaryDark: '#047857'
-        },
-        purple: { 
-          primary: '#8b5cf6', 
-          primaryHover: '#7c3aed', 
-          primaryLight: '#f5f3ff',
-          primaryDark: '#6d28d9'
-        },
         orange: { 
-          primary: '#f97316', 
-          primaryHover: '#ea580c', 
-          primaryLight: '#fff7ed',
-          primaryDark: '#c2410c'
+          primary: '#F15A2B', 
+          primaryHover: '#E04A1B', 
+          primaryLight: '#FFF5F2',
+          primaryDark: '#D13A0B'
         }
       };
       
@@ -253,30 +225,6 @@ export const useColorScheme = () => {
   
   const getColorClasses = (type: 'primary' | 'hover' | 'light' | 'text' = 'primary') => {
     const colorMap = {
-      red: {
-        primary: 'bg-red-primary',
-        hover: 'hover:bg-red-hover',
-        light: 'bg-red-light',
-        text: 'text-red-primary',
-      },
-      blue: {
-        primary: 'bg-blue-primary',
-        hover: 'hover:bg-blue-hover',
-        light: 'bg-blue-light',
-        text: 'text-blue-primary',
-      },
-      green: {
-        primary: 'bg-green-primary',
-        hover: 'hover:bg-green-hover',
-        light: 'bg-green-light',
-        text: 'text-green-primary',
-      },
-      purple: {
-        primary: 'bg-purple-primary',
-        hover: 'hover:bg-purple-hover',
-        light: 'bg-purple-light',
-        text: 'text-purple-primary',
-      },
       orange: {
         primary: 'bg-orange-primary',
         hover: 'hover:bg-orange-hover',

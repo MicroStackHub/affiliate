@@ -28,10 +28,7 @@ const Navbar: React.FC = () => {
   const [showNotifications, setShowNotifications] = useState(false);
 
   const colorOptions = [
-    { name: 'Orange', value: 'orange' as const, color: 'bg-orange-500' },
-    { name: 'Blue', value: 'blue' as const, color: 'bg-blue-500' },
-    { name: 'Green', value: 'green' as const, color: 'bg-green-500' },
-    { name: 'Purple', value: 'purple' as const, color: 'bg-purple-500' },
+    { name: 'Orange', value: 'orange' as const, color: 'bg-orange-primary' },
   ];
 
   const notifications = [
@@ -169,7 +166,7 @@ const Navbar: React.FC = () => {
                       <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
                         Notifications
                       </h3>
-                      <button className="text-xs text-blue-600 dark:text-blue-400 hover:underline">
+                      <button className="text-xs text-orange-primary dark:text-orange-hover hover:underline">
                         Mark all read
                       </button>
                     </div>
@@ -180,12 +177,12 @@ const Navbar: React.FC = () => {
                       <div
                         key={notification.id}
                         className={`px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 cursor-pointer ${
-                          notification.unread ? 'bg-blue-50/50 dark:bg-blue-900/20' : ''
+                          notification.unread ? 'bg-orange-light dark:bg-orange-dark/20' : ''
                         }`}
                       >
                         <div className="flex items-start space-x-3">
                           <div className={`w-2 h-2 rounded-full mt-2 ${
-                            notification.unread ? 'bg-blue-500' : 'bg-transparent'
+                            notification.unread ? 'bg-orange-primary' : 'bg-transparent'
                           }`} />
                           <div className="flex-1 min-w-0">
                             <p className="text-sm font-medium text-gray-900 dark:text-white">
@@ -204,7 +201,7 @@ const Navbar: React.FC = () => {
                   </div>
                   
                   <div className="px-4 py-3 border-t border-gray-200 dark:border-gray-700">
-                    <button className="w-full text-sm text-blue-600 dark:text-blue-400 hover:underline">
+                    <button className="w-full text-sm text-orange-primary dark:text-orange-hover hover:underline">
                       View all notifications
                     </button>
                   </div>
