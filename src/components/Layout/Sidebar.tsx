@@ -20,13 +20,12 @@ const Sidebar: React.FC = () => {
     { path: '/affiliate-links', label: 'Affiliate Links', icon: '🔗' },
     { path: '/referrals', label: 'Referrals', icon: '👥' },
     { path: '/marketing-tools', label: 'Marketing Tools', icon: '🛠️' },
-    
+    { path: '/payouts', label: 'Payouts', icon: '💳' },
   ];
   
   // Account section items
   const accountItems = [
     { path: '/profile', label: 'Profile', icon: '👤' },
-    { path: '/payouts', label: 'Payouts', icon: '💳' },
     { path: '/settings', label: 'Settings', icon: '⚙️' },
     { path: '/support', label: 'Support', icon: '🎧' },
   ];
@@ -60,11 +59,12 @@ const Sidebar: React.FC = () => {
                 borderLeft: location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/') 
                   ? '3px solid #F15A2B'
                   : '3px solid transparent',
+                cursor: 'pointer',
               }}
               title={isSidebarCollapsed ? item.label : ''}
              >
-               <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
-               {!isSidebarCollapsed && <span>{item.label}</span>}
+               <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem', pointerEvents: 'none' }}>{item.icon}</span>
+               {!isSidebarCollapsed && <span style={{ pointerEvents: 'none' }}>{item.label}</span>}
              </Link>
           ))}
 
@@ -104,11 +104,12 @@ const Sidebar: React.FC = () => {
                   ? '3px solid #F15A2B' 
                   : '3px solid transparent',
                 justifyContent: isSidebarCollapsed ? 'center' : 'flex-start',
+                cursor: 'pointer',
               }}
               title={isSidebarCollapsed ? item.label : ''}
             >
-              <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
-              {!isSidebarCollapsed && <span>{item.label}</span>}
+              <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem', pointerEvents: 'none' }}>{item.icon}</span>
+              {!isSidebarCollapsed && <span style={{ pointerEvents: 'none' }}>{item.label}</span>}
               {item.path === '/referrals' && !isSidebarCollapsed && (
                 <span style={{ 
                   marginLeft: 'auto', 
@@ -120,7 +121,8 @@ const Sidebar: React.FC = () => {
                   paddingRight: '0.5rem', 
                   paddingTop: '0.25rem', 
                   paddingBottom: '0.25rem', 
-                  fontWeight: 500 
+                  fontWeight: 500,
+                  pointerEvents: 'none'
                 }}>12</span>
               )}
             </Link>
@@ -167,11 +169,12 @@ const Sidebar: React.FC = () => {
                   ? '3px solid #F15A2B' 
                   : '3px solid transparent',
                 justifyContent: isSidebarCollapsed ? 'center' : 'flex-start',
+                cursor: 'pointer',
               }}
               title={isSidebarCollapsed ? item.label : ''}
             >
-              <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
-              {!isSidebarCollapsed && <span>{item.label}</span>}
+              <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem', pointerEvents: 'none' }}>{item.icon}</span>
+              {!isSidebarCollapsed && <span style={{ pointerEvents: 'none' }}>{item.label}</span>}
             </Link>
           ))}
         </div>
