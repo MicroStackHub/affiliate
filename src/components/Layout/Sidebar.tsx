@@ -51,10 +51,10 @@ const Sidebar: React.FC = () => {
                 fontSize: '0.875rem',
                 fontWeight: 500,
                 backgroundColor: location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/') 
-                  ? '#F15A2B' 
+                  ? '#fff5f2' 
                   : 'transparent',
                 color: location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/') 
-                  ? 'white' 
+                  ? '#F15A2B' 
                   : '#64748b',
                 borderLeft: location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/') 
                   ? '4px solid #F15A2B'
@@ -74,14 +74,14 @@ const Sidebar: React.FC = () => {
           <div style={{
             fontSize: '0.75rem',
             fontWeight: 600,
-            color: 'white',
+            color: '#6b7280',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
             marginTop: '0',
             padding: isSidebarCollapsed ? '0' : '0.75rem',
             marginBottom: isSidebarCollapsed ? '0' : '0',
             display: isSidebarCollapsed ? 'none' : 'block',
-            backgroundColor: 'black',
+            backgroundColor: '#f9fafb',
             borderBottom: '1px solid #e5e7eb'
           }}>
             Management
@@ -98,10 +98,10 @@ const Sidebar: React.FC = () => {
                 fontSize: '0.875rem',
                 fontWeight: 500,
                 backgroundColor: location.pathname === item.path 
-                  ? '#F15A2B' 
+                  ? '#fff5f2' 
                   : 'transparent',
                 color: location.pathname === item.path 
-                  ? 'white' 
+                  ? '#F15A2B' 
                   : '#374151',
                 borderLeft: location.pathname === item.path 
                   ? '3px solid #F15A2B' 
@@ -140,13 +140,13 @@ const Sidebar: React.FC = () => {
           <div style={{
             fontSize: '0.75rem',
             fontWeight: 600,
-            color: 'white',
+            color: '#6b7280',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
             padding: isSidebarCollapsed ? '0' : '0.75rem',
             marginBottom: isSidebarCollapsed ? '0' : '0',
             display: isSidebarCollapsed ? 'none' : 'block',
-            backgroundColor: 'black',
+            backgroundColor: '#f9fafb',
             borderBottom: '1px solid #e5e7eb'
           }}>
             Account
@@ -163,10 +163,10 @@ const Sidebar: React.FC = () => {
                 fontSize: '0.875rem',
                 fontWeight: 500,
                 backgroundColor: location.pathname === item.path 
-                  ? '#F15A2B' 
+                  ? '#fff5f2' 
                   : 'transparent',
                 color: location.pathname === item.path 
-                  ? 'white' 
+                  ? '#F15A2B' 
                   : '#374151',
                 borderLeft: location.pathname === item.path 
                   ? '3px solid #F15A2B' 
