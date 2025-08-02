@@ -255,12 +255,15 @@ const Navbar: React.FC = () => {
                   <div className="border-t border-gray-200 dark:border-gray-700 py-2">
                     <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20">
                       <ArrowRightOnRectangleIcon className="w-5 h-5" />
-                      <span>Sign out</span>
+                      <span onClick={()=>{
+                        window.location.href ="https://bonzicart.vercel.app/auth/login";
+                      }}>Sign out</span>
                     </button>
                   </div>
                 </div>
               )}
             </div>
+
           </div>
         </div>
       </div>
