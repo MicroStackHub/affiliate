@@ -22,6 +22,16 @@
   .dark body {
     @apply bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100;
   }
+  
+  /* Table-like layout */
+  .container-table {
+    @apply w-full max-w-screen-2xl mx-auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    border: 1px solid var(--border-color);
+    margin-top: 4rem; /* Add space for the fixed navbar */
+    max-width: 1200px;
+  }
 
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
@@ -316,7 +326,7 @@
 /* Responsive Design Utilities */
 @layer utilities {
   .container-custom {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    @apply max-w-[1200px] mx-auto px-0;
   }
 
   .grid-responsive {

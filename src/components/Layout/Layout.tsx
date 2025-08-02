@@ -22,27 +22,31 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.5)_1px,transparent_0)] dark:bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.1)_1px,transparent_0)] bg-[length:20px_20px]"></div>
       </div>
 
-      {/* Sidebar */}
-      <Sidebar />
-      
-      {/* Main Content Area */}
-      <div className={`${
-        isSidebarCollapsed ? 'ml-16' : 'ml-64'
-      } relative z-10`}>
-        {/* Navbar */}
+      {/* Fixed Navbar at the top */}
+      <div className="fixed top-0 w-full z-50">
         <Navbar />
+      </div>
+
+      <div className="container-table mx-auto mt-16 mb-8 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg">
+        {/* Sidebar Column */}
+        <div className="border-r border-gray-200 dark:border-gray-800">
+          <Sidebar />
+        </div>
         
-        {/* Page Content */}
-        <main className="container-custom py-6 lg:py-8">
-          <div>
-            {children}
-          </div>
-        </main>
+        {/* Main Content Column */}
+        <div className="flex-1 relative z-10 flex flex-col">
+          {/* Page Content */}
+          <main className="flex-1 p-6 overflow-auto">
+            <div className="max-w-full">
+              {children}
+            </div>
+          </main>
+        </div>
       </div>
 
       {/* Mobile Backdrop */}
       {!isSidebarCollapsed && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden"></div>
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 lg:hidden"></div>
       )}
 
       {/* Floating Elements */}
@@ -54,14 +58,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
 
-      {/* Theme Indicator */}
+      {/* Theme Indicator
       <div className="fixed top-20 right-6 z-40 hidden xl:block">
         <div className="glass p-2 rounded-xl">
           <div className="text-xs font-medium text-gray-600 dark:text-gray-400">
             {isDarkMode ? '🌙 Dark' : '☀️ Light'}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

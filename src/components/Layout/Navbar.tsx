@@ -38,8 +38,8 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-200/50 dark:border-gray-700/50 backdrop-blur-xl bg-white/80 dark:bg-gray-800/80">
-      <div className="container-custom">
+    <nav className="fixed top-0 w-full z-50 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-0 shadow-md">
+      <div className="container mx-auto px-4" style={{ maxWidth: '1200px' }}>
         <div className="flex items-center justify-between h-16">
           {/* Left Section */}
           <div className="flex items-center space-x-4">
@@ -51,14 +51,15 @@ const Navbar: React.FC = () => {
               <Bars3Icon className="w-6 h-6" />
             </button>
 
-            {/* Page Title */}
-            <div className="hidden sm:block">
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-                Affiliate Dashboard
-              </h1>
-              <p className="text-sm text-gray-500 dark:text-gray-400">
-                Welcome back! Here's your performance overview.
-              </p>
+            {/* Logo and Page Title */}
+            <div className="flex items-center">
+              
+              <div className="hidden sm:block">
+                <h1 className="text-xl font-bold text-orange-600 dark:text-white">
+                  Bonzicart
+                </h1>
+               
+              </div>
             </div>
           </div>
 
@@ -118,7 +119,7 @@ const Navbar: React.FC = () => {
                   </div>
 
                   {/* Color Scheme */}
-                  <div className="px-4 py-3">
+                  {/* <div className="px-4 py-3">
                     <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-3">
                       Color Scheme
                     </h4>
@@ -140,7 +141,7 @@ const Navbar: React.FC = () => {
                         </button>
                       ))}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               )}
             </div>
@@ -216,7 +217,7 @@ const Navbar: React.FC = () => {
                 className="flex items-center space-x-2 p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 <div className="w-8 h-8 bg-gradient-to-r from-orange-primary to-orange-hover rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-semibold">JD</span>
+                  <span className="text-white text-sm font-semibold">BP</span>
                 </div>
                 <ChevronDownIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
               </button>
@@ -227,14 +228,14 @@ const Navbar: React.FC = () => {
                   <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                     <div className="flex items-center space-x-3">
                       <div className="w-12 h-12 bg-gradient-to-r from-orange-primary to-orange-hover rounded-full flex items-center justify-center">
-                        <span className="text-white font-semibold">JD</span>
+                        <span className="text-white font-semibold">BP</span>
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                          John Doe
+                         Bharat Prajapat
                         </p>
                         <p className="text-xs text-gray-500 dark:text-gray-400">
-                          john@example.com
+                          prajapat.bharat@gmail.com
                         </p>
                       </div>
                     </div>
