@@ -42,7 +42,7 @@ const Payouts: React.FC = () => {
   const tabs = [
     { id: 'overview', name: 'Overview' },
     { id: 'history', name: 'Payout History' },
-    { id: 'methods', name: 'Payment Methods' },
+    { id: 'methods', name: 'Payment Accounts' },
   ];
 
   return (
