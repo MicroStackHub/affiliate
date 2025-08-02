@@ -29,7 +29,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
       <div className="container-table mx-auto mt-16 mb-8 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg">
         {/* Sidebar Column */}
-        <div className="border-r border-gray-200 dark:border-gray-800">
+        <div className="border-r z-0 border-gray-200 dark:border-gray-800">
           <Sidebar />
         </div>
         
