@@ -19,7 +19,7 @@ const Sidebar: React.FC = () => {
   const managementItems = [
     { path: '/affiliate-links', label: 'Affiliate Links', icon: '🔗' },
     { path: '/referrals', label: 'Referrals', icon: '👥' },
-    { path: '/marketing-tools', label: 'Marketing Tools', icon: '🛠️' },
+   
   ];
   
   // Account section items
