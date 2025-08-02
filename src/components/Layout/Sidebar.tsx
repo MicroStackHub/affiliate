@@ -84,7 +84,7 @@ const Sidebar: React.FC = () => {
            // backgroundColor: '#f9fafb',
             borderBottom: '1px solid #e5e7eb',
          
-          }} className="text-sm text-center bg-orange-400   font-medium text-gray-200 dark:bg-black">
+          }} className="text-sm text-center bg-gray-100   font-medium text-gray-600 dark:bg-black">
             Management
           </div>
           {managementItems.map((item) => (
@@ -149,7 +149,7 @@ const Sidebar: React.FC = () => {
             display: isSidebarCollapsed ? 'none' : 'block',
            // backgroundColor: '#f9fafb',
             borderBottom: '1px solid #e5e7eb'
-          }} className="text-sm text-center font-medium text-gray-200 bg-orange-400 dark:bg-black">
+          }} className="text-sm text-center bg-gray-100   font-medium text-gray-600 dark:bg-black">
             Account
           </div>
           {accountItems.map((item) => (

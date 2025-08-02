@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="fixed top-0 w-full z-50 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-0 shadow-md">
-      <div className="container mx-auto px-4" style={{ maxWidth: '1300px' }}>
+      <div className="container mx-auto px-2 sm:px-4" style={{ maxWidth: '1300px' }}>
         <div className="flex items-center justify-between h-16">
           {/* Left Section */}
           <div className="flex items-center space-x-4">
@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-1 xs:space-x-2 sm:space-x-3">
             {/* Theme Controls */}
             <div className="relative">
               <button
