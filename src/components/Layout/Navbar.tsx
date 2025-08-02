@@ -146,7 +146,7 @@ const Navbar: React.FC = () => {
             </div>
 
             {/* Notifications */}
-            <div className="relative">
+            <div className="relative hidden">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
