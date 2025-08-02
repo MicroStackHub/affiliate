@@ -37,7 +37,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="flex-1 relative z-10 flex flex-col">
           {/* Page Content */}
           <main className="flex-1 p-6 overflow-auto">
-            <div className="max-w-full">
+            <div className="max-w-full  ">
               {children}
             </div>
           </main>
