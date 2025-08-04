@@ -1,11 +1,11 @@
 
 import React, { useState } from 'react';
-import { useTheme } from '../contexts/ThemeContext';
+ 
 import PayoutDataTable from '../components/DataTable/PayoutDataTable';
 
 const Payouts: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const { isDarkMode, colorScheme } = useTheme();
+ 
 
   const payoutStats = [
     { label: 'Available Balance', value: '₹2,456.78', icon: '💰', color: 'text-green-500 dark:text-green-400' },
