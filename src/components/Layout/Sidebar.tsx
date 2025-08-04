@@ -13,13 +13,12 @@ const Sidebar: React.FC = () => {
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/earnings', label: 'Earnings', icon: '💰' },
     { path: '/analytics', label: 'Analytics', icon: '📈' },
+    { path: '/referrals', label: 'Referrals', icon: '👥' },
   ];
   
   // Management section items
   const managementItems = [
     { path: '/affiliate-links', label: 'Affiliate Links', icon: '🔗' },
-    { path: '/referrals', label: 'Referrals', icon: '👥' },
-   
   ];
   
   // Account section items
