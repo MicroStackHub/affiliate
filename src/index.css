@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,7 +11,11 @@
 
 @layer base {
   * {
-    @apply border-gray-200 dark:border-gray-700;
+    border-color: rgb(229 231 235);
+  }
+
+  .dark * {
+    border-color: rgb(75 85 99);
   }
 
   body {
@@ -31,16 +36,6 @@
     max-width: 1200px;
   }
 
-  @media (max-width: 1024px) {
-    .container-table {
-      grid-template-columns: 1fr;
-      margin-top: 4rem;
-      max-width: 100%;
-      margin-left: 0.5rem;
-      margin-right: 0.5rem;
-    }
-  }
-
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
   }
@@ -59,14 +54,6 @@
 
   html {
     scroll-behavior: smooth;
-  }
-
-  ::selection {
-    @apply bg-orange-primary/20 text-orange-primary;
-  }
-
-  .dark ::selection {
-    @apply bg-orange-primary/30 text-orange-100;
   }
 }
 
@@ -309,6 +296,7 @@
   }
 }
 
+/* Scrollbar Styles */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
@@ -338,7 +326,22 @@
   @apply from-gray-500 to-gray-600;
 }
 
-@media (max-width: 640px) {
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .container-table {
+    grid-template-columns: 1fr;
+    margin-top: 4rem;
+    max-width: 100%;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-custom {
+    @apply px-4;
+  }
+
   .card {
     @apply p-3 rounded-lg;
     margin: 0.5rem 0;
@@ -352,6 +355,32 @@
     @apply px-3 py-2 text-sm;
   }
 
+  h1 {
+    @apply text-xl;
+  }
+
+  h2 {
+    @apply text-lg;
+  }
+
+  h3 {
+    @apply text-base;
+  }
+
+  .h-16 {
+    height: 3.5rem;
+  }
+
+  .space-x-8 {
+    gap: 1rem;
+  }
+
+  .space-x-3 {
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
   .space-y-6 > * + * {
     margin-top: 1rem !important;
   }
@@ -405,36 +434,7 @@
   }
 }
 
-@media (max-width: 768px) {
-  .container-custom {
-    @apply px-4;
-  }
-
-  .h-16 {
-    height: 3.5rem;
-  }
-
-  .space-x-8 {
-    gap: 1rem;
-  }
-
-  .space-x-3 {
-    gap: 0.75rem;
-  }
-
-  h1 {
-    @apply text-xl;
-  }
-
-  h2 {
-    @apply text-lg;
-  }
-
-  h3 {
-    @apply text-base;
-  }
-}
-
+/* Accessibility */
 @media (prefers-contrast: high) {
   .card {
     @apply border-2 border-gray-400;
@@ -452,6 +452,7 @@
   }
 }
 
+/* Print Styles */
 @media print {
   .no-print {
     display: none !important;
