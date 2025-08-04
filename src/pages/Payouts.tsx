@@ -62,9 +62,9 @@ const Payouts: React.FC = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              className={`py-2 px-1 border-b-2 font-medium text-sm cursor-pointer relative z-10 transition-colors ${
                 activeTab === tab.id
-                  ? `border-${colorScheme}-primary text-${colorScheme}-primary dark:text-${colorScheme}-primary`
+                  ? 'border-blue-500 text-blue-600 dark:text-blue-400'
                   : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300'
               }`}
             >
@@ -95,13 +95,13 @@ const Payouts: React.FC = () => {
           <div className="card">
             <h2 className="text-lg font-bold text-gray-900 dark:text-white">Quick Actions</h2>
             <div className="flex flex-wrap gap-3 mt-4">
-              <button className={`btn-primary btn-${colorScheme}`}>
+              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer relative z-10">
                 Withdraw Funds
               </button>
-              <button className="btn-secondary">
+              <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-colors cursor-pointer relative z-10">
                 Update Payment Method
               </button>
-              <button className="btn-secondary">
+              <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-colors cursor-pointer relative z-10">
                 View Payment History
               </button>
             </div>
@@ -118,16 +118,16 @@ const Payouts: React.FC = () => {
           <div className="card">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">Payment Methods</h3>
-              <button className={`btn-primary btn-${colorScheme}`}>
+              <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer relative z-10">
                 Add Method
               </button>
             </div>
             <div className="space-y-4">
               {paymentMethods.map((method, index) => (
-                <div key={method.id} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 hover:shadow-md">
+                <div key={method.id} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 hover:shadow-md transition-shadow relative z-10">
                   <div className="flex items-center space-x-3">
-                    <div className={`w-10 h-10 bg-${colorScheme}-100 dark:bg-${colorScheme}-900 rounded-lg flex items-center justify-center`}>
-                      <span className={`text-${colorScheme}-600 dark:text-${colorScheme}-400 font-semibold`}>
+                    <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                      <span className="text-blue-600 dark:text-blue-400 font-semibold text-lg">
                         {method.type === 'PayPal' ? '💳' : '🏦'}
                       </span>
                     </div>
@@ -138,16 +138,22 @@ const Payouts: React.FC = () => {
                       </p>
                     </div>
                     {method.isDefault && (
-                      <span className="badge-success">
+                      <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                         Default
                       </span>
                     )}
                   </div>
-                  <div className="flex space-x-2">
-                    <button className={`text-${colorScheme}-600 hover:text-${colorScheme}-700 dark:text-${colorScheme}-400 dark:hover:text-${colorScheme}-300 text-sm font-medium`}>
+                  <div className="flex space-x-2 relative z-20">
+                    <button 
+                      onClick={() => console.log('Edit method:', method.id)}
+                      className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium cursor-pointer transition-colors"
+                    >
                       Edit
                     </button>
-                    <button className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 text-sm font-medium">
+                    <button 
+                      onClick={() => console.log('Remove method:', method.id)}
+                      className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 text-sm font-medium cursor-pointer transition-colors"
+                    >
                       Remove
                     </button>
                   </div>
