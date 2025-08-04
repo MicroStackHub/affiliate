@@ -1,3 +1,4 @@
+
 import React, { useState, useMemo } from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 
@@ -61,12 +62,12 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
     let filtered = data.filter(payout => {
       // Status filter
       const matchesStatus = filterStatus === 'all' || payout.status.toLowerCase() === filterStatus.toLowerCase();
-
+      
       // Search filter
       const matchesSearch = payout.reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            payout.method.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            payout.amount.toLowerCase().includes(searchTerm.toLowerCase());
-
+      
       // Date filter
       let matchesDate = true;
       if (dateFilter.startDate || dateFilter.endDate) {
@@ -78,26 +79,26 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
           matchesDate = matchesDate && payoutDate <= new Date(dateFilter.endDate);
         }
       }
-
+      
       return matchesStatus && matchesSearch && matchesDate;
     });
 
     return filtered.sort((a, b) => {
       const aValue = a[sortField];
       const bValue = b[sortField];
-
+      
       if (sortField === 'date') {
         const dateA = new Date(aValue as string);
         const dateB = new Date(bValue as string);
         return sortDirection === 'asc' ? dateA.getTime() - dateB.getTime() : dateB.getTime() - dateA.getTime();
       }
-
+      
       if (sortField === 'amount') {
         const amountA = parseFloat((aValue as string).replace('₹', '').replace(',', ''));
         const amountB = parseFloat((bValue as string).replace('₹', '').replace(',', ''));
         return sortDirection === 'asc' ? amountA - amountB : amountB - amountA;
       }
-
+      
       if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
       if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
       return 0;
@@ -151,7 +152,7 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 relative z-20"
                 />
               </div>
-
+              
               <div className="relative z-20">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Status
@@ -168,7 +169,7 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
                   <option value="processing">Processing</option>
                 </select>
               </div>
-
+              
               <div className="relative z-20">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Start Date
@@ -180,7 +181,7 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
                   className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 cursor-pointer relative z-20"
                 />
               </div>
-
+              
               <div className="relative z-20">
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   End Date
@@ -193,7 +194,7 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
                 />
               </div>
             </div>
-
+            
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="flex items-center gap-2">
                 <button
@@ -206,7 +207,7 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
                   ({filteredAndSortedData.length} results)
                 </span>
               </div>
-
+              
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-gray-600 dark:text-gray-400">Show:</span>
                 <select
@@ -347,7 +348,7 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, filteredAndSortedData.length)} of {filteredAndSortedData.length} results
               </div>
-
+              
               <div className="flex items-center space-x-2 relative z-20">
                 <button
                   onClick={() => setCurrentPage(1)}
@@ -363,7 +364,7 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
                 >
                   Previous
                 </button>
-
+                
                 <div className="flex space-x-1">
                   {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
                     const page = Math.max(1, Math.min(totalPages - 4, currentPage - 2)) + i;
@@ -385,7 +386,7 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
                     return null;
                   })}
                 </div>
-
+                
                 <button
                   onClick={() => setCurrentPage(currentPage + 1)}
                   disabled={currentPage === totalPages}
