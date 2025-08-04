@@ -27,12 +27,25 @@ const Sidebar: React.FC = () => {
       d="M3 10h18M9 21V8m6 13V8m-9 4H3m18 0h-3M12 3L2 8h20L12 3z" />
   </svg>
 
+  const privacyicon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="22" height="22">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M12 3l8 4v5c0 5.25-3.5 9.74-8 11-4.5-1.26-8-5.75-8-11V7l8-4z" />
+  </svg>
+
+  const feedBackIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M7 8h10M7 12h6m-6 4h8m1-14H5a2 2 0 00-2 2v14l4-4h11a2 2 0 002-2V5a2 2 0 00-2-2z" />
+  </svg>
+
+
   const accountItems = [
     { path: '/profile', label: 'Profile', icon: '👤' },
     { path: "/bank-accounts", label: "Bank Accounts", icon: bankicon },
     { path: '/payouts', label: 'Payouts', icon: '💳' },
     { path: '/settings', label: 'Settings', icon: '⚙️' },
-    { path: '/support', label: 'Support', icon: '🎧' },
+    { path: '/privacy-policy', label: 'Privacy Policy', icon: privacyicon },
+    { path: '/feedback', label: 'Feedback', icon: feedBackIcon },
+   
   ];
 
  
