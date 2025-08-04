@@ -38,7 +38,7 @@ const Navbar: React.FC = () => {
   ];
 
   return (
-    <nav className="fixed top-0 w-full z-50 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-0 shadow-md">
+    <nav className="fixed top-0 w-full z-[0] border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-0 shadow-md">
       <div className="container mx-auto px-2 sm:px-4" style={{ maxWidth: '1300px' }}>
         <div className="flex items-center justify-between h-16">
           {/* Left Section */}
