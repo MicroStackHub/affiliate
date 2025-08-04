@@ -27,17 +27,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Navbar />
       </div>
 
-      <div className="container-table mx-auto mt-16 mb-8 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg">
+      <div className="container-table mx-auto mt-16 mb-4 lg:mb-8 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg">
         {/* Sidebar Column */}
-        <div className="border-r z-0 border-gray-200 dark:border-gray-800">
+        <div className="border-r z-0 border-gray-200 dark:border-gray-800 lg:block hidden">
+          <Sidebar />
+        </div>
+        
+        {/* Mobile Sidebar */}
+        <div className={`lg:hidden fixed inset-y-0 left-0 z-50 w-64 transform transition-transform duration-300 ease-in-out ${
+          isSidebarCollapsed ? '-translate-x-full' : 'translate-x-0'
+        }`}>
           <Sidebar />
         </div>
         
         {/* Main Content Column */}
-        <div className="flex-1 relative z-10 flex flex-col">
+        <div className="flex-1 relative z-10 flex flex-col min-h-0">
           {/* Page Content */}
-          <main className="flex-1 p-6 overflow-auto">
-            <div className="w-full  ">
+          <main className="flex-1 p-3 sm:p-4 lg:p-6 overflow-auto">
+            <div className="w-full max-w-none">
               {children}
             </div>
           </main>

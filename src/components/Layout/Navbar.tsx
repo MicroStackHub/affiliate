@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="fixed top-0 w-full z-50 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-0 shadow-md">
       <div className="container mx-auto px-2 sm:px-4" style={{ maxWidth: '1300px' }}>
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Left Section */}
           <div className="flex items-center space-x-4">
             {/* Mobile Menu Button */}

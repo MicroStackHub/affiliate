@@ -32,6 +32,17 @@
     max-width: 1200px;
   }
 
+  /* Mobile first responsive layout */
+  @media (max-width: 1024px) {
+    .container-table {
+      grid-template-columns: 1fr;
+      margin-top: 4rem;
+      max-width: 100%;
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+    }
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-semibold tracking-tight;
   }
@@ -383,15 +394,107 @@
 /* Mobile Optimizations */
 @media (max-width: 640px) {
   .card {
-    @apply p-4 rounded-xl;
+    @apply p-3 rounded-lg;
+    margin: 0.5rem 0;
   }
 
   .btn {
-    @apply px-4 py-2 text-sm;
+    @apply px-3 py-2 text-sm w-full;
   }
 
   .form-input {
-    @apply px-3 py-2;
+    @apply px-3 py-2 text-sm;
+  }
+
+  /* Better spacing for mobile */
+  .space-y-6 > * + * {
+    margin-top: 1rem !important;
+  }
+
+  .space-y-4 > * + * {
+    margin-top: 0.75rem !important;
+  }
+
+  /* Mobile grid improvements */
+  .grid-cols-1 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .md\:grid-cols-2,
+  .lg\:grid-cols-3,
+  .lg\:grid-cols-4 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Text size adjustments */
+  .text-2xl {
+    @apply text-xl;
+  }
+
+  .text-xl {
+    @apply text-lg;
+  }
+
+  /* Flex adjustments */
+  .flex-wrap {
+    flex-direction: column !important;
+  }
+
+  .flex-wrap .btn {
+    margin: 0.25rem 0;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .card {
+    @apply p-5 rounded-xl;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* Large mobile devices */
+@media (max-width: 768px) {
+  .container-custom {
+    @apply px-4;
+  }
+
+  /* Navbar improvements */
+  .h-16 {
+    height: 3.5rem;
+  }
+
+  /* Button improvements */
+  .space-x-8 {
+    gap: 1rem;
+  }
+
+  .space-x-3 {
+    gap: 0.75rem;
+  }
+
+  /* Typography improvements */
+  h1 {
+    @apply text-xl;
+  }
+
+  h2 {
+    @apply text-lg;
+  }
+
+  h3 {
+    @apply text-base;
   }
 }
 
