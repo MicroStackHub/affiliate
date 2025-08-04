@@ -3,9 +3,11 @@ import React, { useState } from 'react';
  
 import PayoutDataTable from '../components/DataTable/PayoutDataTable';
 import WithdrawalRequestsTab from '../components/WithdrawalRequestsTab';
+import AddBankAccountModal from '../components/AddBankAccountModal';
 
 const Payouts: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [isAddAccountModalOpen, setIsAddAccountModalOpen] = useState(false);
 
 
   const payoutStats = [
@@ -23,10 +25,25 @@ const Payouts: React.FC = () => {
     { id: 5, date: '2023-11-15', amount: '₹2,145.67', method: 'PayPal', status: 'Completed', reference: 'TXN001238' },
   ];
 
-  const paymentMethods = [
+  const [paymentMethods, setPaymentMethods] = useState([
     { id: 1, type: 'PayPal', email: 'john@example.com', isDefault: true },
     { id: 2, type: 'Bank Transfer', account: '**** **** **** 1234', isDefault: false },
-  ];
+  ]);
+
+  const handleAddBankAccount = (accountData: any) => {
+    const newAccount = {
+      id: paymentMethods.length + 1,
+      type: accountData.refundType === 'bank' ? 'Bank Transfer' : 'UPI',
+      email: accountData.refundType === 'upi' ? accountData.accountNumber : undefined,
+      account: accountData.refundType === 'bank' ? `**** **** **** ${accountData.accountNumber.slice(-4)}` : accountData.accountNumber,
+      accountHolderName: accountData.accountHolderName,
+      mobile: accountData.mobile,
+      bankName: accountData.bankName,
+      ifsc: accountData.ifsc,
+      isDefault: paymentMethods.length === 0
+    };
+    setPaymentMethods(prev => [...prev, newAccount]);
+  };
 
  
 
@@ -109,7 +126,10 @@ const Payouts: React.FC = () => {
           <div className="card">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">Bank Accounts</h3>
-              <button className="px-4 py-2 bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors cursor-pointer relative z-10">
+              <button 
+                onClick={() => setIsAddAccountModalOpen(true)}
+                className="px-4 py-2 bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors cursor-pointer relative z-10"
+              >
                 Add Account
               </button>
             </div>
@@ -174,6 +194,13 @@ const Payouts: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Add Bank Account Modal */}
+      <AddBankAccountModal
+        isOpen={isAddAccountModalOpen}
+        onClose={() => setIsAddAccountModalOpen(false)}
+        onSave={handleAddBankAccount}
+      />
     </div>
   );
 };
