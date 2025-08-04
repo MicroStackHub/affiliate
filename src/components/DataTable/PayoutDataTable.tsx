@@ -1,6 +1,6 @@
 
 import React, { useState, useMemo } from 'react';
-import { useTheme } from '../../contexts/ThemeContext';
+ 
 
 interface PayoutData {
   id: number;
@@ -22,7 +22,7 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
   title = "Payout History", 
   description = "Your complete payout transaction history" 
 }) => {
-  const { isDarkMode, colorScheme } = useTheme();
+ 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [sortField, setSortField] = useState<keyof PayoutData>('date');
