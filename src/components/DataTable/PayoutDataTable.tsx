@@ -117,8 +117,8 @@ const PayoutDataTable: React.FC<PayoutDataTableProps> = ({
       return <span className="text-gray-400 ml-1">⇅</span>;
     }
     return sortDirection === 'asc' ? 
-      <span className="text-blue-500 ml-1">↑</span> : 
-      <span className="text-blue-500 ml-1">↓</span>;
+      <span className="text-orange-500 ml-1">↑</span> : 
+      <span className="text-orange-500 ml-1">↓</span>;
   };
 
   const clearFilters = () => {
