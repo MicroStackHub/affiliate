@@ -2,10 +2,11 @@
 import React, { useState } from 'react';
  
 import PayoutDataTable from '../components/DataTable/PayoutDataTable';
+import WithdrawalRequestsTab from '../components/WithdrawalRequestsTab';
 
 const Payouts: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
- 
+
 
   const payoutStats = [
     { label: 'Available Balance', value: '₹2,456.78', icon: '💰', color: 'text-green-500 dark:text-green-400' },
@@ -27,23 +28,13 @@ const Payouts: React.FC = () => {
     { id: 2, type: 'Bank Transfer', account: '**** **** **** 1234', isDefault: false },
   ];
 
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Completed':
-        return 'badge-success';
-      case 'Pending':
-        return 'badge-warning';
-      case 'Failed':
-        return 'badge-danger';
-      default:
-        return 'badge-info';
-    }
-  };
+ 
 
   const tabs = [
     { id: 'overview', name: 'Overview' },
     { id: 'history', name: 'Payout History' },
-    { id: 'methods', name: 'Payment Accounts' },
+    { id: 'methods', name: 'Bank Accounts' },
+    { id: 'withdrawal', name: 'Withdrawal Requests' },
   ];
 
   return (
@@ -117,9 +108,9 @@ const Payouts: React.FC = () => {
         <div className="space-y-6">
           <div className="card">
             <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Payment Methods</h3>
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Bank Accounts</h3>
               <button className="px-4 py-2 bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors cursor-pointer relative z-10">
-                Add Method
+                Add Account
               </button>
             </div>
             <div className="space-y-4">
@@ -160,6 +151,21 @@ const Payouts: React.FC = () => {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'withdrawal' && (
+        <div className="space-y-6">
+          <div className="card">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Withdrawal Requests</h3>
+              <button className="px-4 py-2 bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors cursor-pointer relative z-10">
+                New Request
+              </button>
+            </div>
+            
+            <WithdrawalRequestsTab />
           </div>
         </div>
       )}
