@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ReferralDataTable from '../components/DataTable/ReferralDataTable';
 
 const Referrals: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -16,8 +17,17 @@ const Referrals: React.FC = () => {
     { id: 3, name: 'Mike Wilson', email: 'mike@example.com', status: 'Active', joinDate: '2024-01-13', earnings: '₹156.78' },
     { id: 4, name: 'Emily Davis', email: 'emily@example.com', status: 'Active', joinDate: '2024-01-12', earnings: '₹324.89' },
     { id: 5, name: 'David Brown', email: 'david@example.com', status: 'Inactive', joinDate: '2024-01-10', earnings: '₹89.45' },
+    { id: 6, name: 'Frank Miller', email: 'frank@example.com', status: 'Active', joinDate: '2024-01-09', earnings: '₹432.10' },
+    { id: 7, name: 'Grace Lee', email: 'grace@example.com', status: 'Pending', joinDate: '2024-01-08', earnings: '₹0.00' },
+    { id: 8, name: 'Henry Taylor', email: 'henry@example.com', status: 'Active', joinDate: '2024-01-07', earnings: '₹178.25' },
+    { id: 9, name: 'Isabella White', email: 'isabella@example.com', status: 'Inactive', joinDate: '2024-01-06', earnings: '₹65.30' },
+    { id: 10, name: 'Jack Robinson', email: 'jack@example.com', status: 'Active', joinDate: '2024-01-05', earnings: '₹289.75' },
+    { id: 11, name: 'Karen Martin', email: 'karen@example.com', status: 'Active', joinDate: '2023-12-28', earnings: '₹521.40' },
+    { id: 12, name: 'Leo Garcia', email: 'leo@example.com', status: 'Pending', joinDate: '2023-12-25', earnings: '₹0.00' },
+    { id: 13, name: 'Mia Rodriguez', email: 'mia@example.com', status: 'Active', joinDate: '2023-12-20', earnings: '₹198.65' },
+    { id: 14, name: 'Nathan Lewis', email: 'nathan@example.com', status: 'Inactive', joinDate: '2023-12-15', earnings: '₹45.20' },
+    { id: 15, name: 'Olivia Clark', email: 'olivia@example.com', status: 'Active', joinDate: '2023-12-10', earnings: '₹367.90' },
   ];
-
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Active':
@@ -33,8 +43,8 @@ const Referrals: React.FC = () => {
 
   const tabs = [
     { id: 'overview', name: 'Overview' },
-    { id: 'invite', name: 'Invite Friends' },
-    { id: 'history', name: 'Referral History' },
+    // { id: 'invite', name: 'Invite Friends' },
+    // { id: 'history', name: 'Referral History' },
   ];
 
   return (
@@ -85,48 +95,7 @@ const Referrals: React.FC = () => {
           </div>
 
           {/* Recent Referrals */}
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
-            <div className="p-6 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Referrals</h3>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">Your latest referral activity</p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead className="bg-gray-50 dark:bg-gray-700">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Email</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Join Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Earnings</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                  {recentReferrals.map((referral) => (
-                    <tr key={referral.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
-                        {referral.name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                        {referral.email}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(referral.status)}`}>
-                          {referral.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
-                        {referral.joinDate}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600 dark:text-green-400">
-                        {referral.earnings}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <ReferralDataTable data={recentReferrals} />
         </div>
       )}
 

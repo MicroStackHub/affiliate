@@ -12,6 +12,7 @@ import MarketingTools from './pages/MarketingTools';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Support from './pages/Support';
+import BankAccounts from './pages/BankAccounts';
 import './App.css';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
             <Route path="/payouts" element={<Payouts />} />
             <Route path="/marketing-tools" element={<MarketingTools />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/bank-accounts" element={<BankAccounts />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/support" element={<Support />} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />

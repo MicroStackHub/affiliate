@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useTheme, useColorScheme } from '../../contexts/ThemeContext';
+import { useNavigate ,useLocation} from 'react-router-dom';
 import { 
   SunIcon, 
   MoonIcon, 
@@ -13,6 +14,9 @@ import {
 } from '@heroicons/react/24/outline';
 
 const Navbar: React.FC = () => {
+
+  const navigation = useNavigate();
+  const location = useLocation();
   const { 
     isDarkMode, 
     toggleTheme, 
@@ -242,13 +246,17 @@ const Navbar: React.FC = () => {
                   </div>
                   
                   <div className="py-2">
-                    <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                    <button className={`w-full flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 ${location.pathname === "/profile" ? "bg-orange-100 dark:bg-gray-700/50" : ""}`} onClick={()=>{
+                      navigation("/profile")
+                    }}>
                       <UserCircleIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                       <span className="text-xs sm:text-sm">Profile</span>
                     </button>
                     <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50">
                       <Cog6ToothIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                      <span className="text-xs sm:text-sm">Settings</span>
+                      <span className="text-xs sm:text-sm" onClick={()=>{
+                         navigation("/settings")
+                      }}>Settings</span>
                     </button>
                   </div>
                   

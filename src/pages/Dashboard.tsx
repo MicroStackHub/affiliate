@@ -124,7 +124,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Recent Referrals */}
-      <div className="card">
+      <div className="card hidden">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Recent Referrals</h3>
           <button className="btn-ghost text-sm py-2 px-3">View All</button>
@@ -143,7 +143,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="card">
+      <div className="card hidden">
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Quick Actions</h3>
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           <ActionButton icon={LinkIcon} label="Generate Link" />

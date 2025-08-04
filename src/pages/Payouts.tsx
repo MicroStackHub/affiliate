@@ -3,11 +3,10 @@ import React, { useState } from 'react';
  
 import PayoutDataTable from '../components/DataTable/PayoutDataTable';
 import WithdrawalRequestsTab from '../components/WithdrawalRequestsTab';
-import AddBankAccountModal from '../components/AddBankAccountModal';
 
 const Payouts: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
-  const [isAddAccountModalOpen, setIsAddAccountModalOpen] = useState(false);
+
 
 
   const payoutStats = [
@@ -25,32 +24,13 @@ const Payouts: React.FC = () => {
     { id: 5, date: '2023-11-15', amount: '₹2,145.67', method: 'PayPal', status: 'Completed', reference: 'TXN001238' },
   ];
 
-  const [paymentMethods, setPaymentMethods] = useState([
-    { id: 1, type: 'PayPal', email: 'john@example.com', isDefault: true },
-    { id: 2, type: 'Bank Transfer', account: '**** **** **** 1234', isDefault: false },
-  ]);
 
-  const handleAddBankAccount = (accountData: any) => {
-    const newAccount = {
-      id: paymentMethods.length + 1,
-      type: accountData.refundType === 'bank' ? 'Bank Transfer' : 'UPI',
-      email: accountData.refundType === 'upi' ? accountData.accountNumber : undefined,
-      account: accountData.refundType === 'bank' ? `**** **** **** ${accountData.accountNumber.slice(-4)}` : accountData.accountNumber,
-      accountHolderName: accountData.accountHolderName,
-      mobile: accountData.mobile,
-      bankName: accountData.bankName,
-      ifsc: accountData.ifsc,
-      isDefault: paymentMethods.length === 0
-    };
-    setPaymentMethods(prev => [...prev, newAccount]);
-  };
 
  
 
   const tabs = [
     { id: 'overview', name: 'Overview' },
     { id: 'history', name: 'Payout History' },
-    { id: 'methods', name: 'Bank Accounts' },
     { id: 'withdrawal', name: 'Withdrawal Requests' },
   ];
 
@@ -121,59 +101,7 @@ const Payouts: React.FC = () => {
         <PayoutDataTable data={payoutHistory} />
       )}
 
-      {activeTab === 'methods' && (
-        <div className="space-y-4 sm:space-y-6 z-[100]">
-          <div className="card">
-            <div className="flex justify-between items-center mb-4 sm:mb-6">
-              <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Bank Accounts</h3>
-              <button 
-                onClick={() => setIsAddAccountModalOpen(true)}
-                className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors cursor-pointer relative z-10"
-              >
-                Add Account
-              </button>
-            </div>
-            <div className="space-y-3 sm:space-y-4">
-              {paymentMethods.map((method, index) => (
-                <div key={method.id} className="flex items-center justify-between p-3 sm:p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 hover:shadow-md transition-shadow relative z-10">
-                  <div className="flex items-center space-x-2 sm:space-x-3">
-                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
-                      <span className="text-orange-600 dark:text-orange-400 font-semibold text-base sm:text-lg">
-                        {method.type === 'PayPal' ? '💳' : '🏦'}
-                      </span>
-                    </div>
-                    <div>
-                      <h4 className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">{method.type}</h4>
-                      <p className="text-2xs sm:text-sm text-gray-500 dark:text-gray-400">
-                        {method.type === 'PayPal' ? method.email : method.account}
-                      </p>
-                    </div>
-                    {method.isDefault && (
-                      <span className="inline-flex px-1.5 py-0.5 sm:px-2 sm:py-1 text-2xs sm:text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                        Default
-                      </span>
-                    )}
-                  </div>
-                  <div className="flex space-x-1 sm:space-x-2 relative z-20">
-                    <button 
-                      onClick={() => console.log('Edit method:', method.id)}
-                      className="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 text-sm font-medium cursor-pointer transition-colors"
-                    >
-                      Edit
-                    </button>
-                    <button 
-                      onClick={() => console.log('Remove method:', method.id)}
-                      className="text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-300 text-sm font-medium cursor-pointer transition-colors"
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {activeTab === 'withdrawal' && (
         <div className="space-y-6 relative z-10">
@@ -195,12 +123,7 @@ const Payouts: React.FC = () => {
         </div>
       )}
 
-      {/* Add Bank Account Modal */}
-      <AddBankAccountModal
-        isOpen={isAddAccountModalOpen}
-        onClose={() => setIsAddAccountModalOpen(false)}
-        onSave={handleAddBankAccount}
-      />
+
     </div>
   );
 };

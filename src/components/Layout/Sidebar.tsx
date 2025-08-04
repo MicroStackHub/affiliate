@@ -12,7 +12,7 @@ const Sidebar: React.FC = () => {
   const overviewItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/earnings', label: 'Earnings', icon: '💰' },
-    { path: '/analytics', label: 'Analytics', icon: '📈' },
+    { path: '/analytics', label: 'Analytics', icon: '📈' ,hidden:true },
     { path: '/referrals', label: 'Referrals', icon: '👥' },
   ];
   
@@ -22,14 +22,20 @@ const Sidebar: React.FC = () => {
   ];
   
   // Account section items
+  const bankicon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+      d="M3 10h18M9 21V8m6 13V8m-9 4H3m18 0h-3M12 3L2 8h20L12 3z" />
+  </svg>
+
   const accountItems = [
     { path: '/profile', label: 'Profile', icon: '👤' },
+    { path: "/bank-accounts", label: "Bank Accounts", icon: bankicon },
     { path: '/payouts', label: 'Payouts', icon: '💳' },
     { path: '/settings', label: 'Settings', icon: '⚙️' },
     { path: '/support', label: 'Support', icon: '🎧' },
   ];
 
-  const { colorScheme } = useTheme();
+ 
   
   return (
     <div className={`h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 z-30 ${isSidebarCollapsed ? 'w-16' : 'w-64'}`}>
@@ -43,12 +49,15 @@ const Sidebar: React.FC = () => {
               key={item.path}
               to={item.path}
               style={{
-                display: 'flex',
+                //display: 'flex',
+                display:item.hidden ? "none":"flex",
                 alignItems: 'center',
                 padding: '0.75rem',
                 borderBottom: '1px solid #e5e7eb',
                 fontSize: '0.875rem',
                 fontWeight: 500,
+
+                
                 backgroundColor: location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/') 
                   ? '#fff5f2' 
                   : 'transparent',
@@ -63,7 +72,10 @@ const Sidebar: React.FC = () => {
                 justifyContent: isSidebarCollapsed ? 'center' : 'flex-start'
               }}
               title={isSidebarCollapsed ? item.label : ''}
+            
               className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
+              
+              
              >
                <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
                {!isSidebarCollapsed && <span>{item.label}</span>}
@@ -79,11 +91,11 @@ const Sidebar: React.FC = () => {
             marginTop: '0',
             padding: isSidebarCollapsed ? '0' : '0.75rem',
             marginBottom: isSidebarCollapsed ? '0' : '0',
-            display: isSidebarCollapsed ? 'none' : 'block',
+           // display: isSidebarCollapsed ? 'none' : 'block',
            // backgroundColor: '#f9fafb',
             borderBottom: '1px solid #e5e7eb',
          
-          }} className="text-sm text-center bg-gray-100   font-medium text-gray-600 dark:bg-black">
+          }} className="text-sm text-center bg-gray-100   font-medium text-gray-600 dark:bg-black hidden">
             Management
           </div>
           {managementItems.map((item) => (
@@ -91,7 +103,7 @@ const Sidebar: React.FC = () => {
               key={item.path}
               to={item.path}
               style={{
-                display: 'flex',
+               // display: 'flex',
                 alignItems: 'center',
                 padding: '0.75rem',
                 borderBottom: '1px solid #e5e7eb',
@@ -111,6 +123,7 @@ const Sidebar: React.FC = () => {
                 width: '100%'
               }}
               title={isSidebarCollapsed ? item.label : ''}
+             className='hidden'
             >
               <span style={{ fontSize: isSidebarCollapsed ? '1rem' : '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
               {!isSidebarCollapsed && <span className="text-sm sm:text-base">{item.label}</span>}

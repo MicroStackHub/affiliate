@@ -1,11 +1,10 @@
 
 import React, { useState } from 'react';
-import { useTheme } from '../contexts/ThemeContext';
-
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 const Settings: React.FC = () => {
-  const { theme, toggleTheme } = useTheme();
+  const MySwal = withReactContent(Swal);
   const [activeTab, setActiveTab] = useState('account');
-
   const tabs = [
     { id: 'account', name: 'Account' },
     { id: 'security', name: 'Security' },
@@ -42,30 +41,36 @@ const Settings: React.FC = () => {
 
       {activeTab === 'account' && (
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Theme Preferences</h3>
-            <div className="flex items-center justify-between">
-              <div>
-                <h4 className="text-sm font-medium text-gray-900 dark:text-white">Dark Mode</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Toggle between light and dark themes</p>
-              </div>
-              <button
-                onClick={toggleTheme}
-                className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none ${
-                  theme === 'dark' ? 'bg-orange-600' : 'bg-gray-200'
-                }`}
-              >
-                <span className={`${
-                  theme === 'dark' ? 'translate-x-5' : 'translate-x-0'
-                } pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0`}></span>
-              </button>
-            </div>
-          </div>
+          
 
           <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Danger Zone</h3>
             <div className="space-y-4">
-              <button className="w-full text-left p-4 border border-orange-200 dark:border-orange-800 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/20">
+              <button 
+                onClick={() => {
+                  MySwal.fire({
+                    title: 'Are you sure?',
+                    text: 'This action cannot be undone. All your data will be permanently deleted.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#f97316', // orange-primary
+                    cancelButtonColor: '#6b7280', // gray-500
+                    confirmButtonText: 'Yes, delete my account!',
+                    cancelButtonText: 'Cancel'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      // Here you would typically call an API to delete the account
+                      MySwal.fire({
+                        title: 'Deleted!',
+                        text: 'Your account has been deleted.',
+                        icon: 'success',
+                        confirmButtonColor: '#f97316'
+                      });
+                    }
+                  });
+                }}
+                className="w-full text-left p-4 border border-orange-200 dark:border-orange-800 rounded-lg hover:bg-orange-50 dark:hover:bg-orange-900/20"
+              >
                 <h4 className="text-sm font-medium text-orange-600 dark:text-orange-400">Delete Account</h4>
                 <p className="text-sm text-orange-500 dark:text-orange-400">Permanently delete your account and all data</p>
               </button>
@@ -106,7 +111,32 @@ const Settings: React.FC = () => {
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                 />
               </div>
-              <button className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700">
+              <button 
+                onClick={() => {
+                  // In a real application, you would validate the form inputs here
+                  MySwal.fire({
+                    title: 'Confirm Password Update',
+                    text: 'Are you sure you want to update your password?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#f97316', // orange-primary
+                    cancelButtonColor: '#6b7280', // gray-500
+                    confirmButtonText: 'Yes, update it!',
+                    cancelButtonText: 'Cancel'
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      // Here you would typically call an API to update the password
+                      MySwal.fire({
+                        title: 'Updated!',
+                        text: 'Your password has been updated successfully.',
+                        icon: 'success',
+                        confirmButtonColor: '#f97316'
+                      });
+                    }
+                  });
+                }}
+                className="px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+              >
                 Update Password
               </button>
             </div>
