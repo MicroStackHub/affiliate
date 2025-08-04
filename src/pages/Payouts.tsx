@@ -156,16 +156,21 @@ const Payouts: React.FC = () => {
       )}
 
       {activeTab === 'withdrawal' && (
-        <div className="space-y-6">
-          <div className="card">
+        <div className="space-y-6 relative z-10">
+          <div className="card relative z-10">
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-lg font-bold text-gray-900 dark:text-white">Withdrawal Requests</h3>
-              <button className="px-4 py-2 bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors cursor-pointer relative z-10">
+              <button 
+                onClick={() => console.log('New withdrawal request')}
+                className="px-4 py-2 bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors cursor-pointer relative z-20"
+              >
                 New Request
               </button>
             </div>
             
-            <WithdrawalRequestsTab />
+            <div className="relative z-10">
+              <WithdrawalRequestsTab />
+            </div>
           </div>
         </div>
       )}
