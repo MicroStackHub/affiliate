@@ -1,12 +1,6 @@
 
 import React, { useState } from 'react';
 
-interface AddBankAccountModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSave: (accountData: BankAccountData) => void;
-}
-
 interface BankAccountData {
   accountHolderName: string;
   mobile: string;
@@ -14,6 +8,12 @@ interface BankAccountData {
   accountNumber: string;
   ifsc: string;
   bankName: string;
+}
+
+interface AddBankAccountModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSave: (accountData: BankAccountData) => void;
 }
 
 const AddBankAccountModal: React.FC<AddBankAccountModalProps> = ({ isOpen, onClose, onSave }) => {
@@ -74,6 +74,10 @@ const AddBankAccountModal: React.FC<AddBankAccountModalProps> = ({ isOpen, onClo
       if (!formData.bankName.trim()) {
         newErrors.bankName = 'Bank name is required';
       }
+    } else {
+      if (!formData.accountNumber.trim()) {
+        newErrors.accountNumber = 'UPI ID is required';
+      }
     }
 
     setErrors(newErrors);
@@ -83,16 +87,7 @@ const AddBankAccountModal: React.FC<AddBankAccountModalProps> = ({ isOpen, onClo
   const handleSave = () => {
     if (validateForm()) {
       onSave(formData);
-      setFormData({
-        accountHolderName: '',
-        mobile: '',
-        refundType: 'bank',
-        accountNumber: '',
-        ifsc: '',
-        bankName: '',
-      });
-      setErrors({});
-      onClose();
+      handleCancel();
     }
   };
 
@@ -112,34 +107,48 @@ const AddBankAccountModal: React.FC<AddBankAccountModalProps> = ({ isOpen, onClo
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900 dark:text-white">Add Bank Account</h2>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 w-full max-w-lg max-h-[85vh] overflow-hidden">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-orange-50 to-orange-100 dark:from-gray-800 dark:to-gray-700">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-orange-primary rounded-full flex items-center justify-center">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-lg font-bold text-gray-900 dark:text-white">Add Bank Account</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400">Add your payment details</p>
+              </div>
+            </div>
             <button
               onClick={handleCancel}
-              className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center justify-center transition-colors"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           </div>
+        </div>
 
+        {/* Body */}
+        <div className="p-6 overflow-y-auto max-h-[calc(85vh-140px)]">
           <div className="space-y-4">
             {/* Account Holder Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Account Holder Name *
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Account Holder Name <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
                 name="accountHolderName"
                 value={formData.accountHolderName}
                 onChange={handleInputChange}
-                placeholder="Enter account holder name"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary focus:border-orange-primary dark:bg-gray-700 dark:text-white"
+                placeholder="Shriram Tiwari"
+                className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary/20 focus:border-orange-primary dark:bg-gray-700 dark:text-white placeholder:text-gray-400 text-sm transition-all"
               />
               {errors.accountHolderName && (
                 <p className="text-red-500 text-xs mt-1">{errors.accountHolderName}</p>
@@ -148,16 +157,16 @@ const AddBankAccountModal: React.FC<AddBankAccountModalProps> = ({ isOpen, onClo
 
             {/* Mobile */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Mobile *
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                Mobile <span className="text-red-500">*</span>
               </label>
               <input
-                type="tel"
+                type="text"
                 name="mobile"
                 value={formData.mobile}
                 onChange={handleInputChange}
-                placeholder="Enter mobile number"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary focus:border-orange-primary dark:bg-gray-700 dark:text-white"
+                placeholder="Mobile number"
+                className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary/20 focus:border-orange-primary dark:bg-gray-700 dark:text-white placeholder:text-gray-400 text-sm transition-all"
               />
               {errors.mobile && (
                 <p className="text-red-500 text-xs mt-1">{errors.mobile}</p>
@@ -166,105 +175,106 @@ const AddBankAccountModal: React.FC<AddBankAccountModalProps> = ({ isOpen, onClo
 
             {/* Refund Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                Refund Type *
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                Refund Type <span className="text-red-500">*</span>
               </label>
               <div className="flex space-x-4">
-                <label className="flex items-center">
+                <label className="flex items-center cursor-pointer">
                   <input
                     type="radio"
                     name="refundType"
+                    value="bank"
                     checked={formData.refundType === 'bank'}
                     onChange={() => handleRefundTypeChange('bank')}
-                    className="mr-2 text-orange-primary focus:ring-orange-primary"
+                    className="w-4 h-4 text-orange-primary border-gray-300 focus:ring-orange-primary focus:ring-2"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">Bank Account</span>
+                  <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">Bank Account</span>
                 </label>
-                <label className="flex items-center">
+                <label className="flex items-center cursor-pointer">
                   <input
                     type="radio"
                     name="refundType"
+                    value="upi"
                     checked={formData.refundType === 'upi'}
                     onChange={() => handleRefundTypeChange('upi')}
-                    className="mr-2 text-orange-primary focus:ring-orange-primary"
+                    className="w-4 h-4 text-orange-primary border-gray-300 focus:ring-orange-primary focus:ring-2"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">UPI or VPA</span>
+                  <span className="ml-2 text-sm text-gray-700 dark:text-gray-300">UPI or VPA</span>
                 </label>
               </div>
             </div>
 
-            {/* Bank Account Fields - Only show when bank account is selected */}
-            {formData.refundType === 'bank' && (
+            {/* Bank Account Fields */}
+            {formData.refundType === 'bank' ? (
               <>
-                {/* Account Number */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Account Number *
-                  </label>
-                  <input
-                    type="text"
-                    name="accountNumber"
-                    value={formData.accountNumber}
-                    onChange={handleInputChange}
-                    placeholder="Enter Account Number"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary focus:border-orange-primary dark:bg-gray-700 dark:text-white"
-                  />
-                  {errors.accountNumber && (
-                    <p className="text-red-500 text-xs mt-1">{errors.accountNumber}</p>
-                  )}
-                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Account Number */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Account Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="accountNumber"
+                      value={formData.accountNumber}
+                      onChange={handleInputChange}
+                      placeholder="Enter Account Number"
+                      className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary/20 focus:border-orange-primary dark:bg-gray-700 dark:text-white placeholder:text-gray-400 text-sm transition-all"
+                    />
+                    {errors.accountNumber && (
+                      <p className="text-red-500 text-xs mt-1">{errors.accountNumber}</p>
+                    )}
+                  </div>
 
-                {/* IFSC */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    IFSC *
-                  </label>
-                  <input
-                    type="text"
-                    name="ifsc"
-                    value={formData.ifsc}
-                    onChange={handleInputChange}
-                    placeholder="Enter IFSC"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary focus:border-orange-primary dark:bg-gray-700 dark:text-white"
-                  />
-                  {errors.ifsc && (
-                    <p className="text-red-500 text-xs mt-1">{errors.ifsc}</p>
-                  )}
+                  {/* IFSC */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      IFSC <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="ifsc"
+                      value={formData.ifsc}
+                      onChange={handleInputChange}
+                      placeholder="Enter IFSC"
+                      className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary/20 focus:border-orange-primary dark:bg-gray-700 dark:text-white placeholder:text-gray-400 text-sm transition-all"
+                    />
+                    {errors.ifsc && (
+                      <p className="text-red-500 text-xs mt-1">{errors.ifsc}</p>
+                    )}
+                  </div>
                 </div>
 
                 {/* Bank Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    Bank Name *
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Bank Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     type="text"
                     name="bankName"
                     value={formData.bankName}
                     onChange={handleInputChange}
-                    placeholder="Enter Bank Name"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary focus:border-orange-primary dark:bg-gray-700 dark:text-white"
+                    placeholder="Bank Name"
+                    className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary/20 focus:border-orange-primary dark:bg-gray-700 dark:text-white placeholder:text-gray-400 text-sm transition-all"
                   />
                   {errors.bankName && (
                     <p className="text-red-500 text-xs mt-1">{errors.bankName}</p>
                   )}
                 </div>
               </>
-            )}
-
-            {/* UPI Field - Only show when UPI is selected */}
-            {formData.refundType === 'upi' && (
+            ) : (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  UPI ID *
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  UPI ID <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   name="accountNumber"
                   value={formData.accountNumber}
                   onChange={handleInputChange}
-                  placeholder="Enter UPI ID"
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary focus:border-orange-primary dark:bg-gray-700 dark:text-white"
+                  placeholder="username@paytm"
+                  className="w-full px-3 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-orange-primary/20 focus:border-orange-primary dark:bg-gray-700 dark:text-white placeholder:text-gray-400 text-sm transition-all"
                 />
                 {errors.accountNumber && (
                   <p className="text-red-500 text-xs mt-1">{errors.accountNumber}</p>
@@ -272,18 +282,20 @@ const AddBankAccountModal: React.FC<AddBankAccountModalProps> = ({ isOpen, onClo
               </div>
             )}
           </div>
+        </div>
 
-          {/* Action Buttons */}
-          <div className="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+        {/* Footer */}
+        <div className="px-6 py-4 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 rounded-b-2xl">
+          <div className="flex justify-end space-x-3">
             <button
               onClick={handleCancel}
-              className="px-4 py-2 text-gray-600 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
             >
               Cancel
             </button>
             <button
               onClick={handleSave}
-              className="px-4 py-2 bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors"
+              className="px-6 py-2 text-sm font-medium bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors shadow-lg hover:shadow-xl"
             >
               Save
             </button>
