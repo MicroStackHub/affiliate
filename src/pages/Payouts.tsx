@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import PayoutDataTable from '../components/DataTable/PayoutDataTable';
 
 const Payouts: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -109,50 +110,7 @@ const Payouts: React.FC = () => {
       )}
 
       {activeTab === 'history' && (
-        <div className="space-y-6">
-          <div className="card overflow-hidden">
-            <div className="border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Payout History</h3>
-              <p className="text-gray-600 dark:text-gray-400 mt-1">Your complete payout transaction history</p>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="table-auto w-full">
-                <thead>
-                  <tr>
-                    <th className="table-header">Date</th>
-                    <th className="table-header">Amount</th>
-                    <th className="table-header">Method</th>
-                    <th className="table-header">Status</th>
-                    <th className="table-header">Reference</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {payoutHistory.map((payout, index) => (
-                    <tr key={payout.id} className="table-row">
-                      <td className="table-cell">
-                        {payout.date}
-                      </td>
-                      <td className="table-cell font-medium text-green-600 dark:text-green-400">
-                        {payout.amount}
-                      </td>
-                      <td className="table-cell">
-                        {payout.method}
-                      </td>
-                      <td className="table-cell">
-                        <span className={getStatusColor(payout.status)}>
-                          {payout.status}
-                        </span>
-                      </td>
-                      <td className="table-cell">
-                        {payout.reference}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
+        <PayoutDataTable data={payoutHistory} />
       )}
 
       {activeTab === 'methods' && (
