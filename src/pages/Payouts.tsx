@@ -122,39 +122,39 @@ const Payouts: React.FC = () => {
       )}
 
       {activeTab === 'methods' && (
-        <div className="space-y-6 z-[100]">
+        <div className="space-y-4 sm:space-y-6 z-[100]">
           <div className="card">
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Bank Accounts</h3>
+            <div className="flex justify-between items-center mb-4 sm:mb-6">
+              <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">Bank Accounts</h3>
               <button 
                 onClick={() => setIsAddAccountModalOpen(true)}
-                className="px-4 py-2 bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors cursor-pointer relative z-10"
+                className="px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm bg-orange-primary text-white rounded-lg hover:bg-orange-hover transition-colors cursor-pointer relative z-10"
               >
                 Add Account
               </button>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-3 sm:space-y-4">
               {paymentMethods.map((method, index) => (
-                <div key={method.id} className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 hover:shadow-md transition-shadow relative z-10">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
-                      <span className="text-orange-600 dark:text-orange-400 font-semibold text-lg">
+                <div key={method.id} className="flex items-center justify-between p-3 sm:p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 hover:shadow-md transition-shadow relative z-10">
+                  <div className="flex items-center space-x-2 sm:space-x-3">
+                    <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
+                      <span className="text-orange-600 dark:text-orange-400 font-semibold text-base sm:text-lg">
                         {method.type === 'PayPal' ? '💳' : '🏦'}
                       </span>
                     </div>
                     <div>
-                      <h4 className="text-sm font-medium text-gray-900 dark:text-white">{method.type}</h4>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                      <h4 className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">{method.type}</h4>
+                      <p className="text-2xs sm:text-sm text-gray-500 dark:text-gray-400">
                         {method.type === 'PayPal' ? method.email : method.account}
                       </p>
                     </div>
                     {method.isDefault && (
-                      <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                      <span className="inline-flex px-1.5 py-0.5 sm:px-2 sm:py-1 text-2xs sm:text-xs font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                         Default
                       </span>
                     )}
                   </div>
-                  <div className="flex space-x-2 relative z-20">
+                  <div className="flex space-x-1 sm:space-x-2 relative z-20">
                     <button 
                       onClick={() => console.log('Edit method:', method.id)}
                       className="text-orange-600 hover:text-orange-700 dark:text-orange-400 dark:hover:text-orange-300 text-sm font-medium cursor-pointer transition-colors"

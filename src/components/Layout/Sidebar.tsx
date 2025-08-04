@@ -112,19 +112,19 @@ const Sidebar: React.FC = () => {
               }}
               title={isSidebarCollapsed ? item.label : ''}
             >
-              <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
-              {!isSidebarCollapsed && <span>{item.label}</span>}
+              <span style={{ fontSize: isSidebarCollapsed ? '1rem' : '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
+              {!isSidebarCollapsed && <span className="text-sm sm:text-base">{item.label}</span>}
               {item.path === '/referrals' && !isSidebarCollapsed && (
                 <span style={{ 
                   marginLeft: 'auto', 
                   backgroundColor: '#f97316', 
                   color: 'white', 
-                  fontSize: '0.75rem', 
+                  fontSize: '0.65rem', 
                   borderRadius: '9999px', 
-                  paddingLeft: '0.5rem', 
-                  paddingRight: '0.5rem', 
-                  paddingTop: '0.25rem', 
-                  paddingBottom: '0.25rem', 
+                  paddingLeft: '0.4rem', 
+                  paddingRight: '0.4rem', 
+                  paddingTop: '0.2rem', 
+                  paddingBottom: '0.2rem', 
                   fontWeight: 500
                 }}>12</span>
               )}

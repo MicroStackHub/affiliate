@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="fixed top-0 w-full z-[0] border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-0 shadow-md">
       <div className="container mx-auto px-2 sm:px-4" style={{ maxWidth: '1300px' }}>
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           {/* Left Section */}
           <div className="flex items-center space-x-4">
             {/* Mobile Menu Button */}
@@ -48,14 +48,14 @@ const Navbar: React.FC = () => {
               onClick={toggleSidebar}
               className="lg:hidden p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              <Bars3Icon className="w-6 h-6" />
+              <Bars3Icon className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
             {/* Logo and Page Title */}
             <div className="flex items-center">
               
               <div className="hidden sm:block">
-                <h1 className="text-xl font-bold text-orange-600 dark:text-white">
+                <h1 className="text-lg sm:text-xl font-bold text-orange-600 dark:text-white">
                   Bonzicart
                 </h1>
                
@@ -64,7 +64,7 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Right Section */}
-          <div className="flex items-center space-x-1 xs:space-x-2 sm:space-x-3">
+          <div className="flex items-center space-x-1 sm:space-x-3">
             {/* Theme Controls */}
             <div className="relative">
               <button
@@ -72,9 +72,9 @@ const Navbar: React.FC = () => {
                 className="p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
                 {isDarkMode ? (
-                  <MoonIcon className="w-5 h-5" />
+                  <MoonIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 ) : (
-                  <SunIcon className="w-5 h-5" />
+                  <SunIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 )}
               </button>
 
@@ -152,9 +152,9 @@ const Navbar: React.FC = () => {
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
               >
-                <BellIcon className="w-5 h-5" />
+                <BellIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 {/* Notification Badge */}
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-orange-500 text-white text-xs rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-orange-500 text-white text-2xs sm:text-xs rounded-full flex items-center justify-center">
                   2
                 </span>
               </button>
@@ -216,10 +216,10 @@ const Navbar: React.FC = () => {
                 onClick={() => setShowUserMenu(!showUserMenu)}
                 className="flex items-center space-x-2 p-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700"
               >
-                <div className="w-8 h-8 bg-gradient-to-r from-orange-primary to-orange-hover rounded-full flex items-center justify-center">
-                  <span className="text-white text-sm font-semibold">BP</span>
+                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-orange-primary to-orange-hover rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs sm:text-sm font-semibold">BP</span>
                 </div>
-                <ChevronDownIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <ChevronDownIcon className="w-3 h-3 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-400" />
               </button>
 
               {/* User Dropdown */}
@@ -227,8 +227,8 @@ const Navbar: React.FC = () => {
                 <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-2xl shadow-elevation-3 border border-gray-200 dark:border-gray-700 py-2">
                   <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-gradient-to-r from-orange-primary to-orange-hover rounded-full flex items-center justify-center">
-                        <span className="text-white font-semibold">BP</span>
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-orange-primary to-orange-hover rounded-full flex items-center justify-center">
+                        <span className="text-white text-sm sm:text-base font-semibold">BP</span>
                       </div>
                       <div>
                         <p className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -243,19 +243,19 @@ const Navbar: React.FC = () => {
                   
                   <div className="py-2">
                     <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                      <UserCircleIcon className="w-5 h-5" />
-                      <span>Profile</span>
+                      <UserCircleIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span className="text-xs sm:text-sm">Profile</span>
                     </button>
                     <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                      <Cog6ToothIcon className="w-5 h-5" />
-                      <span>Settings</span>
+                      <Cog6ToothIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span className="text-xs sm:text-sm">Settings</span>
                     </button>
                   </div>
                   
                   <div className="border-t border-gray-200 dark:border-gray-700 py-2">
                     <button className="w-full flex items-center space-x-3 px-4 py-2 text-sm text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-900/20">
-                      <ArrowRightOnRectangleIcon className="w-5 h-5" />
-                      <span onClick={()=>{
+                      <ArrowRightOnRectangleIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                      <span className="text-xs sm:text-sm" onClick={()=>{
                         window.location.href ="https://bonzicart.vercel.app/auth/login";
                       }}>Sign out</span>
                     </button>

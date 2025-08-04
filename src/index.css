@@ -383,15 +383,45 @@
 /* Mobile Optimizations */
 @media (max-width: 640px) {
   .card {
-    @apply p-4 rounded-xl;
+    @apply p-3 rounded-xl;
   }
 
   .btn {
-    @apply px-4 py-2 text-sm;
+    @apply px-3 py-2 text-xs;
   }
 
   .form-input {
-    @apply px-3 py-2;
+    @apply px-2 py-2 text-xs;
+  }
+  
+  /* Card content responsive adjustments */
+  .card h3 {
+    @apply text-base;
+  }
+  
+  .card p {
+    @apply text-xs;
+  }
+  
+  .card svg {
+    @apply w-4 h-4;
+  }
+  
+  /* Reduce spacing in cards */
+  .card .space-y-4 {
+    margin-top: 0.75rem; /* 12px - equivalent to space-y-3 */
+  }
+  
+  .card .space-y-6 {
+    margin-top: 1rem; /* 16px - equivalent to space-y-4 */
+  }
+  
+  .card .gap-4 {
+    gap: 0.75rem; /* 12px - equivalent to gap-3 */
+  }
+  
+  .card .gap-6 {
+    gap: 1rem; /* 16px - equivalent to gap-4 */
   }
 }
 
