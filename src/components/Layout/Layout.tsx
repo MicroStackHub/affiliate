@@ -9,7 +9,7 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { isSidebarCollapsed, isDarkMode, toggleSidebar } = useTheme();
+  const { isSidebarCollapsed, isDarkMode, isMobileSidebarOpen, toggleMobileSidebar } = useTheme();
 
   return (
     <div className={`min-h-screen ${
@@ -51,17 +51,17 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div className="lg:hidden">
         {/* Mobile Sidebar Overlay */}
         <div className={`fixed inset-0 z-40 transition-opacity duration-300 ${
-          !isSidebarCollapsed ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          isMobileSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
         }`}>
           {/* Backdrop */}
           <div 
             className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={toggleSidebar}
+            onClick={toggleMobileSidebar}
           ></div>
           
           {/* Sidebar */}
           <div className={`fixed top-0 left-0 h-full w-80 max-w-[85vw] transform transition-transform duration-300 ease-in-out ${
-            !isSidebarCollapsed ? 'translate-x-0' : '-translate-x-full'
+            isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
           }`}>
             <Sidebar />
           </div>

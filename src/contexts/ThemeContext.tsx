@@ -14,6 +14,9 @@ interface ThemeContextType {
   isSidebarCollapsed: boolean;
   toggleSidebar: () => void;
   setSidebarCollapsed: (collapsed: boolean) => void;
+  isMobileSidebarOpen: boolean;
+  toggleMobileSidebar: () => void;
+  setMobileSidebarOpen: (open: boolean) => void;
   isLoading: boolean;
   systemPreference: Theme;
   followSystemTheme: boolean;
@@ -33,6 +36,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [theme, setThemeState] = useState<Theme>('light');
   const [colorScheme, setColorSchemeState] = useState<ColorScheme>('orange');
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // Start open for desktop, will be handled for mobile
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false); // Mobile sidebar overlay state
   const [isLoading, setIsLoading] = useState(true);
   const [systemPreference, setSystemPreference] = useState<Theme>('dark');
   const [followSystemTheme, setFollowSystemTheme] = useState(false);
@@ -173,6 +177,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setIsSidebarCollapsed(collapsed);
   }, []);
 
+  const toggleMobileSidebar = useCallback(() => {
+    setIsMobileSidebarOpen(prev => !prev);
+  }, []);
+
+  const setMobileSidebarOpen = useCallback((open: boolean) => {
+    setIsMobileSidebarOpen(open);
+  }, []);
+
   const handleFollowSystemTheme = useCallback((follow: boolean) => {
     setFollowSystemTheme(follow);
     if (follow) {
@@ -190,6 +202,9 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     isSidebarCollapsed,
     toggleSidebar,
     setSidebarCollapsed,
+    isMobileSidebarOpen,
+    toggleMobileSidebar,
+    setMobileSidebarOpen,
     isLoading,
     systemPreference,
     followSystemTheme,

@@ -20,7 +20,7 @@ const Navbar: React.FC = () => {
   const { 
     isDarkMode, 
     toggleTheme, 
-    toggleSidebar, 
+    toggleMobileSidebar, 
     colorScheme, 
     setColorScheme,
     followSystemTheme,
@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
           <div className="flex items-center space-x-4">
             {/* Mobile Menu Button */}
             <button
-              onClick={toggleSidebar}
+              onClick={toggleMobileSidebar}
               className="lg:hidden p-2 rounded-xl text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               <Bars3Icon className="w-5 h-5 sm:w-6 sm:h-6" />

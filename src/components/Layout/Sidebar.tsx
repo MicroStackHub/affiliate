@@ -1,13 +1,12 @@
-
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme } from '../../contexts/ThemeContext';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
-  const { isSidebarCollapsed, toggleSidebar } = useTheme(); // theme removed as it's not used
- 
-  
+  const { isSidebarCollapsed, toggleSidebar, toggleMobileSidebar } = useTheme(); // theme removed as it's not used
+
+
   // Overview section items
   const overviewItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
@@ -15,12 +14,12 @@ const Sidebar: React.FC = () => {
     { path: '/analytics', label: 'Analytics', icon: '📈' ,hidden:true },
     { path: '/referrals', label: 'Referrals', icon: '👥' },
   ];
-  
+
   // Management section items
   const managementItems = [
     { path: '/affiliate-links', label: 'Affiliate Links', icon: '🔗' },
   ];
-  
+
   // Account section items
   const bankicon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -45,11 +44,11 @@ const Sidebar: React.FC = () => {
     { path: '/settings', label: 'Settings', icon: '⚙️' },
     { path: '/privacy-policy', label: 'Privacy Policy', icon: privacyicon },
     { path: '/feedback', label: 'Feedback', icon: feedBackIcon },
-   
+
   ];
 
- 
-  
+
+
   return (
     <div className={`h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 z-30 ${
       // Desktop behavior
@@ -75,7 +74,7 @@ const Sidebar: React.FC = () => {
       {/* Menu Items */}
       <nav style={{ marginTop: '1rem' }} className="lg:mt-4">
         <div style={{ paddingLeft: '0', paddingRight: '0' }}>
-       
+
           {overviewItems.map((item) => (
             <Link
               key={item.path}
@@ -103,14 +102,14 @@ const Sidebar: React.FC = () => {
               onClick={() => {
                 // Close sidebar on mobile after navigation
                 if (window.innerWidth < 1024) {
-                  toggleSidebar();
+                  toggleMobileSidebar();
                 }
               }}
               title={isSidebarCollapsed ? item.label : ''}
-            
+
               className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
-              
-              
+
+
              >
                <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
                {!isSidebarCollapsed && <span>{item.label}</span>}
@@ -129,7 +128,7 @@ const Sidebar: React.FC = () => {
            // display: isSidebarCollapsed ? 'none' : 'block',
            // backgroundColor: '#f9fafb',
             borderBottom: '1px solid #e5e7eb',
-         
+
           }} className="text-sm text-center bg-gray-100   font-medium text-gray-600 dark:bg-black hidden">
             Management
           </div>
@@ -226,7 +225,7 @@ const Sidebar: React.FC = () => {
               onClick={() => {
                 // Close sidebar on mobile after navigation
                 if (window.innerWidth < 1024) {
-                  toggleSidebar();
+                  toggleMobileSidebar();
                 }
               }}
               title={isSidebarCollapsed ? item.label : ''}
