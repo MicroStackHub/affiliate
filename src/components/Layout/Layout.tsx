@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useTheme } from '../../contexts/ThemeContext';
 import Navbar from './Navbar';
@@ -13,8 +12,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <div className={`min-h-screen ${
-      isDarkMode 
-        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900' 
+      isDarkMode
+        ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900'
         : 'bg-gradient-to-br from-gray-50 via-white to-gray-100'
     }`}>
       {/* Background Pattern */}
@@ -34,7 +33,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="border-r z-0 border-gray-200 dark:border-gray-800">
             <Sidebar />
           </div>
-          
+
           {/* Main Content Column */}
           <div className="flex-1 relative z-10 flex flex-col">
             {/* Page Content */}
@@ -50,26 +49,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       {/* Mobile Layout */}
       <div className="lg:hidden">
         {/* Mobile Sidebar Overlay */}
-        <div className={`fixed inset-0 z-40 transition-opacity duration-300 ${
-          isMobileSidebarOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}>
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-            onClick={toggleMobileSidebar}
-          ></div>
-          
-          {/* Sidebar */}
-          <div className={`fixed top-0 left-0 h-full w-80 max-w-[85vw] transform transition-transform duration-300 ease-in-out ${
-            isMobileSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-          }`}>
-            <Sidebar />
+        {isMobileSidebarOpen && (
+          <div className="fixed inset-0 z-50">
+            <div className="fixed inset-0 bg-black bg-opacity-50" onClick={toggleMobileSidebar}></div>
+            <div className="fixed top-0 left-0 w-80 h-full z-60">
+              <Sidebar />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Mobile Main Content */}
-        <div className="mt-16 mb-8">
-          <main className="p-4 sm:p-6">
+        <div className="pt-16 min-h-screen bg-white dark:bg-gray-900">
+          <main className="p-4">
             <div className="w-full">
               {children}
             </div>
@@ -77,7 +68,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
 
-      
+
 
       {/* Theme Indicator
       <div className="fixed top-20 right-6 z-40 hidden xl:block">

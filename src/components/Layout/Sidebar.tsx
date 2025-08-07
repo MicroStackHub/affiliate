@@ -4,56 +4,71 @@ import { useTheme } from '../../contexts/ThemeContext';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
-  const { isSidebarCollapsed, toggleSidebar, toggleMobileSidebar } = useTheme(); // theme removed as it's not used
-
+  const { isSidebarCollapsed, toggleSidebar, toggleMobileSidebar } = useTheme();
 
   // Overview section items
   const overviewItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/earnings', label: 'Earnings', icon: '💰' },
-    { path: '/analytics', label: 'Analytics', icon: '📈' ,hidden:true },
+    { path: '/analytics', label: 'Analytics', icon: '📈', hidden: true },
     { path: '/referrals', label: 'Referrals', icon: '👥' },
   ];
 
-  // Management section items
+  // Management section items  
   const managementItems = [
     { path: '/affiliate-links', label: 'Affiliate Links', icon: '🔗' },
   ];
 
   // Account section items
-  const bankicon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-      d="M3 10h18M9 21V8m6 13V8m-9 4H3m18 0h-3M12 3L2 8h20L12 3z" />
-  </svg>
+  const bankIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+        d="M3 10h18M9 21V8m6 13V8m-9 4H3m18 0h-3M12 3L2 8h20L12 3z" />
+    </svg>
+  );
 
-  const privacyicon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="22" height="22">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-      d="M12 3l8 4v5c0 5.25-3.5 9.74-8 11-4.5-1.26-8-5.75-8-11V7l8-4z" />
-  </svg>
+  const privacyIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+        d="M12 3l8 4v5c0 5.25-3.5 9.74-8 11-4.5-1.26-8-5.75-8-11V7l8-4z" />
+    </svg>
+  );
 
-  const feedBackIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-      d="M7 8h10M7 12h6m-6 4h8m1-14H5a2 2 0 00-2 2v14l4-4h11a2 2 0 002-2V5a2 2 0 00-2-2z" />
-  </svg>
-
+  const feedbackIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-5 h-5">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+        d="M7 8h10M7 12h6m-6 4h8m1-14H5a2 2 0 00-2 2v14l4-4h11a2 2 0 002-2V5a2 2 0 00-2-2z" />
+    </svg>
+  );
 
   const accountItems = [
     { path: '/profile', label: 'Profile', icon: '👤' },
-    { path: "/bank-accounts", label: "Bank Accounts", icon: bankicon },
+    { path: "/bank-accounts", label: "Bank Accounts", icon: bankIcon },
     { path: '/payouts', label: 'Payouts', icon: '💳' },
     { path: '/settings', label: 'Settings', icon: '⚙️' },
-    { path: '/privacy-policy', label: 'Privacy Policy', icon: privacyicon },
-    { path: '/feedback', label: 'Feedback', icon: feedBackIcon },
-
+    { path: '/privacy-policy', label: 'Privacy Policy', icon: privacyIcon },
+    { path: '/feedback', label: 'Feedback', icon: feedbackIcon },
   ];
 
+  const isActiveItem = (itemPath: string) => {
+    return location.pathname === itemPath || (itemPath === '/dashboard' && location.pathname === '/');
+  };
 
+  const handleItemClick = () => {
+    // Close sidebar on mobile after navigation
+    if (window.innerWidth < 1024) {
+      toggleMobileSidebar();
+    }
+  };
 
   return (
-    <div className={`h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 z-30 transition-all duration-300 ${
-      // Desktop behavior - show full sidebar by default, only collapse when explicitly collapsed
-      isSidebarCollapsed ? 'w-16' : 'w-64'
-    }`}>
+    <div className={`
+      h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 
+      transition-all duration-300 ease-in-out
+      ${isSidebarCollapsed ? 'w-16' : 'w-64'}
+      lg:relative lg:block
+      ${isSidebarCollapsed ? '' : 'shadow-lg'}
+    `}>
 
       {/* Mobile Header with Close Button */}
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
@@ -68,165 +83,104 @@ const Sidebar: React.FC = () => {
         </button>
       </div>
 
-      {/* Menu Items */}
-      <nav style={{ marginTop: '1rem' }} className="lg:mt-4">
-        <div style={{ paddingLeft: '0', paddingRight: '0' }}>
-
+      {/* Sidebar Content */}
+      <nav className="h-full overflow-y-auto">
+        {/* Overview Section */}
+        <div className="py-2">
           {overviewItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              style={{
-                display:item.hidden ? "none":"flex",
-                alignItems: 'center',
-                padding: '0.75rem 1rem',
-                borderBottom: '1px solid #e5e7eb',
-                fontSize: '0.875rem',
-                fontWeight: 500,
-                backgroundColor: location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/') 
-                  ? '#fff5f2' 
-                  : 'transparent',
-                color: location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/') 
-                  ? '#F15A2B' 
-                  : '#64748b',
-                borderLeft: location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/') 
-                  ? '4px solid #F15A2B'
-                  : '4px solid transparent',
-                cursor: 'pointer',
-                width: '100%',
-                justifyContent: 'flex-start'
-              }}
-              onClick={() => {
-                // Close sidebar on mobile after navigation
-                if (window.innerWidth < 1024) {
-                  toggleMobileSidebar();
-                }
-              }}
-              title=""
-
-              className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
-
-
-             >
-               <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
-               {!isSidebarCollapsed && <span className="whitespace-nowrap">{item.label}</span>}
-             </Link>
-          ))}
-
-          <div style={{
-            fontSize: '0.75rem',
-            fontWeight: 600,
-           // color: '#6b7280',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            marginTop: '0',
-            padding: isSidebarCollapsed ? '0' : '0.75rem',
-            marginBottom: isSidebarCollapsed ? '0' : '0',
-            display: 'block',
-           // backgroundColor: '#f9fafb',
-            borderBottom: '1px solid #e5e7eb',
-
-          }} className="text-sm text-center bg-gray-100   font-medium text-gray-600 dark:bg-black hidden">
-            Management
-          </div>
-          {managementItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              style={{
-               // display: 'flex',
-                alignItems: 'center',
-                padding: '0.75rem',
-                borderBottom: '1px solid #e5e7eb',
-                fontSize: '0.875rem',
-                fontWeight: 500,
-                backgroundColor: location.pathname === item.path 
-                  ? '#fff5f2' 
-                  : 'transparent',
-                color: location.pathname === item.path 
-                  ? '#F15A2B' 
-                  : '#374151',
-                borderLeft: location.pathname === item.path 
-                  ? '3px solid #F15A2B' 
-                  : '3px solid transparent',
-                justifyContent: 'flex-start',
-                cursor: 'pointer',
-                width: '100%'
-              }}
-              title=""
-             className='hidden'
-            >
-              <span style={{ fontSize: isSidebarCollapsed ? '1rem' : '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
-              {!isSidebarCollapsed && <span className="text-sm sm:text-base">{item.label}</span>}
-              {item.path === '/referrals' && !isSidebarCollapsed && (
-                <span style={{ 
-                  marginLeft: 'auto', 
-                  backgroundColor: '#f97316', 
-                  color: 'white', 
-                  fontSize: '0.65rem', 
-                  borderRadius: '9999px', 
-                  paddingLeft: '0.4rem', 
-                  paddingRight: '0.4rem', 
-                  paddingTop: '0.2rem', 
-                  paddingBottom: '0.2rem', 
-                  fontWeight: 500
-                }}>12</span>
-              )}
-            </Link>
+            !item.hidden && (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={handleItemClick}
+                className={`
+                  flex items-center px-4 py-3 mx-2 my-1 rounded-lg
+                  transition-all duration-200 ease-in-out
+                  hover:bg-orange-50 dark:hover:bg-gray-800
+                  ${isActiveItem(item.path) 
+                    ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-l-4 border-orange-500' 
+                    : 'text-gray-700 dark:text-gray-300'
+                  }
+                  ${isSidebarCollapsed ? 'justify-center' : 'justify-start'}
+                `}
+                title={isSidebarCollapsed ? item.label : ''}
+              >
+                <span className={`text-xl ${!isSidebarCollapsed ? 'mr-3' : ''}`}>
+                  {item.icon}
+                </span>
+                {!isSidebarCollapsed && (
+                  <span className="font-medium text-sm whitespace-nowrap">
+                    {item.label}
+                  </span>
+                )}
+              </Link>
+            )
           ))}
         </div>
 
-        <div style={{ 
-          marginTop: '0', 
-          paddingLeft: '0', 
-          paddingRight: '0' 
-        }}>
-          <div style={{
-            fontSize: '0.75rem',
-            fontWeight: 600,
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            padding: isSidebarCollapsed ? '0.5rem 0' : '0.75rem',
-            marginBottom: '0',
-            display: isSidebarCollapsed ? 'none' : 'block',
-            borderBottom: '1px solid #e5e7eb'
-          }} className="text-sm text-center bg-gray-100 font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-            {!isSidebarCollapsed && 'ACCOUNT'}
+        {/* Management Section */}
+        {!isSidebarCollapsed && (
+          <div className="py-2 border-t border-gray-200 dark:border-gray-700">
+            <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              Management
+            </div>
+            {managementItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={handleItemClick}
+                className={`
+                  flex items-center px-4 py-3 mx-2 my-1 rounded-lg
+                  transition-all duration-200 ease-in-out
+                  hover:bg-orange-50 dark:hover:bg-gray-800
+                  ${isActiveItem(item.path) 
+                    ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-l-4 border-orange-500' 
+                    : 'text-gray-700 dark:text-gray-300'
+                  }
+                `}
+                title={isSidebarCollapsed ? item.label : ''}
+              >
+                <span className="text-xl mr-3">{item.icon}</span>
+                <span className="font-medium text-sm whitespace-nowrap">
+                  {item.label}
+                </span>
+              </Link>
+            ))}
           </div>
+        )}
+
+        {/* Account Section */}
+        <div className="py-2 border-t border-gray-200 dark:border-gray-700 mt-auto">
+          {!isSidebarCollapsed && (
+            <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              Account
+            </div>
+          )}
           {accountItems.map((item) => (
             <Link
               key={item.path}
               to={item.path}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                padding: '0.75rem 1rem',
-                borderBottom: '1px solid #e5e7eb',
-                fontSize: '0.875rem',
-                fontWeight: 500,
-                backgroundColor: location.pathname === item.path 
-                  ? '#fff5f2' 
-                  : 'transparent',
-                color: location.pathname === item.path 
-                  ? '#F15A2B' 
-                  : '#374151',
-                borderLeft: location.pathname === item.path 
-                  ? '3px solid #F15A2B' 
-                  : '3px solid transparent',
-                justifyContent: 'flex-start',
-                cursor: 'pointer',
-                width: '100%'
-              }}
-              onClick={() => {
-                // Close sidebar on mobile after navigation
-                if (window.innerWidth < 1024) {
-                  toggleMobileSidebar();
+              onClick={handleItemClick}
+              className={`
+                flex items-center px-4 py-3 mx-2 my-1 rounded-lg
+                transition-all duration-200 ease-in-out
+                hover:bg-orange-50 dark:hover:bg-gray-800
+                ${isActiveItem(item.path) 
+                  ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-l-4 border-orange-500' 
+                  : 'text-gray-700 dark:text-gray-300'
                 }
-              }}
-              title=""
+                ${isSidebarCollapsed ? 'justify-center' : 'justify-start'}
+              `}
+              title={isSidebarCollapsed ? item.label : ''}
             >
-              <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
-              {!isSidebarCollapsed && <span className="whitespace-nowrap">{item.label}</span>}
+              <span className={`text-xl ${!isSidebarCollapsed ? 'mr-3' : ''}`}>
+                {typeof item.icon === 'string' ? item.icon : <span className="flex items-center">{item.icon}</span>}
+              </span>
+              {!isSidebarCollapsed && (
+                <span className="font-medium text-sm whitespace-nowrap">
+                  {item.label}
+                </span>
+              )}
             </Link>
           ))}
         </div>
