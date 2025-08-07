@@ -136,8 +136,8 @@ export const profileService = {
   // Update personal information
   updatePersonalInfo: async (data: UpdatePersonalInfoData): Promise<any> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/profile/personal`, {
-        method: 'PUT',
+      const response = await fetch(`${API_BASE_URL}/profile/update`, {
+        method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify(data),
       });

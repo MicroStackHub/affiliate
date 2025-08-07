@@ -1,6 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import {
   fetchUserProfile,
   updatePersonalInfo,
@@ -13,6 +15,7 @@ import {
 
 const Profile: React.FC = () => {
   const dispatch = useAppDispatch();
+  const MySwal = withReactContent(Swal);
   const { 
     profileData, 
     loading, 
@@ -22,8 +25,9 @@ const Profile: React.FC = () => {
     error 
   } = useAppSelector((state) => state.profile);
 
+  const [editMode, setEditMode] = useState(false);
+
   const [activeTab, setActiveTab] = useState('personal');
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [personalForm, setPersonalForm] = useState({
     first_name: '',
     last_name: '',
@@ -82,16 +86,7 @@ const Profile: React.FC = () => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
 
-  // Auto-clear success messages after 5 seconds
-  useEffect(() => {
-    if (successMessage) {
-      const timer = setTimeout(() => {
-        setSuccessMessage(null);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [successMessage]);
-
+ 
   // Update forms when profile data is loaded
   useEffect(() => {
     if (profileData) {
@@ -144,7 +139,6 @@ const Profile: React.FC = () => {
 
   const handlePersonalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSuccessMessage(null);
     try {
       const updateData = {
         first_name: personalForm.first_name,
@@ -161,40 +155,73 @@ const Profile: React.FC = () => {
         alt_phone_number: personalForm.alt_phone_number,
       };
       await dispatch(updatePersonalInfo(updateData)).unwrap();
-      setSuccessMessage('Personal information updated successfully!');
+      // Show success message with SweetAlert
+      MySwal.fire({
+        title: 'Success!',
+        text: 'Personal information updated successfully!',
+        icon: 'success',
+        confirmButtonColor: '#f97316' // orange-primary
+      });
     } catch (error) {
       console.error('Failed to update personal info:', error);
-      // Error is handled by Redux slice
+      // Show error message with SweetAlert
+      MySwal.fire({
+        title: 'Error!',
+        text: error instanceof Error ? error.message : 'Failed to update personal information. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#f97316' // orange-primary
+      });
     }
   };
 
   const handleBusinessSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSuccessMessage(null);
     try {
       await dispatch(updateBusinessDetails(businessForm)).unwrap();
-      setSuccessMessage('Business details updated successfully!');
+      // Show success message with SweetAlert
+      MySwal.fire({
+        title: 'Success!',
+        text: 'Business details updated successfully!',
+        icon: 'success',
+        confirmButtonColor: '#f97316' // orange-primary
+      });
     } catch (error) {
       console.error('Failed to update business details:', error);
-      // Error is handled by Redux slice
+      // Show error message with SweetAlert
+      MySwal.fire({
+        title: 'Error!',
+        text: error instanceof Error ? error.message : 'Failed to update business details. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#f97316' // orange-primary
+      });
     }
   };
 
   const handlePreferencesSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSuccessMessage(null);
     try {
       await dispatch(updatePreferences(preferencesForm)).unwrap();
-      setSuccessMessage('Preferences updated successfully!');
+      // Show success message with SweetAlert
+      MySwal.fire({
+        title: 'Success!',
+        text: 'Preferences updated successfully!',
+        icon: 'success',
+        confirmButtonColor: '#f97316' // orange-primary
+      });
     } catch (error) {
       console.error('Failed to update preferences:', error);
-      // Error is handled by Redux slice
+      // Show error message with SweetAlert
+      MySwal.fire({
+        title: 'Error!',
+        text: error instanceof Error ? error.message : 'Failed to update preferences. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#f97316' // orange-primary
+      });
     }
   };
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSuccessMessage(null);
     
     if (passwordForm.new_password !== passwordForm.new_password_confirmation) {
       return; // Error will be shown in validation
@@ -206,7 +233,13 @@ const Profile: React.FC = () => {
     
     try {
       await dispatch(changePassword(passwordForm)).unwrap();
-      setSuccessMessage('Password changed successfully!');
+      // Show success message with SweetAlert
+      MySwal.fire({
+        title: 'Success!',
+        text: 'Your password has been updated successfully.',
+        icon: 'success',
+        confirmButtonColor: '#f97316' // orange-primary
+      });
       setPasswordForm({
         current_password: '',
         new_password: '',
@@ -214,7 +247,13 @@ const Profile: React.FC = () => {
       });
     } catch (error) {
       console.error('Failed to change password:', error);
-      // Error is handled by Redux slice
+      // Show error message with SweetAlert
+      MySwal.fire({
+        title: 'Error!',
+        text: error instanceof Error ? error.message : 'Failed to change password. Please try again.',
+        icon: 'error',
+        confirmButtonColor: '#f97316' // orange-primary
+      });
     }
   };
 
@@ -223,28 +262,45 @@ const Profile: React.FC = () => {
     if (file) {
       // Validate file size (max 5MB)
       if (file.size > 5 * 1024 * 1024) {
-        setSuccessMessage(null);
-        dispatch({ type: 'profile/setError', payload: 'Image file size must be less than 5MB' });
+        MySwal.fire({
+          title: 'Error!',
+          text: 'Image file size must be less than 5MB',
+          icon: 'error',
+          confirmButtonColor: '#f97316' // orange-primary
+        });
         return;
       }
 
       // Validate file type
       if (!file.type.startsWith('image/')) {
-        setSuccessMessage(null);
-        dispatch({ type: 'profile/setError', payload: 'Please select a valid image file' });
+        MySwal.fire({
+          title: 'Error!',
+          text: 'Please select a valid image file',
+          icon: 'error',
+          confirmButtonColor: '#f97316' // orange-primary
+        });
         return;
       }
 
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64String = reader.result as string;
-        setSuccessMessage(null);
         try {
           await dispatch(updateProfileImage({ profile_image: base64String })).unwrap();
-          setSuccessMessage('Profile image updated successfully!');
+          MySwal.fire({
+            title: 'Success!',
+            text: 'Profile image updated successfully!',
+            icon: 'success',
+            confirmButtonColor: '#f97316' // orange-primary
+          });
         } catch (error) {
           console.error('Failed to update profile image:', error);
-          // Error is handled by Redux slice
+          MySwal.fire({
+            title: 'Error!',
+            text: error instanceof Error ? error.message : 'Failed to update profile image. Please try again.',
+            icon: 'error',
+            confirmButtonColor: '#f97316' // orange-primary
+          });
         }
       };
       reader.readAsDataURL(file);
@@ -282,19 +338,7 @@ const Profile: React.FC = () => {
         </div>
       )}
 
-      {successMessage && (
-        <div className="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 text-green-700 dark:text-green-300 px-4 py-3 rounded-lg">
-          <div className="flex justify-between items-center">
-            <span>{successMessage}</span>
-            <button
-              onClick={() => setSuccessMessage(null)}
-              className="text-green-500 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
-            >
-              ×
-            </button>
-          </div>
-        </div>
-      )}
+
 
       {/* Tab Navigation */}
       <div className="border-b border-gray-200 dark:border-gray-700">
@@ -325,22 +369,53 @@ const Profile: React.FC = () => {
               Profile Image
             </label>
             <div className="flex items-center space-x-4">
-              {(profileData?.profile_image || profileData?.profile_image_url) && (
-                <img
-                  src={profileData.profile_image || profileData.profile_image_url}
-                  alt="Profile"
-                  className="w-20 h-20 rounded-full object-cover"
+              <div className="relative">
+                {(profileData?.profile_image || profileData?.profile_image_url) ? (
+                  <div className="relative w-24 h-24 rounded-full overflow-hidden border-4 border-orange-200 shadow-md">
+                    <img
+                      src={profileData.profile_image || profileData.profile_image_url}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-30 flex items-center justify-center transition-all duration-200">
+                      <label htmlFor="profile-image-upload" className="cursor-pointer w-full h-full flex items-center justify-center">
+                        <span className="text-white opacity-0 hover:opacity-100">Change</span>
+                      </label>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="w-24 h-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center border-4 border-orange-200 shadow-md">
+                    <span className="text-gray-500 dark:text-gray-400 text-2xl">👤</span>
+                  </div>
+                )}
+                <input
+                  id="profile-image-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  disabled={imageLoading}
+                  className="hidden"
                 />
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                disabled={imageLoading}
-                className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-orange-50 file:text-orange-700 hover:file:bg-orange-100"
-              />
-              {imageLoading && <span className="text-sm text-gray-500">Uploading...</span>}
+                <label htmlFor="profile-image-upload" className="absolute bottom-0 right-0 bg-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer shadow-md hover:bg-orange-600 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </label>
+              </div>
+              {imageLoading && <span className="text-sm text-gray-500 ml-4">Uploading...</span>}
             </div>
+          </div>
+
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Personal Information</h3>
+            <button 
+              type="button" 
+              onClick={() => setEditMode(!editMode)}
+              className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+            >
+              {editMode ? 'Cancel' : 'Edit Profile'}
+            </button>
           </div>
 
           <form onSubmit={handlePersonalSubmit}>
@@ -349,60 +424,90 @@ const Profile: React.FC = () => {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   First Name
                 </label>
-                <input
-                  type="text"
-                  value={personalForm.first_name}
-                  onChange={(e) => setPersonalForm({...personalForm, first_name: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                />
+                {editMode ? (
+                  <input
+                    type="text"
+                    value={personalForm.first_name}
+                    onChange={(e) => setPersonalForm({...personalForm, first_name: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {personalForm.first_name || 'Not provided'}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Last Name
                 </label>
-                <input
-                  type="text"
-                  value={personalForm.last_name}
-                  onChange={(e) => setPersonalForm({...personalForm, last_name: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                />
+                {editMode ? (
+                  <input
+                    type="text"
+                    value={personalForm.last_name}
+                    onChange={(e) => setPersonalForm({...personalForm, last_name: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {personalForm.last_name || 'Not provided'}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Email
                 </label>
-                <input
-                  type="email"
-                  value={personalForm.email}
-                  onChange={(e) => setPersonalForm({...personalForm, email: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                />
+                {editMode ? (
+                  <input
+                    type="email"
+                    value={personalForm.email}
+                    onChange={(e) => setPersonalForm({...personalForm, email: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {personalForm.email || 'Not provided'}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Phone
                 </label>
-                <input
-                  type="tel"
-                  value={personalForm.phone}
-                  onChange={(e) => setPersonalForm({...personalForm, phone: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                />
+                {editMode ? (
+                  <input
+                    type="tel"
+                    value={personalForm.phone}
+                    onChange={(e) => setPersonalForm({...personalForm, phone: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {personalForm.phone || 'Not provided'}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Gender
                 </label>
-                <select
-                  value={personalForm.gender}
-                  onChange={(e) => setPersonalForm({...personalForm, gender: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                >
-                  <option value="">Select Gender</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
+                {editMode ? (
+                  <select
+                    value={personalForm.gender}
+                    onChange={(e) => setPersonalForm({...personalForm, gender: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  >
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {personalForm.gender ? personalForm.gender.charAt(0).toUpperCase() + personalForm.gender.slice(1) : 'Not provided'}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -482,60 +587,90 @@ const Profile: React.FC = () => {
                 />
               </div>
             </div>
-            <button 
-              type="submit" 
-              disabled={updateLoading}
-              className="mt-6 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50"
-            >
-              {updateLoading ? 'Saving...' : 'Save Changes'}
-            </button>
+            {editMode && (
+              <button 
+                type="submit" 
+                disabled={updateLoading}
+                className="mt-6 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50"
+              >
+                {updateLoading ? 'Saving...' : 'Save Changes'}
+              </button>
+            )}
           </form>
         </div>
       )}
 
       {activeTab === 'business' && (
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Business Details</h3>
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Business Details</h3>
+            <button 
+              type="button" 
+              onClick={() => setEditMode(!editMode)}
+              className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+            >
+              {editMode ? 'Cancel' : 'Edit Details'}
+            </button>
+          </div>
           <form onSubmit={handleBusinessSubmit}>
             <div className="space-y-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Business Name
                 </label>
-                <input
-                  type="text"
-                  value={businessForm.company_name}
-                  onChange={(e) => setBusinessForm({...businessForm, company_name: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                />
+                {editMode ? (
+                  <input
+                    type="text"
+                    value={businessForm.company_name}
+                    onChange={(e) => setBusinessForm({...businessForm, company_name: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {businessForm.company_name || 'Not provided'}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Website
                 </label>
-                <input
-                  type="url"
-                  value={businessForm.website}
-                  onChange={(e) => setBusinessForm({...businessForm, website: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                />
+                {editMode ? (
+                  <input
+                    type="url"
+                    value={businessForm.website}
+                    onChange={(e) => setBusinessForm({...businessForm, website: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {businessForm.website || 'Not provided'}
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Tax ID
                 </label>
-                <input
-                  type="text"
-                  value={businessForm.tax_id}
-                  onChange={(e) => setBusinessForm({...businessForm, tax_id: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                />
+                {editMode ? (
+                  <input
+                    type="text"
+                    value={businessForm.tax_id}
+                    onChange={(e) => setBusinessForm({...businessForm, tax_id: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {businessForm.tax_id || 'Not provided'}
+                  </div>
+                )}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Street
                   </label>
+                  {editMode ? (
                   <input
                     type="text"
                     value={businessForm.address.street}
@@ -545,11 +680,17 @@ const Profile: React.FC = () => {
                     })}
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                   />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {businessForm.address.street || 'Not provided'}
+                  </div>
+                )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     City
                   </label>
+                  {editMode ? (
                   <input
                     type="text"
                     value={businessForm.address.city}
@@ -559,11 +700,17 @@ const Profile: React.FC = () => {
                     })}
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                   />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {businessForm.address.city || 'Not provided'}
+                  </div>
+                )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     State
                   </label>
+                  {editMode ? (
                   <input
                     type="text"
                     value={businessForm.address.state}
@@ -573,11 +720,17 @@ const Profile: React.FC = () => {
                     })}
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                   />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {businessForm.address.state || 'Not provided'}
+                  </div>
+                )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     ZIP Code
                   </label>
+                  {editMode ? (
                   <input
                     type="text"
                     value={businessForm.address.zip}
@@ -587,34 +740,56 @@ const Profile: React.FC = () => {
                     })}
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                   />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {businessForm.address.zip || 'Not provided'}
+                  </div>
+                )}
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Industry
                 </label>
-                <input
-                  type="text"
-                  value={businessForm.industry}
-                  onChange={(e) => setBusinessForm({...businessForm, industry: e.target.value})}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-                />
+                {editMode ? (
+                  <input
+                    type="text"
+                    value={businessForm.industry}
+                    onChange={(e) => setBusinessForm({...businessForm, industry: e.target.value})}
+                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                  />
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {businessForm.industry || 'Not provided'}
+                  </div>
+                )}
               </div>
             </div>
-            <button 
-              type="submit" 
-              disabled={updateLoading}
-              className="mt-6 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50"
-            >
-              {updateLoading ? 'Saving...' : 'Save Changes'}
-            </button>
+            {editMode && (
+              <button 
+                type="submit" 
+                disabled={updateLoading}
+                className="mt-6 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50"
+              >
+                {updateLoading ? 'Saving...' : 'Save Changes'}
+              </button>
+            )}
           </form>
         </div>
       )}
 
       {activeTab === 'preferences' && (
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Preferences</h3>
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Preferences</h3>
+            <button 
+              type="button" 
+              onClick={() => setEditMode(!editMode)}
+              className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+            >
+              {editMode ? 'Cancel' : 'Edit Preferences'}
+            </button>
+          </div>
           <form onSubmit={handlePreferencesSubmit}>
             <div className="space-y-6">
               <div className="flex items-center justify-between">
@@ -622,52 +797,67 @@ const Profile: React.FC = () => {
                   <h4 className="text-sm font-medium text-gray-900 dark:text-white">Email Notifications</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Receive email updates about your account</p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setPreferencesForm({
-                    ...preferencesForm,
-                    notifications: {
-                      ...preferencesForm.notifications,
-                      email: !preferencesForm.notifications.email
-                    }
-                  })}
-                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none ${
-                    preferencesForm.notifications.email ? 'bg-orange-600' : 'bg-gray-200'
-                  }`}
-                >
-                  <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ${
-                    preferencesForm.notifications.email ? 'translate-x-5' : 'translate-x-0'
-                  }`}></span>
-                </button>
+                {editMode ? (
+                  <button 
+                    type="button"
+                    onClick={() => setPreferencesForm({
+                      ...preferencesForm,
+                      notifications: {
+                        ...preferencesForm.notifications,
+                        email: !preferencesForm.notifications.email
+                      }
+                    })}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none ${
+                      preferencesForm.notifications.email ? 'bg-orange-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ${
+                      preferencesForm.notifications.email ? 'translate-x-5' : 'translate-x-0'
+                    }`}></span>
+                  </button>
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {preferencesForm.notifications.email ? 'Enabled' : 'Disabled'}
+                  </div>
+                )}
+
               </div>
               <div className="flex items-center justify-between">
                 <div>
                   <h4 className="text-sm font-medium text-gray-900 dark:text-white">SMS Notifications</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Receive SMS updates</p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setPreferencesForm({
-                    ...preferencesForm,
-                    notifications: {
-                      ...preferencesForm.notifications,
-                      sms: !preferencesForm.notifications.sms
-                    }
-                  })}
-                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none ${
-                    preferencesForm.notifications.sms ? 'bg-orange-600' : 'bg-gray-200'
-                  }`}
-                >
-                  <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ${
-                    preferencesForm.notifications.sms ? 'translate-x-5' : 'translate-x-0'
-                  }`}></span>
-                </button>
+                {editMode ? (
+                  <button
+                    type="button"
+                    onClick={() => setPreferencesForm({
+                      ...preferencesForm,
+                      notifications: {
+                        ...preferencesForm.notifications,
+                        sms: !preferencesForm.notifications.sms
+                      }
+                    })}
+                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none ${
+                      preferencesForm.notifications.sms ? 'bg-orange-600' : 'bg-gray-200'
+                    }`}
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ${
+                      preferencesForm.notifications.sms ? 'translate-x-5' : 'translate-x-0'
+                    }`}></span>
+                  </button>
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {preferencesForm.notifications.sms ? 'Enabled' : 'Disabled'}
+                  </div>
+                )}
+
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Language
                   </label>
+                  {editMode ? (
                   <select
                     value={preferencesForm.language}
                     onChange={(e) => setPreferencesForm({...preferencesForm, language: e.target.value})}
@@ -677,11 +867,19 @@ const Profile: React.FC = () => {
                     <option value="es">Spanish</option>
                     <option value="fr">French</option>
                   </select>
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {preferencesForm.language === 'en' ? 'English' : 
+                     preferencesForm.language === 'es' ? 'Spanish' : 
+                     preferencesForm.language === 'fr' ? 'French' : 'Not selected'}
+                  </div>
+                )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Currency
                   </label>
+                  {editMode ? (
                   <select
                     value={preferencesForm.currency}
                     onChange={(e) => setPreferencesForm({...preferencesForm, currency: e.target.value})}
@@ -692,23 +890,40 @@ const Profile: React.FC = () => {
                     <option value="GBP">GBP</option>
                     <option value="INR">INR</option>
                   </select>
+                ) : (
+                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
+                    {preferencesForm.currency || 'Not selected'}
+                  </div>
+                )}
                 </div>
               </div>
             </div>
-            <button 
-              type="submit" 
-              disabled={updateLoading}
-              className="mt-6 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50"
-            >
-              {updateLoading ? 'Saving...' : 'Save Preferences'}
-            </button>
+            {editMode && (
+              <button 
+                type="submit" 
+                disabled={updateLoading}
+                className="mt-6 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50"
+              >
+                {updateLoading ? 'Saving...' : 'Save Preferences'}
+              </button>
+            )}
           </form>
         </div>
       )}
 
       {activeTab === 'password' && (
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">Change Password</h3>
+          <div className="flex justify-between items-center mb-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Change Password</h3>
+            <button 
+              type="button" 
+              onClick={() => setEditMode(!editMode)}
+              className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
+            >
+              {editMode ? 'Cancel' : 'Change Password'}
+            </button>
+          </div>
+          {editMode ? (
           <form onSubmit={handlePasswordSubmit}>
             <div className="space-y-6">
               <div>
@@ -763,6 +978,11 @@ const Profile: React.FC = () => {
               {passwordLoading ? 'Changing...' : 'Change Password'}
             </button>
           </form>
+          ) : (
+            <div className="text-gray-600 dark:text-gray-400 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              For security reasons, your password is hidden. Click the "Change Password" button to update it.
+            </div>
+          )}
         </div>
       )}
     </div>
