@@ -43,59 +43,37 @@ const handleApiResponse = async (response: Response) => {
 };
 
 export interface ProfileData {
-  id: string;
-  personal: {
-    first_name: string;
-    last_name: string;
-    email: string;
-    phone: string;
-    profile_image?: string;
-    date_joined: string;
-    last_login: string;
-  };
-  business: {
-    company_name: string;
-    website: string;
-    tax_id: string;
-    address: {
-      street: string;
-      city: string;
-      state: string;
-      zip: string;
-      country: string;
-    };
-    industry: string;
-    company_size: string;
-  };
-  preferences: {
-    language: string;
-    timezone: string;
-    currency: string;
-    notifications: {
-      email: boolean;
-      sms: boolean;
-      push: boolean;
-    };
-    theme: string;
-    dashboard_widgets: string[];
-  };
-  affiliate: {
-    status: string;
-    level: string;
-    commission_rate: number;
-    referral_code: string;
-    default_link: string;
-    total_earnings: number;
-    total_referrals: number;
-  };
+  id: number;
+  first_name: string;
+  last_name: string;
+  gender: string | null;
+  profile_image: string | null;
+  email: string;
+  country: string | null;
+  state: string | null;
+  city: string | null;
+  address1: string | null;
+  address2: string | null;
+  pin_code: string | null;
+  phone_number: string;
+  alt_phone_number: string | null;
+  member_since: number;
+  profile_image_url: string;
 }
 
 export interface UpdatePersonalInfoData {
   first_name: string;
   last_name: string;
   email: string;
-  phone: string;
-  profile_image?: string;
+  phone_number: string;
+  gender?: string;
+  country?: string;
+  state?: string;
+  city?: string;
+  address1?: string;
+  address2?: string;
+  pin_code?: string;
+  alt_phone_number?: string;
 }
 
 export interface UpdateBusinessDetailsData {
@@ -147,7 +125,7 @@ export const profileService = {
       });
 
       const result = await handleApiResponse(response);
-      return result.data.profile;
+      return result.data;
     } catch (error) {
       throw new Error(`Failed to fetch profile: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }

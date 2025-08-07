@@ -11,18 +11,23 @@ import {
 } from '../../services/profileService';
 
 interface User {
-  id: string;
+  id: number;
   name: string;
   email: string;
   profileImage?: string;
-  bio?: string;
-  url?: string;
-  roles?: string[];
-  teams?: string[];
-  personal?: any;
-  business?: any;
-  preferences?: any;
-  affiliate?: any;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  gender?: string;
+  country?: string;
+  state?: string;
+  city?: string;
+  address1?: string;
+  address2?: string;
+  pin_code?: string;
+  alt_phone_number?: string;
+  member_since: number;
+  profile_image_url: string;
 }
 
 interface ProfileState {
@@ -167,13 +172,22 @@ const profileSlice = createSlice({
         state.profileData = action.payload;
         state.user = {
           id: action.payload.id,
-          name: `${action.payload.personal.first_name} ${action.payload.personal.last_name}`,
-          email: action.payload.personal.email,
-          profileImage: action.payload.personal.profile_image,
-          personal: action.payload.personal,
-          business: action.payload.business,
-          preferences: action.payload.preferences,
-          affiliate: action.payload.affiliate,
+          name: `${action.payload.first_name} ${action.payload.last_name}`,
+          email: action.payload.email,
+          profileImage: action.payload.profile_image,
+          first_name: action.payload.first_name,
+          last_name: action.payload.last_name,
+          phone_number: action.payload.phone_number,
+          gender: action.payload.gender,
+          country: action.payload.country,
+          state: action.payload.state,
+          city: action.payload.city,
+          address1: action.payload.address1,
+          address2: action.payload.address2,
+          pin_code: action.payload.pin_code,
+          alt_phone_number: action.payload.alt_phone_number,
+          member_since: action.payload.member_since,
+          profile_image_url: action.payload.profile_image_url,
         };
         state.error = null;
       })
@@ -191,13 +205,24 @@ const profileSlice = createSlice({
       .addCase(updatePersonalInfo.fulfilled, (state, action) => {
         state.updateLoading = false;
         if (state.profileData) {
-          state.profileData.personal = action.payload;
+          // Update the profile data with new values
+          Object.assign(state.profileData, action.payload);
           state.user = {
             ...state.user!,
             name: `${action.payload.first_name} ${action.payload.last_name}`,
             email: action.payload.email,
             profileImage: action.payload.profile_image,
-            personal: action.payload,
+            first_name: action.payload.first_name,
+            last_name: action.payload.last_name,
+            phone_number: action.payload.phone_number,
+            gender: action.payload.gender,
+            country: action.payload.country,
+            state: action.payload.state,
+            city: action.payload.city,
+            address1: action.payload.address1,
+            address2: action.payload.address2,
+            pin_code: action.payload.pin_code,
+            alt_phone_number: action.payload.alt_phone_number,
           };
         }
         state.error = null;
@@ -260,10 +285,12 @@ const profileSlice = createSlice({
       .addCase(updateProfileImage.fulfilled, (state, action) => {
         state.imageLoading = false;
         if (state.profileData && action.payload.profile_image) {
-          state.profileData.personal.profile_image = action.payload.profile_image;
+          state.profileData.profile_image = action.payload.profile_image;
+          state.profileData.profile_image_url = action.payload.profile_image_url || action.payload.profile_image;
           state.user = {
             ...state.user!,
             profileImage: action.payload.profile_image,
+            profile_image_url: action.payload.profile_image_url || action.payload.profile_image,
           };
         }
         state.error = null;

@@ -29,6 +29,14 @@ const Profile: React.FC = () => {
     last_name: '',
     email: '',
     phone: '',
+    gender: '',
+    country: '',
+    state: '',
+    city: '',
+    address1: '',
+    address2: '',
+    pin_code: '',
+    alt_phone_number: '',
   });
   const [businessForm, setBusinessForm] = useState({
     company_name: '',
@@ -88,38 +96,40 @@ const Profile: React.FC = () => {
   useEffect(() => {
     if (profileData) {
       setPersonalForm({
-        first_name: profileData.personal.first_name || '',
-        last_name: profileData.personal.last_name || '',
-        email: profileData.personal.email || '',
-        phone: profileData.personal.phone || '',
+        first_name: profileData.first_name || '',
+        last_name: profileData.last_name || '',
+        email: profileData.email || '',
+        phone: profileData.phone_number || '',
       });
 
+      // Set default values for business form (since API doesn't provide these yet)
       setBusinessForm({
-        company_name: profileData.business.company_name || '',
-        website: profileData.business.website || '',
-        tax_id: profileData.business.tax_id || '',
+        company_name: '',
+        website: '',
+        tax_id: '',
         address: {
-          street: profileData.business.address?.street || '',
-          city: profileData.business.address?.city || '',
-          state: profileData.business.address?.state || '',
-          zip: profileData.business.address?.zip || '',
-          country: profileData.business.address?.country || '',
+          street: profileData.address1 || '',
+          city: profileData.city || '',
+          state: profileData.state || '',
+          zip: profileData.pin_code || '',
+          country: profileData.country || '',
         },
-        industry: profileData.business.industry || '',
-        company_size: profileData.business.company_size || '',
+        industry: '',
+        company_size: '',
       });
 
+      // Set default values for preferences (since API doesn't provide these yet)
       setPreferencesForm({
-        language: profileData.preferences.language || 'en',
-        timezone: profileData.preferences.timezone || 'America/New_York',
-        currency: profileData.preferences.currency || 'USD',
+        language: 'en',
+        timezone: 'America/New_York',
+        currency: 'USD',
         notifications: {
-          email: profileData.preferences.notifications?.email || true,
-          sms: profileData.preferences.notifications?.sms || false,
-          push: profileData.preferences.notifications?.push || true,
+          email: true,
+          sms: false,
+          push: true,
         },
-        theme: profileData.preferences.theme || 'light',
-        dashboard_widgets: profileData.preferences.dashboard_widgets || ['earnings_summary'],
+        theme: 'light',
+        dashboard_widgets: ['earnings_summary'],
       });
     }
   }, [profileData]);
@@ -128,7 +138,21 @@ const Profile: React.FC = () => {
     e.preventDefault();
     setSuccessMessage(null);
     try {
-      await dispatch(updatePersonalInfo(personalForm)).unwrap();
+      const updateData = {
+        first_name: personalForm.first_name,
+        last_name: personalForm.last_name,
+        email: personalForm.email,
+        phone_number: personalForm.phone,
+        gender: personalForm.gender,
+        country: personalForm.country,
+        state: personalForm.state,
+        city: personalForm.city,
+        address1: personalForm.address1,
+        address2: personalForm.address2,
+        pin_code: personalForm.pin_code,
+        alt_phone_number: personalForm.alt_phone_number,
+      };
+      await dispatch(updatePersonalInfo(updateData)).unwrap();
       setSuccessMessage('Personal information updated successfully!');
     } catch (error) {
       console.error('Failed to update personal info:', error);
@@ -293,9 +317,9 @@ const Profile: React.FC = () => {
               Profile Image
             </label>
             <div className="flex items-center space-x-4">
-              {profileData?.personal.profile_image && (
+              {(profileData?.profile_image || profileData?.profile_image_url) && (
                 <img
-                  src={profileData.personal.profile_image}
+                  src={profileData.profile_image || profileData.profile_image_url}
                   alt="Profile"
                   className="w-20 h-20 rounded-full object-cover"
                 />
@@ -354,6 +378,98 @@ const Profile: React.FC = () => {
                   type="tel"
                   value={personalForm.phone}
                   onChange={(e) => setPersonalForm({...personalForm, phone: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Gender
+                </label>
+                <select
+                  value={personalForm.gender}
+                  onChange={(e) => setPersonalForm({...personalForm, gender: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                >
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Country
+                </label>
+                <input
+                  type="text"
+                  value={personalForm.country}
+                  onChange={(e) => setPersonalForm({...personalForm, country: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  State
+                </label>
+                <input
+                  type="text"
+                  value={personalForm.state}
+                  onChange={(e) => setPersonalForm({...personalForm, state: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  City
+                </label>
+                <input
+                  type="text"
+                  value={personalForm.city}
+                  onChange={(e) => setPersonalForm({...personalForm, city: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Address 1
+                </label>
+                <input
+                  type="text"
+                  value={personalForm.address1}
+                  onChange={(e) => setPersonalForm({...personalForm, address1: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Address 2
+                </label>
+                <input
+                  type="text"
+                  value={personalForm.address2}
+                  onChange={(e) => setPersonalForm({...personalForm, address2: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  PIN Code
+                </label>
+                <input
+                  type="text"
+                  value={personalForm.pin_code}
+                  onChange={(e) => setPersonalForm({...personalForm, pin_code: e.target.value})}
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  Alternate Phone
+                </label>
+                <input
+                  type="tel"
+                  value={personalForm.alt_phone_number}
+                  onChange={(e) => setPersonalForm({...personalForm, alt_phone_number: e.target.value})}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                 />
               </div>
