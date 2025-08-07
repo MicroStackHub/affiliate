@@ -97,7 +97,7 @@ const Sidebar: React.FC = () => {
                   : '4px solid transparent',
                 cursor: 'pointer',
                 width: '100%',
-                justifyContent: (isSidebarCollapsed && window.innerWidth >= 1024) ? 'center' : 'flex-start'
+                justifyContent: 'flex-start'
               }}
               onClick={() => {
                 // Close sidebar on mobile after navigation
@@ -105,7 +105,7 @@ const Sidebar: React.FC = () => {
                   toggleMobileSidebar();
                 }
               }}
-              title={isSidebarCollapsed ? item.label : ''}
+              title=""
 
               className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200"
 
@@ -125,7 +125,7 @@ const Sidebar: React.FC = () => {
             marginTop: '0',
             padding: isSidebarCollapsed ? '0' : '0.75rem',
             marginBottom: isSidebarCollapsed ? '0' : '0',
-           // display: isSidebarCollapsed ? 'none' : 'block',
+            display: 'block',
            // backgroundColor: '#f9fafb',
             borderBottom: '1px solid #e5e7eb',
 
@@ -152,11 +152,11 @@ const Sidebar: React.FC = () => {
                 borderLeft: location.pathname === item.path 
                   ? '3px solid #F15A2B' 
                   : '3px solid transparent',
-                justifyContent: isSidebarCollapsed ? 'center' : 'flex-start',
+                justifyContent: 'flex-start',
                 cursor: 'pointer',
                 width: '100%'
               }}
-              title={isSidebarCollapsed ? item.label : ''}
+              title=""
              className='hidden'
             >
               <span style={{ fontSize: isSidebarCollapsed ? '1rem' : '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
@@ -192,7 +192,7 @@ const Sidebar: React.FC = () => {
             letterSpacing: '0.05em',
             padding: isSidebarCollapsed ? '0' : '0.75rem',
             marginBottom: isSidebarCollapsed ? '0' : '0',
-            display: isSidebarCollapsed ? 'none' : 'block',
+            display: 'block',
            // backgroundColor: '#f9fafb',
             borderBottom: '1px solid #e5e7eb'
           }} className="text-sm text-center bg-gray-100   font-medium text-gray-600 dark:bg-black">
@@ -218,7 +218,7 @@ const Sidebar: React.FC = () => {
                 borderLeft: location.pathname === item.path 
                   ? '3px solid #F15A2B' 
                   : '3px solid transparent',
-                justifyContent: (isSidebarCollapsed && window.innerWidth >= 1024) ? 'center' : 'flex-start',
+                justifyContent: 'flex-start',
                 cursor: 'pointer',
                 width: '100%'
               }}
@@ -228,7 +228,7 @@ const Sidebar: React.FC = () => {
                   toggleMobileSidebar();
                 }
               }}
-              title={isSidebarCollapsed ? item.label : ''}
+              title=""
             >
               <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
               {!isSidebarCollapsed && <span>{item.label}</span>}
