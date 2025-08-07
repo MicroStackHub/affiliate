@@ -4,6 +4,7 @@ const API_BASE_URL = 'https://backend.glst.in/api/account';
 // Helper function to get auth headers
 const getAuthHeaders = () => {
   const token = localStorage.getItem('token') || localStorage.getItem('authToken');
+  console.log("Token form local storage is : ",token);
   return {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
