@@ -6,8 +6,8 @@ import {
   UpdatePersonalInfoData, 
   UpdateBusinessDetailsData, 
   UpdatePreferencesData,
-  ChangePasswordData,
-  UpdateProfileImageData 
+  UpdateProfileImageData,
+  ChangePasswordData
 } from '../../services/profileService';
 
 interface User {
