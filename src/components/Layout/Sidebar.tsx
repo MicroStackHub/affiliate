@@ -65,9 +65,9 @@ const Sidebar: React.FC = () => {
     <div className={`
       h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 
       transition-all duration-300 ease-in-out
-      ${isSidebarCollapsed ? 'w-16' : 'w-64'}
+      w-64
       lg:relative lg:block
-      ${isSidebarCollapsed ? '' : 'shadow-lg'}
+      shadow-lg
     `}>
 
       {/* Mobile Header with Close Button */}
@@ -105,57 +105,51 @@ const Sidebar: React.FC = () => {
                 `}
                 title={isSidebarCollapsed ? item.label : ''}
               >
-                <span className={`text-xl ${!isSidebarCollapsed ? 'mr-3' : ''}`}>
+                <span className="text-xl mr-3">
                   {item.icon}
                 </span>
-                {!isSidebarCollapsed && (
-                  <span className="font-medium text-sm whitespace-nowrap">
-                    {item.label}
-                  </span>
-                )}
+                <span className="font-medium text-sm whitespace-nowrap">
+                  {item.label}
+                </span>
               </Link>
             )
           ))}
         </div>
 
         {/* Management Section */}
-        {!isSidebarCollapsed && (
-          <div className="py-2 border-t border-gray-200 dark:border-gray-700">
-            <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-              Management
-            </div>
-            {managementItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                onClick={handleItemClick}
-                className={`
-                  flex items-center px-4 py-3 mx-2 my-1 rounded-lg
-                  transition-all duration-200 ease-in-out
-                  hover:bg-orange-50 dark:hover:bg-gray-800
-                  ${isActiveItem(item.path) 
-                    ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-l-4 border-orange-500' 
-                    : 'text-gray-700 dark:text-gray-300'
-                  }
-                `}
-                title={isSidebarCollapsed ? item.label : ''}
-              >
-                <span className="text-xl mr-3">{item.icon}</span>
-                <span className="font-medium text-sm whitespace-nowrap">
-                  {item.label}
-                </span>
-              </Link>
-            ))}
+        <div className="py-2 border-t border-gray-200 dark:border-gray-700">
+          <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            Management
           </div>
-        )}
+          {managementItems.map((item) => (
+            <Link
+              key={item.path}
+              to={item.path}
+              onClick={handleItemClick}
+              className={`
+                flex items-center px-4 py-3 mx-2 my-1 rounded-lg
+                transition-all duration-200 ease-in-out
+                hover:bg-orange-50 dark:hover:bg-gray-800
+                ${isActiveItem(item.path) 
+                  ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-l-4 border-orange-500' 
+                  : 'text-gray-700 dark:text-gray-300'
+                }
+              `}
+              title={isSidebarCollapsed ? item.label : ''}
+            >
+              <span className="text-xl mr-3">{item.icon}</span>
+              <span className="font-medium text-sm whitespace-nowrap">
+                {item.label}
+              </span>
+            </Link>
+          ))}
+        </div>
 
         {/* Account Section */}
         <div className="py-2 border-t border-gray-200 dark:border-gray-700 mt-auto">
-          {!isSidebarCollapsed && (
-            <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-              Account
-            </div>
-          )}
+          <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+            Account
+          </div>
           {accountItems.map((item) => (
             <Link
               key={item.path}
@@ -169,18 +163,16 @@ const Sidebar: React.FC = () => {
                   ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-l-4 border-orange-500' 
                   : 'text-gray-700 dark:text-gray-300'
                 }
-                ${isSidebarCollapsed ? 'justify-center' : 'justify-start'}
+                justify-start
               `}
-              title={isSidebarCollapsed ? item.label : ''}
+              title={item.label}
             >
-              <span className={`text-xl ${!isSidebarCollapsed ? 'mr-3' : ''}`}>
+              <span className="text-xl mr-3">
                 {typeof item.icon === 'string' ? item.icon : <span className="flex items-center">{item.icon}</span>}
               </span>
-              {!isSidebarCollapsed && (
-                <span className="font-medium text-sm whitespace-nowrap">
-                  {item.label}
-                </span>
-              )}
+              <span className="font-medium text-sm whitespace-nowrap">
+                {item.label}
+              </span>
             </Link>
           ))}
         </div>
