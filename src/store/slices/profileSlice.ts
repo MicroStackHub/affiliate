@@ -1,5 +1,14 @@
 
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { 
+  profileService, 
+  ProfileData, 
+  UpdatePersonalInfoData, 
+  UpdateBusinessDetailsData, 
+  UpdatePreferencesData,
+  ChangePasswordData,
+  UpdateProfileImageData 
+} from '../../services/profileService';
 
 interface User {
   id: string;
@@ -10,19 +19,116 @@ interface User {
   url?: string;
   roles?: string[];
   teams?: string[];
+  personal?: any;
+  business?: any;
+  preferences?: any;
+  affiliate?: any;
 }
 
 interface ProfileState {
   user: User | null;
+  profileData: ProfileData | null;
   loading: boolean;
   error: string | null;
+  updateLoading: boolean;
+  passwordLoading: boolean;
+  imageLoading: boolean;
 }
 
 const initialState: ProfileState = {
   user: null,
+  profileData: null,
   loading: false,
   error: null,
+  updateLoading: false,
+  passwordLoading: false,
+  imageLoading: false,
 };
+
+// Async thunks for API calls
+export const fetchUserProfile = createAsyncThunk(
+  'profile/fetchUserProfile',
+  async (_, { rejectWithValue }) => {
+    try {
+      const profileData = await profileService.getUserProfile();
+      return profileData;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to fetch profile');
+    }
+  }
+);
+
+export const updatePersonalInfo = createAsyncThunk(
+  'profile/updatePersonalInfo',
+  async (data: UpdatePersonalInfoData, { rejectWithValue }) => {
+    try {
+      const updatedData = await profileService.updatePersonalInfo(data);
+      return updatedData;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to update personal info');
+    }
+  }
+);
+
+export const updateBusinessDetails = createAsyncThunk(
+  'profile/updateBusinessDetails',
+  async (data: UpdateBusinessDetailsData, { rejectWithValue }) => {
+    try {
+      const updatedData = await profileService.updateBusinessDetails(data);
+      return updatedData;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to update business details');
+    }
+  }
+);
+
+export const updatePreferences = createAsyncThunk(
+  'profile/updatePreferences',
+  async (data: UpdatePreferencesData, { rejectWithValue }) => {
+    try {
+      const updatedData = await profileService.updatePreferences(data);
+      return updatedData;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to update preferences');
+    }
+  }
+);
+
+export const updateProfileImage = createAsyncThunk(
+  'profile/updateProfileImage',
+  async (data: UpdateProfileImageData, { rejectWithValue }) => {
+    try {
+      const result = await profileService.updateProfileImage(data);
+      return result;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to update profile image');
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  'profile/changePassword',
+  async (data: ChangePasswordData, { rejectWithValue }) => {
+    try {
+      const result = await profileService.changePassword(data);
+      return result;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to change password');
+    }
+  }
+);
+
+export const updateProfile = createAsyncThunk(
+  'profile/updateProfile',
+  async (data: any, { rejectWithValue }) => {
+    try {
+      const result = await profileService.updateProfile(data);
+      return result;
+    } catch (error) {
+      return rejectWithValue(error instanceof Error ? error.message : 'Failed to update profile');
+    }
+  }
+);
 
 const profileSlice = createSlice({
   name: 'profile',
@@ -45,8 +151,158 @@ const profileSlice = createSlice({
     },
     clearUser: (state) => {
       state.user = null;
+      state.profileData = null;
       state.error = null;
     },
+  },
+  extraReducers: (builder) => {
+    // Fetch user profile
+    builder
+      .addCase(fetchUserProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchUserProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.profileData = action.payload;
+        state.user = {
+          id: action.payload.id,
+          name: `${action.payload.personal.first_name} ${action.payload.personal.last_name}`,
+          email: action.payload.personal.email,
+          profileImage: action.payload.personal.profile_image,
+          personal: action.payload.personal,
+          business: action.payload.business,
+          preferences: action.payload.preferences,
+          affiliate: action.payload.affiliate,
+        };
+        state.error = null;
+      })
+      .addCase(fetchUserProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+    // Update personal info
+    builder
+      .addCase(updatePersonalInfo.pending, (state) => {
+        state.updateLoading = true;
+        state.error = null;
+      })
+      .addCase(updatePersonalInfo.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        if (state.profileData) {
+          state.profileData.personal = action.payload;
+          state.user = {
+            ...state.user!,
+            name: `${action.payload.first_name} ${action.payload.last_name}`,
+            email: action.payload.email,
+            profileImage: action.payload.profile_image,
+            personal: action.payload,
+          };
+        }
+        state.error = null;
+      })
+      .addCase(updatePersonalInfo.rejected, (state, action) => {
+        state.updateLoading = false;
+        state.error = action.payload as string;
+      });
+
+    // Update business details
+    builder
+      .addCase(updateBusinessDetails.pending, (state) => {
+        state.updateLoading = true;
+        state.error = null;
+      })
+      .addCase(updateBusinessDetails.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        if (state.profileData) {
+          state.profileData.business = action.payload;
+          state.user = {
+            ...state.user!,
+            business: action.payload,
+          };
+        }
+        state.error = null;
+      })
+      .addCase(updateBusinessDetails.rejected, (state, action) => {
+        state.updateLoading = false;
+        state.error = action.payload as string;
+      });
+
+    // Update preferences
+    builder
+      .addCase(updatePreferences.pending, (state) => {
+        state.updateLoading = true;
+        state.error = null;
+      })
+      .addCase(updatePreferences.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        if (state.profileData) {
+          state.profileData.preferences = action.payload;
+          state.user = {
+            ...state.user!,
+            preferences: action.payload,
+          };
+        }
+        state.error = null;
+      })
+      .addCase(updatePreferences.rejected, (state, action) => {
+        state.updateLoading = false;
+        state.error = action.payload as string;
+      });
+
+    // Update profile image
+    builder
+      .addCase(updateProfileImage.pending, (state) => {
+        state.imageLoading = true;
+        state.error = null;
+      })
+      .addCase(updateProfileImage.fulfilled, (state, action) => {
+        state.imageLoading = false;
+        if (state.profileData && action.payload.profile_image) {
+          state.profileData.personal.profile_image = action.payload.profile_image;
+          state.user = {
+            ...state.user!,
+            profileImage: action.payload.profile_image,
+          };
+        }
+        state.error = null;
+      })
+      .addCase(updateProfileImage.rejected, (state, action) => {
+        state.imageLoading = false;
+        state.error = action.payload as string;
+      });
+
+    // Change password
+    builder
+      .addCase(changePassword.pending, (state) => {
+        state.passwordLoading = true;
+        state.error = null;
+      })
+      .addCase(changePassword.fulfilled, (state) => {
+        state.passwordLoading = false;
+        state.error = null;
+      })
+      .addCase(changePassword.rejected, (state, action) => {
+        state.passwordLoading = false;
+        state.error = action.payload as string;
+      });
+
+    // Update profile (general)
+    builder
+      .addCase(updateProfile.pending, (state) => {
+        state.updateLoading = true;
+        state.error = null;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.updateLoading = false;
+        state.error = null;
+        // Handle successful profile update
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.updateLoading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 
