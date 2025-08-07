@@ -780,15 +780,8 @@ const Profile: React.FC = () => {
 
       {activeTab === 'preferences' && (
         <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 shadow-sm">
-          <div className="flex justify-between items-center mb-6">
+          <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Preferences</h3>
-            <button 
-              type="button" 
-              onClick={() => setEditMode(!editMode)}
-              className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors"
-            >
-              {editMode ? 'Cancel' : 'Edit Preferences'}
-            </button>
           </div>
           <form onSubmit={handlePreferencesSubmit}>
             <div className="space-y-6">
@@ -797,29 +790,23 @@ const Profile: React.FC = () => {
                   <h4 className="text-sm font-medium text-gray-900 dark:text-white">Email Notifications</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Receive email updates about your account</p>
                 </div>
-                {editMode ? (
-                  <button 
-                    type="button"
-                    onClick={() => setPreferencesForm({
-                      ...preferencesForm,
-                      notifications: {
-                        ...preferencesForm.notifications,
-                        email: !preferencesForm.notifications.email
-                      }
-                    })}
-                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none ${
-                      preferencesForm.notifications.email ? 'bg-orange-600' : 'bg-gray-200'
-                    }`}
-                  >
-                    <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ${
-                      preferencesForm.notifications.email ? 'translate-x-5' : 'translate-x-0'
-                    }`}></span>
-                  </button>
-                ) : (
-                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-                    {preferencesForm.notifications.email ? 'Enabled' : 'Disabled'}
-                  </div>
-                )}
+                <button 
+                  type="button"
+                  onClick={() => setPreferencesForm({
+                    ...preferencesForm,
+                    notifications: {
+                      ...preferencesForm.notifications,
+                      email: !preferencesForm.notifications.email
+                    }
+                  })}
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none ${
+                    preferencesForm.notifications.email ? 'bg-orange-600' : 'bg-gray-200'
+                  }`}
+                >
+                  <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ${
+                    preferencesForm.notifications.email ? 'translate-x-5' : 'translate-x-0'
+                  }`}></span>
+                </button>
 
               </div>
               <div className="flex items-center justify-between">
@@ -827,29 +814,23 @@ const Profile: React.FC = () => {
                   <h4 className="text-sm font-medium text-gray-900 dark:text-white">SMS Notifications</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">Receive SMS updates</p>
                 </div>
-                {editMode ? (
-                  <button
-                    type="button"
-                    onClick={() => setPreferencesForm({
-                      ...preferencesForm,
-                      notifications: {
-                        ...preferencesForm.notifications,
-                        sms: !preferencesForm.notifications.sms
-                      }
-                    })}
-                    className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none ${
-                      preferencesForm.notifications.sms ? 'bg-orange-600' : 'bg-gray-200'
-                    }`}
-                  >
-                    <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ${
-                      preferencesForm.notifications.sms ? 'translate-x-5' : 'translate-x-0'
-                    }`}></span>
-                  </button>
-                ) : (
-                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-                    {preferencesForm.notifications.sms ? 'Enabled' : 'Disabled'}
-                  </div>
-                )}
+                <button
+                  type="button"
+                  onClick={() => setPreferencesForm({
+                    ...preferencesForm,
+                    notifications: {
+                      ...preferencesForm.notifications,
+                      sms: !preferencesForm.notifications.sms
+                    }
+                  })}
+                  className={`relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none ${
+                    preferencesForm.notifications.sms ? 'bg-orange-600' : 'bg-gray-200'
+                  }`}
+                >
+                  <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition ${
+                    preferencesForm.notifications.sms ? 'translate-x-5' : 'translate-x-0'
+                  }`}></span>
+                </button>
 
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -857,7 +838,6 @@ const Profile: React.FC = () => {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Language
                   </label>
-                  {editMode ? (
                   <select
                     value={preferencesForm.language}
                     onChange={(e) => setPreferencesForm({...preferencesForm, language: e.target.value})}
@@ -867,19 +847,11 @@ const Profile: React.FC = () => {
                     <option value="es">Spanish</option>
                     <option value="fr">French</option>
                   </select>
-                ) : (
-                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-                    {preferencesForm.language === 'en' ? 'English' : 
-                     preferencesForm.language === 'es' ? 'Spanish' : 
-                     preferencesForm.language === 'fr' ? 'French' : 'Not selected'}
-                  </div>
-                )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Currency
                   </label>
-                  {editMode ? (
                   <select
                     value={preferencesForm.currency}
                     onChange={(e) => setPreferencesForm({...preferencesForm, currency: e.target.value})}
@@ -890,23 +862,16 @@ const Profile: React.FC = () => {
                     <option value="GBP">GBP</option>
                     <option value="INR">INR</option>
                   </select>
-                ) : (
-                  <div className="w-full px-4 py-2 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300">
-                    {preferencesForm.currency || 'Not selected'}
-                  </div>
-                )}
                 </div>
               </div>
             </div>
-            {editMode && (
-              <button 
-                type="submit" 
-                disabled={updateLoading}
-                className="mt-6 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50"
-              >
-                {updateLoading ? 'Saving...' : 'Save Preferences'}
-              </button>
-            )}
+            <button 
+              type="submit" 
+              disabled={updateLoading}
+              className="mt-6 px-6 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 disabled:opacity-50"
+            >
+              {updateLoading ? 'Saving...' : 'Save Preferences'}
+            </button>
           </form>
         </div>
       )}
