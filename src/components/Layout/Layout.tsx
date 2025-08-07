@@ -77,14 +77,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
 
-      {/* Floating Elements */}
-      <div className="fixed bottom-6 left-6 z-50 hidden lg:block">
-        <div className="glass p-3 rounded-2xl">
-          <div className={`w-3 h-3 rounded-full ${
-            isDarkMode ? 'bg-green-400' : 'bg-green-500'
-          }`}></div>
-        </div>
-      </div>
+      
 
       {/* Theme Indicator
       <div className="fixed top-20 right-6 z-40 hidden xl:block">
