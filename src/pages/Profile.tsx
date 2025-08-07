@@ -23,6 +23,7 @@ const Profile: React.FC = () => {
   } = useAppSelector((state) => state.profile);
 
   const [activeTab, setActiveTab] = useState('personal');
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [personalForm, setPersonalForm] = useState({
     first_name: '',
     last_name: '',
@@ -73,6 +74,16 @@ const Profile: React.FC = () => {
     dispatch(fetchUserProfile());
   }, [dispatch]);
 
+  // Auto-clear success messages after 5 seconds
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+
   // Update forms when profile data is loaded
   useEffect(() => {
     if (profileData) {
@@ -115,43 +126,55 @@ const Profile: React.FC = () => {
 
   const handlePersonalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSuccessMessage(null);
     try {
       await dispatch(updatePersonalInfo(personalForm)).unwrap();
-      alert('Personal information updated successfully!');
+      setSuccessMessage('Personal information updated successfully!');
     } catch (error) {
       console.error('Failed to update personal info:', error);
+      // Error is handled by Redux slice
     }
   };
 
   const handleBusinessSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSuccessMessage(null);
     try {
       await dispatch(updateBusinessDetails(businessForm)).unwrap();
-      alert('Business details updated successfully!');
+      setSuccessMessage('Business details updated successfully!');
     } catch (error) {
       console.error('Failed to update business details:', error);
+      // Error is handled by Redux slice
     }
   };
 
   const handlePreferencesSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSuccessMessage(null);
     try {
       await dispatch(updatePreferences(preferencesForm)).unwrap();
-      alert('Preferences updated successfully!');
+      setSuccessMessage('Preferences updated successfully!');
     } catch (error) {
       console.error('Failed to update preferences:', error);
+      // Error is handled by Redux slice
     }
   };
 
   const handlePasswordSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSuccessMessage(null);
+    
     if (passwordForm.new_password !== passwordForm.confirm_password) {
-      alert('New passwords do not match!');
-      return;
+      return; // Error will be shown in validation
     }
+    
+    if (passwordForm.new_password.length < 8) {
+      return; // Error will be shown in validation
+    }
+    
     try {
       await dispatch(changePassword(passwordForm)).unwrap();
-      alert('Password changed successfully!');
+      setSuccessMessage('Password changed successfully!');
       setPasswordForm({
         current_password: '',
         new_password: '',
@@ -159,20 +182,37 @@ const Profile: React.FC = () => {
       });
     } catch (error) {
       console.error('Failed to change password:', error);
+      // Error is handled by Redux slice
     }
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        setSuccessMessage(null);
+        dispatch({ type: 'profile/setError', payload: 'Image file size must be less than 5MB' });
+        return;
+      }
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        setSuccessMessage(null);
+        dispatch({ type: 'profile/setError', payload: 'Please select a valid image file' });
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = async () => {
         const base64String = reader.result as string;
+        setSuccessMessage(null);
         try {
           await dispatch(updateProfileImage({ profile_image: base64String })).unwrap();
-          alert('Profile image updated successfully!');
+          setSuccessMessage('Profile image updated successfully!');
         } catch (error) {
           console.error('Failed to update profile image:', error);
+          // Error is handled by Redux slice
         }
       };
       reader.readAsDataURL(file);
@@ -202,7 +242,21 @@ const Profile: React.FC = () => {
             <span>{error}</span>
             <button
               onClick={() => dispatch(clearError())}
-              className="text-red-500 hover:text-red-700"
+              className="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300"
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
+
+      {successMessage && (
+        <div className="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 text-green-700 dark:text-green-300 px-4 py-3 rounded-lg">
+          <div className="flex justify-between items-center">
+            <span>{successMessage}</span>
+            <button
+              onClick={() => setSuccessMessage(null)}
+              className="text-green-500 hover:text-green-700 dark:text-green-400 dark:hover:text-green-300"
             >
               ×
             </button>
@@ -555,7 +609,11 @@ const Profile: React.FC = () => {
                   onChange={(e) => setPasswordForm({...passwordForm, new_password: e.target.value})}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                   required
+                  minLength={8}
                 />
+                {passwordForm.new_password && passwordForm.new_password.length < 8 && (
+                  <p className="text-red-500 text-xs mt-1">Password must be at least 8 characters long</p>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
@@ -568,6 +626,9 @@ const Profile: React.FC = () => {
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                   required
                 />
+                {passwordForm.confirm_password && passwordForm.new_password !== passwordForm.confirm_password && (
+                  <p className="text-red-500 text-xs mt-1">Passwords do not match</p>
+                )}
               </div>
             </div>
             <button 

@@ -18,6 +18,29 @@ const getAuthHeadersFormData = () => {
   };
 };
 
+// Helper function to handle API responses
+const handleApiResponse = async (response: Response) => {
+  if (!response.ok) {
+    let errorMessage = `HTTP error! status: ${response.status}`;
+    
+    try {
+      const errorData = await response.json();
+      if (errorData.message) {
+        errorMessage = errorData.message;
+      } else if (errorData.error) {
+        errorMessage = errorData.error;
+      }
+    } catch (parseError) {
+      // If we can't parse the error response, use the status text
+      errorMessage = response.statusText || errorMessage;
+    }
+    
+    throw new Error(errorMessage);
+  }
+  
+  return await response.json();
+};
+
 export interface ProfileData {
   id: string;
   personal: {
@@ -102,126 +125,126 @@ export interface UpdatePreferencesData {
   dashboard_widgets: string[];
 }
 
+export interface UpdateProfileImageData {
+  profile_image: string; // base64 encoded image
+}
+
 export interface ChangePasswordData {
   current_password: string;
   new_password: string;
   confirm_password: string;
 }
 
-export interface UpdateProfileImageData {
-  profile_image: string; // base64 encoded image
-}
-
 // API Service Functions
 export const profileService = {
   // Get user profile
   getUserProfile: async (): Promise<ProfileData> => {
-    const response = await fetch(`${API_BASE_URL}/profile`, {
-      method: 'GET',
-      headers: getAuthHeaders(),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/profile`, {
+        method: 'GET',
+        headers: getAuthHeaders(),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch profile: ${response.statusText}`);
+      const result = await handleApiResponse(response);
+      return result.data.profile;
+    } catch (error) {
+      throw new Error(`Failed to fetch profile: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-
-    const result = await response.json();
-    return result.data.profile;
   },
 
   // Update personal information
   updatePersonalInfo: async (data: UpdatePersonalInfoData): Promise<any> => {
-    const response = await fetch(`${API_BASE_URL}/profile/personal`, {
-      method: 'PUT',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/profile/personal`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Failed to update personal info: ${response.statusText}`);
+      const result = await handleApiResponse(response);
+      return result.data.personal;
+    } catch (error) {
+      throw new Error(`Failed to update personal info: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-
-    const result = await response.json();
-    return result.data.personal;
   },
 
   // Update business details
   updateBusinessDetails: async (data: UpdateBusinessDetailsData): Promise<any> => {
-    const response = await fetch(`${API_BASE_URL}/profile/business`, {
-      method: 'PUT',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/profile/business`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Failed to update business details: ${response.statusText}`);
+      const result = await handleApiResponse(response);
+      return result.data.business;
+    } catch (error) {
+      throw new Error(`Failed to update business details: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-
-    const result = await response.json();
-    return result.data.business;
   },
 
   // Update preferences
   updatePreferences: async (data: UpdatePreferencesData): Promise<any> => {
-    const response = await fetch(`${API_BASE_URL}/profile/preferences`, {
-      method: 'PUT',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/profile/preferences`, {
+        method: 'PUT',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Failed to update preferences: ${response.statusText}`);
+      const result = await handleApiResponse(response);
+      return result.data.preferences;
+    } catch (error) {
+      throw new Error(`Failed to update preferences: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-
-    const result = await response.json();
-    return result.data.preferences;
   },
 
   // Update profile image
   updateProfileImage: async (data: UpdateProfileImageData): Promise<any> => {
-    const response = await fetch(`${API_BASE_URL}/profile/image`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/profile/image`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Failed to update profile image: ${response.statusText}`);
+      const result = await handleApiResponse(response);
+      return result.data;
+    } catch (error) {
+      throw new Error(`Failed to update profile image: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-
-    const result = await response.json();
-    return result.data;
   },
 
   // Change password
   changePassword: async (data: ChangePasswordData): Promise<any> => {
-    const response = await fetch(`${API_BASE_URL}/account/profile/change-password`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/account/profile/change-password`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Failed to change password: ${response.statusText}`);
+      const result = await handleApiResponse(response);
+      return result.data;
+    } catch (error) {
+      throw new Error(`Failed to change password: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-
-    const result = await response.json();
-    return result.data;
   },
 
   // Update general profile (combined endpoint)
   updateProfile: async (data: any): Promise<any> => {
-    const response = await fetch(`${API_BASE_URL}/account/profile/update`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(data),
-    });
+    try {
+      const response = await fetch(`${API_BASE_URL}/account/profile/update`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(data),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Failed to update profile: ${response.statusText}`);
+      const result = await handleApiResponse(response);
+      return result.data;
+    } catch (error) {
+      throw new Error(`Failed to update profile: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-
-    const result = await response.json();
-    return result.data;
   },
 };
