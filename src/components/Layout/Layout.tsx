@@ -27,27 +27,55 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Navbar />
       </div>
 
-      <div className="container-table mx-auto mt-16 mb-8 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg">
-        {/* Sidebar Column */}
-        <div className="border-r z-0 border-gray-200 dark:border-gray-800">
-          <Sidebar />
+      {/* Desktop Layout */}
+      <div className="hidden lg:block">
+        <div className="container-table mx-auto mt-16 mb-8 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg">
+          {/* Sidebar Column */}
+          <div className="border-r z-0 border-gray-200 dark:border-gray-800">
+            <Sidebar />
+          </div>
+          
+          {/* Main Content Column */}
+          <div className="flex-1 relative z-10 flex flex-col">
+            {/* Page Content */}
+            <main className="flex-1 p-6 overflow-auto">
+              <div className="w-full">
+                {children}
+              </div>
+            </main>
+          </div>
         </div>
-        
-        {/* Main Content Column */}
-        <div className="flex-1 relative z-10 flex flex-col">
-          {/* Page Content */}
-          <main className="flex-1 p-6 overflow-auto">
-            <div className="w-full  ">
+      </div>
+
+      {/* Mobile Layout */}
+      <div className="lg:hidden">
+        {/* Mobile Sidebar Overlay */}
+        <div className={`fixed inset-0 z-40 transition-opacity duration-300 ${
+          !isSidebarCollapsed ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        }`}>
+          {/* Backdrop */}
+          <div 
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+            onClick={toggleSidebar}
+          ></div>
+          
+          {/* Sidebar */}
+          <div className={`fixed top-0 left-0 h-full w-80 max-w-[85vw] transform transition-transform duration-300 ease-in-out ${
+            !isSidebarCollapsed ? 'translate-x-0' : '-translate-x-full'
+          }`}>
+            <Sidebar />
+          </div>
+        </div>
+
+        {/* Mobile Main Content */}
+        <div className="mt-16 mb-8">
+          <main className="p-4 sm:p-6">
+            <div className="w-full">
               {children}
             </div>
           </main>
         </div>
       </div>
-
-      {/* Mobile Backdrop */}
-      {!isSidebarCollapsed && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 lg:hidden"></div>
-      )}
 
       {/* Floating Elements */}
       <div className="fixed bottom-6 left-6 z-50 hidden lg:block">

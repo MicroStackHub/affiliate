@@ -51,10 +51,29 @@ const Sidebar: React.FC = () => {
  
   
   return (
-    <div className={`h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 z-30 ${isSidebarCollapsed ? 'w-16' : 'w-64'}`}>
+    <div className={`h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 z-30 ${
+      // Desktop behavior
+      'lg:' + (isSidebarCollapsed ? 'w-16' : 'w-64')
+    } ${
+      // Mobile behavior - always full width when visible
+      'w-full lg:w-auto'
+    }`}>
+
+      {/* Mobile Header with Close Button */}
+      <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <h2 className="text-lg font-semibold text-orange-600 dark:text-orange-400">Bonzicart</h2>
+        <button
+          onClick={toggleSidebar}
+          className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
 
       {/* Menu Items */}
-      <nav style={{ marginTop: '1rem' }}>
+      <nav style={{ marginTop: '1rem' }} className="lg:mt-4">
         <div style={{ paddingLeft: '0', paddingRight: '0' }}>
        
           {overviewItems.map((item) => (
@@ -62,15 +81,12 @@ const Sidebar: React.FC = () => {
               key={item.path}
               to={item.path}
               style={{
-                //display: 'flex',
                 display:item.hidden ? "none":"flex",
                 alignItems: 'center',
-                padding: '0.75rem',
+                padding: '0.75rem 1rem',
                 borderBottom: '1px solid #e5e7eb',
                 fontSize: '0.875rem',
                 fontWeight: 500,
-
-                
                 backgroundColor: location.pathname === item.path || (item.path === '/dashboard' && location.pathname === '/') 
                   ? '#fff5f2' 
                   : 'transparent',
@@ -82,7 +98,13 @@ const Sidebar: React.FC = () => {
                   : '4px solid transparent',
                 cursor: 'pointer',
                 width: '100%',
-                justifyContent: isSidebarCollapsed ? 'center' : 'flex-start'
+                justifyContent: (isSidebarCollapsed && window.innerWidth >= 1024) ? 'center' : 'flex-start'
+              }}
+              onClick={() => {
+                // Close sidebar on mobile after navigation
+                if (window.innerWidth < 1024) {
+                  toggleSidebar();
+                }
               }}
               title={isSidebarCollapsed ? item.label : ''}
             
@@ -184,7 +206,7 @@ const Sidebar: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                padding: '0.75rem',
+                padding: '0.75rem 1rem',
                 borderBottom: '1px solid #e5e7eb',
                 fontSize: '0.875rem',
                 fontWeight: 500,
@@ -197,9 +219,15 @@ const Sidebar: React.FC = () => {
                 borderLeft: location.pathname === item.path 
                   ? '3px solid #F15A2B' 
                   : '3px solid transparent',
-                justifyContent: isSidebarCollapsed ? 'center' : 'flex-start',
+                justifyContent: (isSidebarCollapsed && window.innerWidth >= 1024) ? 'center' : 'flex-start',
                 cursor: 'pointer',
                 width: '100%'
+              }}
+              onClick={() => {
+                // Close sidebar on mobile after navigation
+                if (window.innerWidth < 1024) {
+                  toggleSidebar();
+                }
               }}
               title={isSidebarCollapsed ? item.label : ''}
             >

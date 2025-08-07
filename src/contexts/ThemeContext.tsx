@@ -32,7 +32,7 @@ const STORAGE_KEYS = {
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>('light');
   const [colorScheme, setColorSchemeState] = useState<ColorScheme>('orange');
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true); // Start collapsed for mobile
   const [isLoading, setIsLoading] = useState(true);
   const [systemPreference, setSystemPreference] = useState<Theme>('dark');
   const [followSystemTheme, setFollowSystemTheme] = useState(false);

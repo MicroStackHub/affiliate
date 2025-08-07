@@ -22,7 +22,7 @@
     @apply bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-gray-100;
   }
 
-  /* Table-like layout */
+  /* Table-like layout for desktop only */
   .container-table {
     @apply w-full max-w-screen-2xl mx-auto;
     display: grid;
@@ -30,6 +30,14 @@
     border: 1px solid var(--border-color);
     margin-top: 4rem; /* Add space for the fixed navbar */
     max-width: 1200px;
+  }
+
+  @media (max-width: 1023px) {
+    .container-table {
+      display: block;
+      border: none;
+      margin-top: 0;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
