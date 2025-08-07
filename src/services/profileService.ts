@@ -1,5 +1,5 @@
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://backend.glst.in/api';
+const API_BASE_URL = 'https://backend.glst.in/api/account';
 
 // Helper function to get auth headers
 const getAuthHeaders = () => {
@@ -11,7 +11,7 @@ const getAuthHeaders = () => {
 };
 
 // Helper function to get auth headers for form data
-const getAuthHeadersFormData = () => {
+export const getAuthHeadersFormData = () => {
   const token = localStorage.getItem('token') || localStorage.getItem('authToken');
   return {
     'Authorization': `Bearer ${token}`,
@@ -219,7 +219,7 @@ export const profileService = {
   // Change password
   changePassword: async (data: ChangePasswordData): Promise<any> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/account/profile/change-password`, {
+      const response = await fetch(`${API_BASE_URL}/profile/change-password`, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: JSON.stringify(data),

@@ -1,13 +1,13 @@
 
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
 import { 
-  profileService, 
-  ProfileData, 
-  UpdatePersonalInfoData, 
-  UpdateBusinessDetailsData, 
-  UpdatePreferencesData,
-  UpdateProfileImageData,
-  ChangePasswordData
+    profileService, 
+  type ProfileData, 
+  type UpdatePersonalInfoData, 
+  type UpdateBusinessDetailsData, 
+ type UpdatePreferencesData,
+  type UpdateProfileImageData,
+  type ChangePasswordData
 } from '../../services/profileService';
 
 interface User {
