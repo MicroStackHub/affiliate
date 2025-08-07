@@ -22,17 +22,17 @@ const Sidebar: React.FC = () => {
 
   // Account section items
   const bankicon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
       d="M3 10h18M9 21V8m6 13V8m-9 4H3m18 0h-3M12 3L2 8h20L12 3z" />
   </svg>
 
   const privacyicon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="22" height="22">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
       d="M12 3l8 4v5c0 5.25-3.5 9.74-8 11-4.5-1.26-8-5.75-8-11V7l8-4z" />
   </svg>
 
   const feedBackIcon = <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
       d="M7 8h10M7 12h6m-6 4h8m1-14H5a2 2 0 00-2 2v14l4-4h11a2 2 0 002-2V5a2 2 0 00-2-2z" />
   </svg>
 
@@ -50,12 +50,9 @@ const Sidebar: React.FC = () => {
 
 
   return (
-    <div className={`h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 z-30 ${
-      // Desktop behavior
-      'lg:' + (isSidebarCollapsed ? 'w-16' : 'w-64')
-    } ${
-      // Mobile behavior - always full width when visible
-      'w-full lg:w-auto'
+    <div className={`h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 z-30 transition-all duration-300 ${
+      // Desktop behavior - show full sidebar by default, only collapse when explicitly collapsed
+      isSidebarCollapsed ? 'w-16' : 'w-64'
     }`}>
 
       {/* Mobile Header with Close Button */}
@@ -112,7 +109,7 @@ const Sidebar: React.FC = () => {
 
              >
                <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
-               {!isSidebarCollapsed && <span>{item.label}</span>}
+               {!isSidebarCollapsed && <span className="whitespace-nowrap">{item.label}</span>}
              </Link>
           ))}
 
@@ -187,16 +184,14 @@ const Sidebar: React.FC = () => {
           <div style={{
             fontSize: '0.75rem',
             fontWeight: 600,
-            //color: '#6b7280',
             textTransform: 'uppercase',
             letterSpacing: '0.05em',
-            padding: isSidebarCollapsed ? '0' : '0.75rem',
-            marginBottom: isSidebarCollapsed ? '0' : '0',
-            display: 'block',
-           // backgroundColor: '#f9fafb',
+            padding: isSidebarCollapsed ? '0.5rem 0' : '0.75rem',
+            marginBottom: '0',
+            display: isSidebarCollapsed ? 'none' : 'block',
             borderBottom: '1px solid #e5e7eb'
-          }} className="text-sm text-center bg-gray-100   font-medium text-gray-600 dark:bg-black">
-            Account
+          }} className="text-sm text-center bg-gray-100 font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-400">
+            {!isSidebarCollapsed && 'ACCOUNT'}
           </div>
           {accountItems.map((item) => (
             <Link
@@ -231,7 +226,7 @@ const Sidebar: React.FC = () => {
               title=""
             >
               <span style={{ fontSize: '1.25rem', marginRight: isSidebarCollapsed ? '0' : '0.75rem' }}>{item.icon}</span>
-              {!isSidebarCollapsed && <span>{item.label}</span>}
+              {!isSidebarCollapsed && <span className="whitespace-nowrap">{item.label}</span>}
             </Link>
           ))}
         </div>
