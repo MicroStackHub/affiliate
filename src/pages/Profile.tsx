@@ -67,7 +67,7 @@ const Profile: React.FC = () => {
   const [passwordForm, setPasswordForm] = useState({
     current_password: '',
     new_password: '',
-    confirm_password: '',
+    new_password_confirmation: '',
   });
 
   const tabs = [
@@ -98,6 +98,14 @@ const Profile: React.FC = () => {
       setPersonalForm({
         first_name: profileData.first_name || '',
         last_name: profileData.last_name || '',
+        gender: profileData.gender || '',
+        country: profileData.country || '',
+        state: profileData.state || '',
+        city: profileData.city || '',
+        address1: profileData.address1 || '',
+        address2: profileData.address2 || '',
+        pin_code: profileData.pin_code || '',
+        alt_phone_number: profileData.alt_phone_number || '',
         email: profileData.email || '',
         phone: profileData.phone_number || '',
       });
@@ -188,7 +196,7 @@ const Profile: React.FC = () => {
     e.preventDefault();
     setSuccessMessage(null);
     
-    if (passwordForm.new_password !== passwordForm.confirm_password) {
+    if (passwordForm.new_password !== passwordForm.new_password_confirmation) {
       return; // Error will be shown in validation
     }
     
@@ -202,7 +210,7 @@ const Profile: React.FC = () => {
       setPasswordForm({
         current_password: '',
         new_password: '',
-        confirm_password: '',
+        new_password_confirmation: '',
       });
     } catch (error) {
       console.error('Failed to change password:', error);
@@ -737,12 +745,12 @@ const Profile: React.FC = () => {
                 </label>
                 <input
                   type="password"
-                  value={passwordForm.confirm_password}
-                  onChange={(e) => setPasswordForm({...passwordForm, confirm_password: e.target.value})}
+                  value={passwordForm.new_password_confirmation}
+                  onChange={(e) => setPasswordForm({...passwordForm, new_password_confirmation: e.target.value})}
                   className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
                   required
                 />
-                {passwordForm.confirm_password && passwordForm.new_password !== passwordForm.confirm_password && (
+                {passwordForm.new_password_confirmation && passwordForm.new_password !== passwordForm.new_password_confirmation && (
                   <p className="text-red-500 text-xs mt-1">Passwords do not match</p>
                 )}
               </div>

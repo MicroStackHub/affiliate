@@ -59,6 +59,8 @@ export interface ProfileData {
   alt_phone_number: string | null;
   member_since: number;
   profile_image_url: string;
+  business?: UpdateBusinessDetailsData; // Add business property with proper type
+  preferences?: UpdatePreferencesData; // Add preferences property with proper type
 }
 
 export interface UpdatePersonalInfoData {
@@ -111,7 +113,7 @@ export interface UpdateProfileImageData {
 export interface ChangePasswordData {
   current_password: string;
   new_password: string;
-  confirm_password: string;
+  new_password_confirmation: string;
 }
 
 // API Service Functions
