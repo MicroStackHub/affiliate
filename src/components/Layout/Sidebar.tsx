@@ -74,7 +74,7 @@ const Sidebar: React.FC = () => {
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
         <h2 className="text-lg font-semibold text-orange-600 dark:text-orange-400">Bonzicart</h2>
         <button
-          onClick={toggleSidebar}
+          onClick={toggleMobileSidebar}
           className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
