@@ -35,7 +35,7 @@ const STORAGE_KEYS = {
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>('light');
   const [colorScheme, setColorSchemeState] = useState<ColorScheme>('orange');
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // Always start expanded to show labels
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false); // Start open for desktop, will be handled for mobile
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false); // Mobile sidebar overlay state
   const [isLoading, setIsLoading] = useState(true);
   const [systemPreference, setSystemPreference] = useState<Theme>('dark');

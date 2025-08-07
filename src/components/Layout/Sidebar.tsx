@@ -74,7 +74,7 @@ const Sidebar: React.FC = () => {
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
         <h2 className="text-lg font-semibold text-orange-600 dark:text-orange-400">Bonzicart</h2>
         <button
-          onClick={toggleMobileSidebar}
+          onClick={toggleSidebar}
           className="p-2 rounded-lg text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
         >
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -84,9 +84,9 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* Sidebar Content */}
-      <nav className="h-full overflow-y-auto py-4">
+      <nav className="h-full overflow-y-auto">
         {/* Overview Section */}
-        <div className="space-y-1">
+        <div className="py-2">
           {overviewItems.map((item) => (
             !item.hidden && (
               <Link
@@ -94,7 +94,7 @@ const Sidebar: React.FC = () => {
                 to={item.path}
                 onClick={handleItemClick}
                 className={`
-                  flex items-center px-4 py-3 mx-2 rounded-lg
+                  flex items-center px-4 py-3 mx-2 my-1 rounded-lg
                   transition-all duration-200 ease-in-out
                   hover:bg-orange-50 dark:hover:bg-gray-800
                   ${isActiveItem(item.path) 
@@ -105,11 +105,11 @@ const Sidebar: React.FC = () => {
                 `}
                 title={isSidebarCollapsed ? item.label : ''}
               >
-                <span className={`text-xl flex-shrink-0 ${!isSidebarCollapsed ? 'mr-3' : ''}`}>
+                <span className={`text-xl ${!isSidebarCollapsed ? 'mr-3' : ''}`}>
                   {item.icon}
                 </span>
                 {!isSidebarCollapsed && (
-                  <span className="font-medium text-sm whitespace-nowrap overflow-hidden">
+                  <span className="font-medium text-sm whitespace-nowrap">
                     {item.label}
                   </span>
                 )}
@@ -119,43 +119,38 @@ const Sidebar: React.FC = () => {
         </div>
 
         {/* Management Section */}
-        <div className="mt-6 space-y-1">
-          {!isSidebarCollapsed && (
+        {!isSidebarCollapsed && (
+          <div className="py-2 border-t border-gray-200 dark:border-gray-700">
             <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
               Management
             </div>
-          )}
-          {managementItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={handleItemClick}
-              className={`
-                flex items-center px-4 py-3 mx-2 rounded-lg
-                transition-all duration-200 ease-in-out
-                hover:bg-orange-50 dark:hover:bg-gray-800
-                ${isActiveItem(item.path) 
-                  ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-l-4 border-orange-500' 
-                  : 'text-gray-700 dark:text-gray-300'
-                }
-                ${isSidebarCollapsed ? 'justify-center' : 'justify-start'}
-              `}
-              title={isSidebarCollapsed ? item.label : ''}
-            >
-              <span className={`text-xl flex-shrink-0 ${!isSidebarCollapsed ? 'mr-3' : ''}`}>
-                {item.icon}
-              </span>
-              {!isSidebarCollapsed && (
-                <span className="font-medium text-sm whitespace-nowrap overflow-hidden">
+            {managementItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                onClick={handleItemClick}
+                className={`
+                  flex items-center px-4 py-3 mx-2 my-1 rounded-lg
+                  transition-all duration-200 ease-in-out
+                  hover:bg-orange-50 dark:hover:bg-gray-800
+                  ${isActiveItem(item.path) 
+                    ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 border-l-4 border-orange-500' 
+                    : 'text-gray-700 dark:text-gray-300'
+                  }
+                `}
+                title={isSidebarCollapsed ? item.label : ''}
+              >
+                <span className="text-xl mr-3">{item.icon}</span>
+                <span className="font-medium text-sm whitespace-nowrap">
                   {item.label}
                 </span>
-              )}
-            </Link>
-          ))}
-        </div>
+              </Link>
+            ))}
+          </div>
+        )}
 
         {/* Account Section */}
-        <div className="mt-6 space-y-1">
+        <div className="py-2 border-t border-gray-200 dark:border-gray-700 mt-auto">
           {!isSidebarCollapsed && (
             <div className="px-4 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
               Account
@@ -167,7 +162,7 @@ const Sidebar: React.FC = () => {
               to={item.path}
               onClick={handleItemClick}
               className={`
-                flex items-center px-4 py-3 mx-2 rounded-lg
+                flex items-center px-4 py-3 mx-2 my-1 rounded-lg
                 transition-all duration-200 ease-in-out
                 hover:bg-orange-50 dark:hover:bg-gray-800
                 ${isActiveItem(item.path) 
@@ -178,15 +173,11 @@ const Sidebar: React.FC = () => {
               `}
               title={isSidebarCollapsed ? item.label : ''}
             >
-              <span className={`flex-shrink-0 ${!isSidebarCollapsed ? 'mr-3' : ''}`}>
-                {typeof item.icon === 'string' ? (
-                  <span className="text-xl">{item.icon}</span>
-                ) : (
-                  <span className="text-xl flex items-center justify-center w-5 h-5">{item.icon}</span>
-                )}
+              <span className={`text-xl ${!isSidebarCollapsed ? 'mr-3' : ''}`}>
+                {typeof item.icon === 'string' ? item.icon : <span className="flex items-center">{item.icon}</span>}
               </span>
               {!isSidebarCollapsed && (
-                <span className="font-medium text-sm whitespace-nowrap overflow-hidden">
+                <span className="font-medium text-sm whitespace-nowrap">
                   {item.label}
                 </span>
               )}
