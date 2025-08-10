@@ -1,11 +1,11 @@
 
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
 import { 
-    profileService, 
+  profileService, 
   type ProfileData, 
   type UpdatePersonalInfoData, 
   type UpdateBusinessDetailsData, 
- type UpdatePreferencesData,
+  type UpdatePreferencesData,
   type UpdateProfileImageData,
   type ChangePasswordData
 } from '../../services/profileService';
@@ -28,6 +28,8 @@ interface User {
   alt_phone_number?: string;
   member_since: number;
   profile_image_url: string;
+  business?: any; // Add business property
+  preferences?: any; // Add preferences property
 }
 
 interface ProfileState {
@@ -174,18 +176,19 @@ const profileSlice = createSlice({
           id: action.payload.id,
           name: `${action.payload.first_name} ${action.payload.last_name}`,
           email: action.payload.email,
-          profileImage: action.payload.profile_image,
+          profileImage: action.payload.profile_image || undefined,
           first_name: action.payload.first_name,
           last_name: action.payload.last_name,
           phone_number: action.payload.phone_number,
-          gender: action.payload.gender,
-          country: action.payload.country,
-          state: action.payload.state,
-          city: action.payload.city,
-          address1: action.payload.address1,
-          address2: action.payload.address2,
-          pin_code: action.payload.pin_code,
-          alt_phone_number: action.payload.alt_phone_number,
+          gender: action.payload.gender || undefined,
+
+          country: action.payload.country || undefined,
+          state: action.payload.state || undefined,
+          city: action.payload.city || undefined,
+          address1: action.payload.address1 || undefined,
+          address2: action.payload.address2 || undefined,
+          pin_code: action.payload.pin_code || undefined,
+          alt_phone_number: action.payload.alt_phone_number || undefined,
           member_since: action.payload.member_since,
           profile_image_url: action.payload.profile_image_url,
         };
@@ -207,23 +210,25 @@ const profileSlice = createSlice({
         if (state.profileData) {
           // Update the profile data with new values
           Object.assign(state.profileData, action.payload);
-          state.user = {
-            ...state.user!,
-            name: `${action.payload.first_name} ${action.payload.last_name}`,
-            email: action.payload.email,
-            profileImage: action.payload.profile_image,
-            first_name: action.payload.first_name,
-            last_name: action.payload.last_name,
-            phone_number: action.payload.phone_number,
-            gender: action.payload.gender,
-            country: action.payload.country,
-            state: action.payload.state,
-            city: action.payload.city,
-            address1: action.payload.address1,
-            address2: action.payload.address2,
-            pin_code: action.payload.pin_code,
-            alt_phone_number: action.payload.alt_phone_number,
-          };
+          if (state.user) {
+            state.user = {
+              ...state.user,
+              name: `${action.payload.first_name} ${action.payload.last_name}`,
+              email: action.payload.email,
+              profileImage: action.payload.profile_image,
+              first_name: action.payload.first_name,
+              last_name: action.payload.last_name,
+              phone_number: action.payload.phone_number,
+              gender: action.payload.gender,
+              country: action.payload.country,
+              state: action.payload.state,
+              city: action.payload.city,
+              address1: action.payload.address1,
+              address2: action.payload.address2,
+              pin_code: action.payload.pin_code,
+              alt_phone_number: action.payload.alt_phone_number,
+            };
+          }
         }
         state.error = null;
       })
@@ -240,12 +245,14 @@ const profileSlice = createSlice({
       })
       .addCase(updateBusinessDetails.fulfilled, (state, action) => {
         state.updateLoading = false;
-        if (state.profileData) {
+        if (state.profileData && action.payload) {
           state.profileData.business = action.payload;
-          state.user = {
-            ...state.user!,
-            business: action.payload,
-          };
+          if (state.user) {
+            state.user = {
+              ...state.user,
+              business: action.payload,
+            };
+          }
         }
         state.error = null;
       })
@@ -262,12 +269,14 @@ const profileSlice = createSlice({
       })
       .addCase(updatePreferences.fulfilled, (state, action) => {
         state.updateLoading = false;
-        if (state.profileData) {
+        if (state.profileData && action.payload) {
           state.profileData.preferences = action.payload;
-          state.user = {
-            ...state.user!,
-            preferences: action.payload,
-          };
+          if (state.user) {
+            state.user = {
+              ...state.user,
+              preferences: action.payload,
+            };
+          }
         }
         state.error = null;
       })
@@ -287,11 +296,13 @@ const profileSlice = createSlice({
         if (state.profileData && action.payload.profile_image) {
           state.profileData.profile_image = action.payload.profile_image;
           state.profileData.profile_image_url = action.payload.profile_image_url || action.payload.profile_image;
-          state.user = {
-            ...state.user!,
-            profileImage: action.payload.profile_image,
-            profile_image_url: action.payload.profile_image_url || action.payload.profile_image,
-          };
+          if (state.user) {
+            state.user = {
+              ...state.user,
+              profileImage: action.payload.profile_image,
+              profile_image_url: action.payload.profile_image_url || action.payload.profile_image,
+            };
+          }
         }
         state.error = null;
       })
