@@ -1,8 +1,6 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 :root {
   --border-radius: 0.75rem;
   --shadow-color: rgba(0, 0, 0, 0.1);
@@ -11,7 +9,11 @@
 
 @layer base {
   * {
-    @apply border-gray-200 dark:border-gray-700;
+    border-color: rgb(229, 231, 235); /* border-gray-200 */
+  }
+  
+  .dark * {
+    border-color: rgb(55, 65, 81); /* border-gray-700 */
   }
 
   body {
@@ -556,11 +558,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (prefers-contrast: high) {
-  .border-gray-200 {
+  * {
     border-color: #000;
   }
   
-  .dark .border-gray-700 {
+  .dark * {
     border-color: #fff;
   }
 }
