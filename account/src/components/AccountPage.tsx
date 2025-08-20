@@ -135,7 +135,7 @@ const QuickActionButton: React.FC<QuickActionButtonProps> = ({ title, descriptio
         case 'green': return 'bg-green-600 hover:bg-green-700 text-white shadow-lg hover:shadow-xl';
         case 'purple': return 'bg-purple-600 hover:bg-purple-700 text-white shadow-lg hover:shadow-xl';
         case 'red': return 'bg-red-600 hover:bg-red-700 text-white shadow-lg hover:shadow-xl';
-        default: return 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl';
+        default: return 'bg-orange-primary hover:bg-orange-hover text-white shadow-lg hover:shadow-xl';
       }
     }
     return `${isDarkMode ? 'bg-gray-800 border-gray-700 hover:bg-gray-700' : 'bg-white border-gray-200 hover:bg-gray-50'} border shadow-sm hover:shadow-md`;
@@ -545,10 +545,9 @@ const AccountPage: React.FC = () => {
                   <button
                     key={index}
                     onClick={() => handleQuickAction(link.action)}
-                    className={`w-full text-left px-3 py-2 rounded-lg ${isDarkMode ? 'hover:bg-gray-700 text-gray-300' : 'hover:bg-gray-100 text-gray-700'} transition-colors flex items-center space-x-3`}
+                    className="w-full bg-orange-primary hover:bg-orange-hover text-white px-4 py-2 rounded-lg font-medium transition-colors text-sm"
                   >
-                    <span>{link.icon}</span>
-                    <span className="text-sm">{link.name}</span>
+                    {link.name}
                   </button>
                 ))}
               </div>
