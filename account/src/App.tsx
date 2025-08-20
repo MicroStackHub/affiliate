@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Layout from './components/Layout/Layout';
 import AccountPage from './components/AccountPage';
@@ -44,9 +44,8 @@ import './App.css';
 function App() {
   return (
     <ThemeProvider>
-      <Router>
-        <Layout>
-          <Routes>
+      <Layout>
+        <Routes>
             {/* Default Route */}
             <Route path="/" element={<Navigate to="/overview" replace />} />
             
@@ -54,7 +53,7 @@ function App() {
             <Route path="/overview" element={<AccountPage />} />
             
             {/* Profile Management */}
-            <Route path="/profile/*" element={<ProfilePage />}>
+            <Route path="/profile/*" element={<ProfilePage userRole="customer" />}>
               <Route path="basic" element={<BasicInformation />} />
               <Route path="contact" element={<ContactDetails />} />
               <Route path="picture" element={<ProfilePicture />} />
@@ -134,7 +133,6 @@ function App() {
             <Route path="/support/report" element={<SupportPage />} />
           </Routes>
         </Layout>
-      </Router>
     </ThemeProvider>
   );
 }

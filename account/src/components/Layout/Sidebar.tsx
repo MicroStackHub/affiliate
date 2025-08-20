@@ -6,8 +6,9 @@ import { sidebarConfig, MenuItem } from '../../config/sidebarConfig';
 
 const Sidebar: React.FC = () => {
   const location = useLocation();
-  const { toggleMobileSidebar } = useTheme();
+  const { toggleMobileSidebar, isDarkMode } = useTheme();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
+  const [isHovered, setIsHovered] = useState(false);
 
   const isActiveItem = (itemPath: string) => {
     return location.pathname === itemPath || (itemPath === '/dashboard' && location.pathname === '/');
@@ -120,13 +121,17 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <div className={`
-      h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 
-      transition-all duration-300 ease-in-out
-      w-64
-      lg:relative lg:block
-      shadow-lg
-    `}>
+    <div 
+      className={`
+        h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 
+        transition-all duration-300 ease-in-out
+        w-64
+        lg:relative lg:block
+        shadow-lg
+      `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
 
       {/* Mobile Header with Close Button */}
       <div className="lg:hidden flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
