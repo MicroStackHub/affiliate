@@ -4,6 +4,13 @@ import React, { createContext, useContext, useState, useEffect, useCallback } fr
 type Theme = 'light' | 'dark';
 type ColorScheme = 'orange';
 
+const STORAGE_KEYS = {
+  theme: 'bonzicart-theme',
+  colorScheme: 'bonzicart-color-scheme',
+  sidebarCollapsed: 'bonzicart-sidebar-collapsed',
+  followSystemTheme: 'bonzicart-follow-system-theme',
+};
+
 interface ThemeContextType {
   theme: Theme;
   isDarkMode: boolean;
@@ -25,100 +32,70 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-const STORAGE_KEYS = {
-  theme: 'affiliate-theme',
-  colorScheme: 'affiliate-colorScheme',
-  sidebarCollapsed: 'affiliate-sidebarCollapsed',
-  followSystemTheme: 'affiliate-followSystemTheme',
-} as const;
+interface ThemeProviderProps {
+  children: React.ReactNode;
+}
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const useColorScheme = () => {
+  const getColorClasses = useCallback((variant: 'primary' | 'secondary' | 'accent' = 'primary') => {
+    const colors = {
+      primary: 'bg-orange-500 hover:bg-orange-600 text-white',
+      secondary: 'bg-orange-100 hover:bg-orange-200 text-orange-800 dark:bg-orange-900/20 dark:text-orange-200',
+      accent: 'border-orange-500 text-orange-500'
+    };
+    return colors[variant] || colors.primary;
+  }, []);
+
+  return { getColorClasses };
+};
+
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>('light');
   const [colorScheme, setColorSchemeState] = useState<ColorScheme>('orange');
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [systemPreference, setSystemPreference] = useState<Theme>('dark');
-  const [followSystemTheme, setFollowSystemTheme] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [systemPreference, setSystemPreference] = useState<Theme>('light');
+  const [followSystemTheme, setFollowSystemThemeState] = useState<boolean>(false);
 
-  const getSystemTheme = useCallback((): Theme => {
+  const isDarkMode = theme === 'dark';
+
+  // Detect system preference
+  const detectSystemPreference = useCallback((): Theme => {
     if (typeof window !== 'undefined' && window.matchMedia) {
       return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
-    return 'dark';
+    return 'light';
   }, []);
 
-  useEffect(() => {
+  // Apply theme and related settings to DOM
+  const applySettings = useCallback((
+    theme: Theme,
+    colorScheme: ColorScheme,
+    isSidebarCollapsed: boolean,
+    followSystemTheme: boolean
+  ) => {
     try {
-      const savedTheme = localStorage.getItem(STORAGE_KEYS.theme) as Theme;
-      const savedColorScheme = localStorage.getItem(STORAGE_KEYS.colorScheme) as ColorScheme;
-      const savedSidebarState = localStorage.getItem(STORAGE_KEYS.sidebarCollapsed);
-      const savedFollowSystem = localStorage.getItem(STORAGE_KEYS.followSystemTheme);
-      
-      const systemTheme = getSystemTheme();
-      setSystemPreference(systemTheme);
-      
-      const shouldFollowSystem = savedFollowSystem === 'true';
-      setFollowSystemTheme(shouldFollowSystem);
-      
-      if (shouldFollowSystem) {
-        setThemeState(systemTheme);
-      } else if (savedTheme && ['light', 'dark'].includes(savedTheme)) {
-        setThemeState(savedTheme);
-      } else {
-        setThemeState('light');
-      }
-      
-      setColorSchemeState('orange');
-      
-      if (savedSidebarState) {
-        setIsSidebarCollapsed(savedSidebarState === 'true');
-      }
-    } catch (error) {
-      console.warn('Error loading theme preferences:', error);
-      setThemeState(getSystemTheme());
-    } finally {
-      setIsLoading(false);
-    }
-  }, [getSystemTheme]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined' && window.matchMedia) {
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      
-      const handleChange = (e: MediaQueryListEvent) => {
-        const newSystemTheme = e.matches ? 'dark' : 'light';
-        setSystemPreference(newSystemTheme);
-        
-        if (followSystemTheme) {
-          setThemeState(newSystemTheme);
-        }
-      };
-      
-      mediaQuery.addEventListener('change', handleChange);
-      return () => mediaQuery.removeEventListener('change', handleChange);
-    }
-  }, [followSystemTheme]);
-
-  useEffect(() => {
-    if (isLoading) return;
-
-    try {
+      // Save to localStorage
       localStorage.setItem(STORAGE_KEYS.theme, theme);
       localStorage.setItem(STORAGE_KEYS.colorScheme, colorScheme);
       localStorage.setItem(STORAGE_KEYS.sidebarCollapsed, isSidebarCollapsed.toString());
       localStorage.setItem(STORAGE_KEYS.followSystemTheme, followSystemTheme.toString());
       
+      // Apply theme to document
       const root = document.documentElement;
       
+      // Theme class
       if (theme === 'dark') {
         root.classList.add('dark');
       } else {
         root.classList.remove('dark');
       }
       
+      // Color scheme attribute
       root.setAttribute('data-color-scheme', colorScheme);
       
+      // CSS custom properties for consistent theming
       const colors = {
         orange: { 
           primary: '#F15A2B', 
@@ -134,25 +111,99 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       root.style.setProperty('--color-primary-light', currentColors.primaryLight);
       root.style.setProperty('--color-primary-dark', currentColors.primaryDark);
       
+      // Meta theme color for mobile browsers
       const metaThemeColor = document.querySelector('meta[name="theme-color"]');
       if (metaThemeColor) {
-        metaThemeColor.setAttribute('content', theme === 'dark' ? '#111827' : '#ffffff');
+        metaThemeColor.setAttribute('content', theme === 'dark' ? '#1F2937' : '#FFFFFF');
       }
-      
     } catch (error) {
-      console.warn('Error applying theme:', error);
+      console.warn('Failed to apply theme settings:', error);
     }
-  }, [theme, colorScheme, isSidebarCollapsed, followSystemTheme, isLoading]);
+  }, []);
+
+  // Initialize theme from localStorage or system preference
+  useEffect(() => {
+    const initializeTheme = async () => {
+      try {
+        const detectedSystemPreference = detectSystemPreference();
+        setSystemPreference(detectedSystemPreference);
+
+        const savedTheme = localStorage.getItem(STORAGE_KEYS.theme) as Theme;
+        const savedColorScheme = localStorage.getItem(STORAGE_KEYS.colorScheme) as ColorScheme;
+        const savedSidebarCollapsed = localStorage.getItem(STORAGE_KEYS.sidebarCollapsed) === 'true';
+        const savedFollowSystemTheme = localStorage.getItem(STORAGE_KEYS.followSystemTheme) === 'true';
+
+        const initialTheme = savedFollowSystemTheme 
+          ? detectedSystemPreference 
+          : savedTheme || detectedSystemPreference;
+        
+        const initialColorScheme = savedColorScheme || 'orange';
+
+        setThemeState(initialTheme);
+        setColorSchemeState(initialColorScheme);
+        setIsSidebarCollapsed(savedSidebarCollapsed);
+        setFollowSystemThemeState(savedFollowSystemTheme);
+
+        applySettings(initialTheme, initialColorScheme, savedSidebarCollapsed, savedFollowSystemTheme);
+      } catch (error) {
+        console.warn('Failed to initialize theme:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeTheme();
+  }, [detectSystemPreference, applySettings]);
+
+  // Listen for system theme changes
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    
+    const handleChange = (e: MediaQueryListEvent) => {
+      const newSystemPreference: Theme = e.matches ? 'dark' : 'light';
+      setSystemPreference(newSystemPreference);
+      
+      if (followSystemTheme) {
+        setThemeState(newSystemPreference);
+        applySettings(newSystemPreference, colorScheme, isSidebarCollapsed, followSystemTheme);
+      }
+    };
+
+    // Modern browsers
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    }
+    // Legacy browsers
+    else if (mediaQuery.addListener) {
+      mediaQuery.addListener(handleChange);
+      return () => mediaQuery.removeListener(handleChange);
+    }
+  }, [followSystemTheme, colorScheme, isSidebarCollapsed, applySettings]);
+
+  // Update settings when they change
+  useEffect(() => {
+    if (!isLoading) {
+      applySettings(theme, colorScheme, isSidebarCollapsed, followSystemTheme);
+    }
+  }, [theme, colorScheme, isSidebarCollapsed, followSystemTheme, isLoading, applySettings]);
 
   const toggleTheme = useCallback(() => {
-    setFollowSystemTheme(false);
-    setThemeState(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  }, []);
+    if (followSystemTheme) {
+      setFollowSystemThemeState(false);
+    }
+    const newTheme: Theme = theme === 'light' ? 'dark' : 'light';
+    setThemeState(newTheme);
+  }, [theme, followSystemTheme]);
 
   const setTheme = useCallback((newTheme: Theme) => {
-    setFollowSystemTheme(false);
+    if (followSystemTheme) {
+      setFollowSystemThemeState(false);
+    }
     setThemeState(newTheme);
-  }, []);
+  }, [followSystemTheme]);
 
   const setColorScheme = useCallback((scheme: ColorScheme) => {
     setColorSchemeState(scheme);
@@ -174,16 +225,16 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setIsMobileSidebarOpen(open);
   }, []);
 
-  const handleFollowSystemTheme = useCallback((follow: boolean) => {
-    setFollowSystemTheme(follow);
+  const setFollowSystemTheme = useCallback((follow: boolean) => {
+    setFollowSystemThemeState(follow);
     if (follow) {
       setThemeState(systemPreference);
     }
   }, [systemPreference]);
 
-  const contextValue: ThemeContextType = {
+  const value: ThemeContextType = {
     theme,
-    isDarkMode: theme === 'dark',
+    isDarkMode,
     toggleTheme,
     setTheme,
     colorScheme,
@@ -197,25 +248,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     isLoading,
     systemPreference,
     followSystemTheme,
-    setFollowSystemTheme: handleFollowSystemTheme,
+    setFollowSystemTheme,
   };
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="rounded-full h-12 w-12 border-b-2 border-orange-primary animate-spin"></div>
-      </div>
-    );
-  }
-
-  return (
-    <ThemeContext.Provider value={contextValue}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 };
 
-export const useTheme = () => {
+export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
@@ -223,21 +262,4 @@ export const useTheme = () => {
   return context;
 };
 
-export const useColorScheme = () => {
-  const { colorScheme } = useTheme();
-  
-  const getColorClasses = (type: 'primary' | 'hover' | 'light' | 'text' = 'primary') => {
-    const colorMap = {
-      orange: {
-        primary: 'bg-orange-primary',
-        hover: 'hover:bg-orange-hover',
-        light: 'bg-orange-light',
-        text: 'text-orange-primary',
-      },
-    };
-    
-    return colorMap[colorScheme][type];
-  };
-  
-  return { colorScheme, getColorClasses };
-};
+export default ThemeContext;
